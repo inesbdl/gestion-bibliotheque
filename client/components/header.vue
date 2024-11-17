@@ -16,6 +16,11 @@ const links = ref([
   ],
   [
     {
+        label: 'Paramètres',
+        icon: 'i-heroicons-wrench-screwdriver',
+      to: 'parameters'
+    },
+    {
       label: 'Guide',
       icon: 'i-heroicons-question-mark-circle',
       to:"guide"
