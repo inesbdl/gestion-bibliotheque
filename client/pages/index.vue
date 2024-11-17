@@ -27,17 +27,6 @@
         </UInput>
       </div>
   
-      <!-- Bouton pour ajouter un livre -->
-      <div class="add-book-btn">
-        <UButton label="Ajouter un livre" color="gray" @click="goToAddBook">
-            <template #trailing>
-            <UIcon name="i-heroicons-plus-20-solid" class="w-5 h-5" />
-            </template>
-        </UButton>
-        <ExportButton :books="books" />
-      </div>
-
-
   
       <!-- Filtres -->
       <div class="filters">
@@ -56,7 +45,7 @@
           <option v-for="type in types" :key="type" :value="type">{{ type }}</option>
         </select>
   
-        <UButton color="primary" @click="resetFilters">
+        <UButton color="gray" @click="resetFilters">
           Réinitialiser les filtres
         </UButton>
       </div>
@@ -68,9 +57,8 @@
     </div>
   </template>
   
-  <script setup lang="ts">
+ <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
 
 // Variables pour la recherche et les filtres
 const q = ref('');
@@ -86,21 +74,37 @@ const types = ['Essai', 'Roman', 'Biographie'];
 // Liste des livres (initialement vide)
 const books = ref<any[]>([]);
 
-// Charger les livres depuis books.json
-onMounted(async () => {
-      try {
-        const response = await fetch('/books.json'); // Vérifie si l'URL est correcte
-        if (response.ok) {
-          const data = await response.json();
-          // Accède à la propriété "books" du fichier JSON
-          books.value = data.books || [];
-        } else {
-          console.error('Erreur lors du chargement des livres');
-        }
-      } catch (error) {
-        console.error('Erreur lors de la récupération du fichier:', error);
+// Fonction pour sauvegarder les livres dans le localStorage
+const saveBooksToLocalStorage = () => {
+  localStorage.setItem('books', JSON.stringify(books.value));
+};
+
+// Fonction pour charger les livres depuis le localStorage ou depuis books.json
+const fetchBooks = async () => {
+  try {
+    const storedBooks = localStorage.getItem('books');
+    if (storedBooks) {
+      books.value = JSON.parse(storedBooks);
+    } else {
+      // Charger les livres depuis le fichier JSON si le localStorage est vide
+      const response = await fetch('/books.json');
+      if (response.ok) {
+        const data = await response.json();
+        books.value = data.books || [];
+        saveBooksToLocalStorage(); // Sauvegarder dans le localStorage après le chargement
+      } else {
+        console.error('Erreur lors du chargement des livres');
       }
-    });
+    }
+  } catch (error) {
+    console.error('Erreur lors de la récupération des livres depuis le localStorage:', error);
+  }
+};
+
+// Charger les livres lors de l'initialisation du composant
+onMounted(() => {
+  fetchBooks();
+});
 
 // Filtrage des livres en fonction des critères
 const filteredBooks = computed(() => {
@@ -120,6 +124,7 @@ const filteredBooks = computed(() => {
   });
 });
 
+// Colonnes pour le tableau des livres
 const columns = [
   {
     key: 'title',
@@ -139,14 +144,14 @@ const columns = [
     sortable: true,
   },
   {
-    key : 'isbn',
+    key: 'isbn',
     label: 'ISBN',
   },
   {
-    key:'number',
-    label : 'Nombre'
+    key: 'number',
+    label: 'Nombre'
   }
-]
+];
 
 // Réinitialisation des filtres
 const resetFilters = () => {
@@ -156,12 +161,9 @@ const resetFilters = () => {
   q.value = '';
 };
 
-// Navigation vers la page d'ajout de livre
-const router = useRouter();
-const goToAddBook = () => {
-  router.push('/addBook');
-};
+
 </script>
+
 
   
   <style scoped>
