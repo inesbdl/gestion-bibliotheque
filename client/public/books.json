@@ -1,0 +1,27 @@
+{
+    "books": [
+      { "id": 1, "title": "Le Deuxième Sexe", "author": "Simone de Beauvoir", "theme": "Féminisme, Philosophie", "type": "Essai", "isbn": "9782070378901", "number": 5 },
+      { "id": 2, "title": "La Force des choses", "author": "Simone de Beauvoir", "theme": "Féminisme, Autobiographie", "type": "Autobiographie", "isbn": "9782070394048", "number": 3 },
+      { "id": 3, "title": "Les Mandarins", "author": "Simone de Beauvoir", "theme": "Féminisme, Littérature", "type": "Roman", "isbn": "9782070344463", "number": 4 },
+      { "id": 4, "title": "Les Monologues du Vagin", "author": "Eve Ensler", "theme": "Sexualité, Féminisme", "type": "Théâtre", "isbn": "9782742756880", "number": 6 },
+      { "id": 5, "title": "Ceci est mon corps", "author": "Eve Ensler", "theme": "Féminisme, Corps", "type": "Essai", "isbn": "9782742757962", "number": 2 },
+      { "id": 6, "title": "Une chambre à soi", "author": "Virginia Woolf", "theme": "Féminisme, Littérature", "type": "Essai", "isbn": "9782070367035", "number": 7 },
+      { "id": 7, "title": "Mrs Dalloway", "author": "Virginia Woolf", "theme": "Féminisme, Psychologie", "type": "Roman", "isbn": "9782070386166", "number": 5 },
+      { "id": 8, "title": "Les vagues", "author": "Virginia Woolf", "theme": "Féminisme, Existentialisme", "type": "Roman", "isbn": "9782070394062", "number": 4 },
+      { "id": 9, "title": "Bad Feminist", "author": "Roxane Gay", "theme": "Féminisme, Culture", "type": "Essai", "isbn": "9780062282712", "number": 8 },
+      { "id": 10, "title": "Hunger", "author": "Roxane Gay", "theme": "Féminisme, Corps", "type": "Mémoires", "isbn": "9780062362596", "number": 6 },
+      { "id": 11, "title": "Le Corps des Femmes", "author": "Sylvie Germain", "theme": "Féminisme, Corps", "type": "Essai", "isbn": "9782901429067", "number": 3 },
+      { "id": 12, "title": "La Peste", "author": "Sylvie Germain", "theme": "Féminisme, Littérature", "type": "Roman", "isbn": "9782070373487", "number": 5 },
+      { "id": 13, "title": "Feminism Is for Everybody", "author": "bell hooks", "theme": "Féminisme, Inclusion", "type": "Essai", "isbn": "9780896086287", "number": 10 },
+      { "id": 14, "title": "All About Love: New Visions", "author": "bell hooks", "theme": "Féminisme, Relations", "type": "Essai", "isbn": "9780060959476", "number": 9 },
+      { "id": 15, "title": "Le Mythe de la Virilité", "author": "Olivia Gazalé", "theme": "Féminisme, Genre", "type": "Essai", "isbn": "9782253139893", "number": 4 },
+      { "id": 16, "title": "Féminisme et psychanalyse", "author": "Olivia Gazalé", "theme": "Féminisme, Psychanalyse", "type": "Essai", "isbn": "9782845148284", "number": 2 },
+      { "id": 17, "title": "La Femme gelée", "author": "Annie Ernaux", "theme": "Féminisme, Autobiographie", "type": "Roman", "isbn": "9782070387040", "number": 6 },
+      { "id": 18, "title": "Les Années", "author": "Annie Ernaux", "theme": "Féminisme, Mémoire", "type": "Autobiographie", "isbn": "9782070327572", "number": 7 },
+      { "id": 19, "title": "Sister Citizen", "author": "Melissa V. Harris-Perry", "theme": "Racisme, Féminisme", "type": "Essai", "isbn": "9780307388160", "number": 4 },
+      { "id": 20, "title": "The Feminine Mystique", "author": "Betty Friedan", "theme": "Féminisme, Histoire", "type": "Essai", "isbn": "9780393322576", "number": 5 },
+      { "id": 21, "title": "Le Livre des Femmes", "author": "Hélène Cixous", "theme": "Féminisme, Écriture", "type": "Essai", "isbn": "9782070341110", "number": 3 },
+      { "id": 22, "title": "Les Chiennes savantes", "author": "Hélène Cixous", "theme": "Féminisme, Théâtre", "type": "Théâtre", "isbn": "9782070385701", "number": 4 }
+    ]
+  }
+  

@@ -4,13 +4,17 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-  "start": "electron ."
-},
+    "start": "electron ."
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/file-saver": "^2.0.7",
     "electron": "^33.2.0"
+  },
+  "dependencies": {
+    "file-saver": "^2.0.5",
+    "xlsx": "^0.18.5"
   }
-
 }
