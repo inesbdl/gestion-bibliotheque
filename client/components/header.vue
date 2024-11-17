@@ -25,5 +25,26 @@ const links = ref([
 </script>
 
 <template>
-  <UHorizontalNavigation :links="links" class="border-b border-gray-200 dark:border-gray-800" />
+    <header class="header">
+        <UHorizontalNavigation :links="links" class="border-b border-gray-200 dark:border-gray-800" />
+    </header>
 </template>
+
+<style scoped>
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #121212;
+  box-shadow: 0 2px 10px rgba(128, 125, 125, 0.1); 
+  z-index: 1000; 
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+}
+
+
+</style>

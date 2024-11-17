@@ -3,11 +3,17 @@ import Header from './components/header.vue';
 </script>
 
 <template>
-  <div>
-    
-    <Header/>
-    <NuxtPage />
-
+  <div class="page-container">
+    <Header />
+    <div class="body">
+      <NuxtPage />
+    </div>
   </div>
 </template>
 
+<style scoped>
+
+.body{
+  margin-top: 50px;
+}
+</style>
