@@ -1,280 +1,238 @@
 <template>
-    <div class="home-container">
+  <div class="home-container">
+    <h1 class="title">GESTION DE LA BIBLIOTHÈQUE</h1>
 
-      <h1 class="title">GESTION DE LA BIBLIOTHÈQUE</h1>
-      
-  
-      <!-- Barre de recherche -->
-      <div class="search-bar">
-        <UInput
-          v-model="q"
-          name="q"
-          placeholder="Rechercher un livre, auteur·ice, thème, type, isbn..."
-          icon="i-heroicons-magnifying-glass-20-solid"
-          autocomplete="off"
-          :ui="{ icon: { trailing: { pointer: '' } } }"
-        >
-          <template #trailing>
-            <UButton
-              v-show="q !== ''"
-              color="gray"
-              variant="link"
-              icon="i-heroicons-x-mark-20-solid"
-              :padded="false"
-              @click="q = ''"
-            />
-          </template>
-        </UInput>
-      </div>
-  
-  
-      <!-- Filtres -->
-      <div class="filters">
-        <select v-model="selectedAuthor">
-          <option value="" disabled selected>Auteur</option>
-          <option v-for="author in authors" :key="author" :value="author">{{ author }}</option>
-        </select>
-  
-        <select v-model="selectedTheme">
-          <option value="" disabled selected>Thématique</option>
-          <option v-for="theme in themes" :key="theme" :value="theme">{{ theme }}</option>
-        </select>
-  
-        <select v-model="selectedType">
-          <option value="" disabled selected>Type</option>
-          <option v-for="type in types" :key="type" :value="type">{{ type }}</option>
-        </select>
-  
-        <UButton color="gray" @click="resetFilters">
-          Réinitialiser les filtres
-        </UButton>
-      </div>
-  
-      <!-- Tableau d'affichage des livres -->
-      <UTable :columns="columns" :rows="filteredBooks" />
-
-
+    <!-- Barre de recherche -->
+    <div class="search-bar">
+      <UInput
+        v-model="q"
+        name="q"
+        placeholder="Rechercher un livre, auteur·ice, thème, type, isbn..."
+        icon="i-heroicons-magnifying-glass-20-solid"
+        autocomplete="off"
+        :ui="{ icon: { trailing: { pointer: '' } } }"
+      >
+        <template #trailing>
+          <UButton
+            v-show="q !== ''"
+            color="gray"
+            variant="link"
+            icon="i-heroicons-x-mark-20-solid"
+            :padded="false"
+            @click="q = ''"
+          />
+        </template>
+      </UInput>
     </div>
-  </template>
-  
- <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
 
-// Variables pour la recherche et les filtres
-const q = ref('');
-const selectedAuthor = ref('');
-const selectedTheme = ref('');
-const selectedType = ref('');
+    <!-- Filtres -->
+    <div class="filters">
+      <select v-model="selectedAuthor">
+        <option value="">Auteur·ice</option>
+        <option v-for="author in authors" :key="author" :value="author">
+          {{ author }}
+        </option>
+      </select>
 
-// Données disponibles pour les filtres
-const authors = ['Auteur 1', 'Auteur 2', 'Auteur 3'];
-const themes = ['Thème 1', 'Thème 2', 'Thème 3'];
-const types = ['Essai', 'Roman', 'Biographie'];
+      <select v-model="selectedTheme">
+        <option value="">Thématique</option>
+        <option v-for="theme in themes" :key="theme" :value="theme">
+          {{ theme }}
+        </option>
+      </select>
 
-// Liste des livres (initialement vide)
+      <select v-model="selectedType">
+        <option value="">Type</option>
+        <option v-for="type in types" :key="type" :value="type">
+          {{ type }}
+        </option>
+      </select>
+
+      <select v-model="selectedEdition">
+        <option value="">Édition</option>
+        <option v-for="edition in editions" :key="edition" :value="edition">
+          {{ edition }}
+        </option>
+      </select>
+
+      <UButton color="gray" @click="resetFilters">
+        Réinitialiser les filtres
+      </UButton>
+    </div>
+
+    <!-- Tableau -->
+    <UTable :columns="columns" :rows="formattedBooks" />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted } from "vue";
+
+// formater les themes
+const formattedBooks = computed(() => {
+  return filteredBooks.value.map((book) => ({
+    ...book,
+    themes: book.themes.join(", "),
+  }));
+});
+
+const q = ref("");
+const selectedAuthor = ref("");
+const selectedTheme = ref(""); 
+const selectedType = ref("");
+const selectedEdition = ref("");
+
 const books = ref<any[]>([]);
 
-// Fonction pour sauvegarder les livres dans le localStorage
-const saveBooksToLocalStorage = () => {
-  localStorage.setItem('books', JSON.stringify(books.value));
-};
+const types = ref<string[]>([]);
+const themes = ref<string[]>([]);
+const editions = ref<string[]>([]);
+const authors = ref<string[]>([]);
 
-// Fonction pour charger les livres depuis le localStorage ou depuis books.json
-const fetchBooks = async () => {
+const fetchTypes = async () => {
   try {
-    const storedBooks = localStorage.getItem('books');
-    if (storedBooks) {
-      books.value = JSON.parse(storedBooks);
-    } else {
-      // Charger les livres depuis le fichier JSON si le localStorage est vide
-      const response = await fetch('/books.json');
-      if (response.ok) {
-        const data = await response.json();
-        books.value = data.books || [];
-        saveBooksToLocalStorage(); // Sauvegarder dans le localStorage après le chargement
-      } else {
-        console.error('Erreur lors du chargement des livres');
-      }
-    }
+    const response = await fetch("/types.json");
+    const data = await response.json();
+    types.value = data.types.map((type: { type: string }) => type.type);
   } catch (error) {
-    console.error('Erreur lors de la récupération des livres depuis le localStorage:', error);
+    console.error("Erreur lors du chargement des types:", error);
   }
 };
 
-// Charger les livres lors de l'initialisation du composant
+const fetchThemes = async () => {
+  try {
+    const response = await fetch("/themes.json");
+    const data = await response.json();
+    themes.value = data.themes.map((theme: { theme: string }) => theme.theme);
+  } catch (error) {
+    console.error("Erreur lors du chargement des thèmes:", error);
+  }
+};
+const fetchAuthors = async () => {
+  try {
+    const response = await fetch("/authors.json");
+    const data = await response.json();
+    authors.value = data.authors.map((author) => author.name);
+  } catch (error) {
+    console.error("Erreur lors du chargement des auteurices:", error);
+  }
+};
+
+const fetchEditions = async () => {
+  try {
+    const response = await fetch("/editions.json");
+    const data = await response.json();
+    editions.value = data.editions.map(
+      (edition: { name: string }) => edition.name
+    );
+  } catch (error) {
+    console.error("Erreur lors du chargement des maisons d'édition:", error);
+  }
+};
+
+const fetchBooks = async () => {
+  try {
+    const response = await fetch("/books.json");
+    const data = await response.json();
+    books.value = data.books.filter((book: any) => book.owned);
+  } catch (error) {
+    console.error("Erreur lors du chargement des livres:", error);
+  }
+};
+
 onMounted(() => {
+  fetchTypes();
+  fetchThemes();
+  fetchEditions();
   fetchBooks();
+  fetchAuthors();
 });
 
-// Filtrage des livres en fonction des critères
 const filteredBooks = computed(() => {
-  return books.value.filter(book => {
-    const searchQuery = q.value.toLowerCase();
+  const searchQuery = q.value.toLowerCase();
+  return books.value.filter((book) => {
     return (
-      (!q.value || 
+      (!q.value ||
         book.title.toLowerCase().includes(searchQuery) ||
+        book.edition.toLowerCase().includes(searchQuery) ||
         book.author.toLowerCase().includes(searchQuery) ||
-        book.theme.toLowerCase().includes(searchQuery) ||
+        book.themes.some((theme: string) =>
+          theme.toLowerCase().includes(searchQuery)
+        ) ||
         book.type.toLowerCase().includes(searchQuery) ||
         book.isbn.toLowerCase().includes(searchQuery)) &&
       (!selectedAuthor.value || book.author === selectedAuthor.value) &&
-      (!selectedTheme.value || book.theme === selectedTheme.value) &&
-      (!selectedType.value || book.type === selectedType.value)
+      (!selectedTheme.value || book.themes.includes(selectedTheme.value)) &&
+      (!selectedType.value || book.type === selectedType.value) &&
+      (!selectedEdition.value || book.edition === selectedEdition.value)
     );
   });
 });
 
-// Colonnes pour le tableau des livres
 const columns = [
+  { key: "title", label: "Titre", sortable: true },
+  { key: "author", label: "Auteur·ice", sortable: true },
   {
-    key: 'title',
-    label: 'Titre',
-    sortable: true
-  }, {
-    key: 'author',
-    label: 'Auteur·ice',
-    sortable: true
-  }, {
-    key: 'theme',
-    label: 'Thème',
-    sortable: true,
-  }, {
-    key: 'type',
-    label: 'Type',
-    sortable: true,
+    key: "themes",
+    label: "Thèmes",
+    sortable: false,
   },
-  {
-    key: 'isbn',
-    label: 'ISBN',
-  },
-  {
-    key: 'number',
-    label: 'Nombre'
-  }
+  { key: "type", label: "Type", sortable: false },
+  { key: "edition", label: "Édition", sortable: false },
+  { key: "isbn", label: "ISBN" },
+  { key: "number", label: "Nombre d'exemplaires" },
 ];
 
-// Réinitialisation des filtres
 const resetFilters = () => {
-  selectedAuthor.value = '';
-  selectedTheme.value = '';
-  selectedType.value = '';
-  q.value = '';
+  q.value = "";
+  selectedAuthor.value = "";
+  selectedTheme.value = "";
+  selectedType.value = "";
+  selectedEdition.value = "";
 };
-
-
 </script>
 
+<style scoped>
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
 
-  
-  <style scoped>
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: "Arial", sans-serif;
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-    .home-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    }
+.search-bar {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
 
-    .title {
-    font-size: 2.5rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-family: 'Arial', sans-serif;
-    text-align: center;
-    margin-bottom: 20px;
-    }
+.add-book-btn {
+  margin-bottom: 20px;
+}
 
-    .search-bar {
-    width: 100%;
-    max-width: 600px;
-    margin-bottom: 20px;
-    }
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
 
-    .add-book-btn {
-    margin-bottom: 20px;
-    }
-
-    .filters {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-    }
-
-    .book-table {
-    width: 100%;
-    max-width: 800px;
-    margin-top: 20px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #ffffff;
-    font-size: 1rem;
-    }
-
-    th, td {
-    padding: 12px 20px;
-    text-align: center;
-    border-bottom: 1px solid #f0f0f0;
-    }
-
-    th {
-    background-color: #f7fafc; /* Couleur d'arrière-plan pour les en-têtes */
-    color: #4a5568; /* Couleur du texte pour les en-têtes */
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    }
-
-    td {
-    color: #4a5568;
-    font-weight: 400;
-    background-color: #f9fafb; /* Couleur de fond pour les lignes impaires */
-    }
-
-    tr:nth-child(even) td {
-    background-color: #f1f5f9; /* Couleur de fond alternée pour les lignes paires */
-    }
-
-    tr:hover td {
-    background-color: #e2e8f0; /* Effet au survol des lignes */
-    }
-
-    tr td:first-child {
-    font-weight: 600; /* Mettre en gras la première colonne (titre du livre) */
-    }
-
-    .book-table td {
-    transition: background-color 0.3s ease-in-out;
-    }
-
-    .book-table td,
-    .book-table th {
-    border-radius: 6px;
-    }
-
-    .book-table td:last-child {
-    text-transform: uppercase; /* Mettre les ISBN en majuscules */
-    }
-
-    .book-table tr:first-child th {
-    border-top: 3px solid #e2e8f0; /* Bordure supérieure de la table */
-    }
-
-    .book-table tr:last-child td {
-    border-bottom: 3px solid #e2e8f0; /* Bordure inférieure de la table */
-    }
-
-    .book-table tr td,
-    .book-table tr th {
-    font-family: 'Roboto', sans-serif; /* Typographie moderne et lisible */
-    }
-
-  </style>
-  
+.book-table {
+  width: 100%;
+  max-width: 800px;
+  margin-top: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+</style>

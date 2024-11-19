@@ -1,0 +1,11 @@
+{
+    "editions": [
+      { "id" : 1 ,"name": "Hachette" },
+      { "id" : 2 ,"name": "Folio" },
+      { "id" : 3 ,"name": "Picador" },
+      { "id" : 4 ,"name": "Penguin Random House" },
+      { "id" : 5 ,"name": "Gallimard" },
+      { "id" : 6,"name": "Flammarion" }
+    ]
+  }
+  

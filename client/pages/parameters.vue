@@ -1,5 +1,8 @@
 <template>
     <div class="form-container">
+      <h1>Paramètres</h1>
+
+      <!-- TYPE -->
       <form class="styled-form">
         <UFormGroup label="Ajouter un type" required>
           <UInput placeholder="Essai" class="input-field" />
@@ -10,6 +13,7 @@
         </UButton>
       </form>
   
+      <!-- THEME -->
       <form class="styled-form">
         <UFormGroup label="Ajouter une thématique" required>
           <UInput placeholder="Violences" class="input-field" />
@@ -19,12 +23,32 @@
           Ajouter la thématique
         </UButton>
       </form>
-      <ExportButton :books="books" />
-      <UButton label="Ajouter un livre" color="gray" @click="goToAddBook">
-            <template #trailing>
-            <UIcon name="i-heroicons-plus-20-solid" class="w-5 h-5" />
-            </template>
+
+      <!-- EDITION -->
+      <form class="styled-form">
+        <UFormGroup label="Ajouter une maison d\'édition'" required>
+          <UInput placeholder="Folio" class="input-field" />
+        </UFormGroup>
+  
+        <UButton block type="submit" class="submit-button">
+          Ajouter la thématique
         </UButton>
+      </form>
+
+      <!-- AUTEUR -->
+      <form class="styled-form">
+        <UFormGroup label="Ajouter un·e auteur·ice" required>
+          <UInput placeholder="Angela Davis" class="input-field" />
+        </UFormGroup>
+  
+        <UButton block type="submit" class="submit-button">
+          Ajouter l'auteur
+        </UButton>
+      </form>
+
+      <div>
+        <ExportButton :books="books" />
+      </div>
     </div>
   </template>
   
@@ -36,27 +60,33 @@
     router.push('/addBook');
     };
   
-  // Définir l'interface pour les livres
   interface Book {
     title: string;
     author: string;
     theme: string;
     type: string;
     isbn: string;
-    number?: number; // Optionnel si nécessaire
+    number?: number; 
   }
   
-  // Variable pour les livres
   const books = ref<Book[]>([]);
   
-  // Charger les livres depuis le localStorage
   onMounted(() => {
-    const storedBooks = localStorage.getItem('books');
-    if (storedBooks) {
-      books.value = JSON.parse(storedBooks) as Book[];
-    } else {
-      console.warn('Aucune donnée trouvée dans le localStorage.');
+    const fetchBooks = async () => {
+  try {
+      const response = await fetch('/books.json');
+      if (response.ok) {
+        const data = await response.json();
+        books.value = data.books || [];
+      } else {
+        console.error('Erreur lors du chargement des livres');
+      }
     }
+
+  catch (error) {
+    console.error('Erreur lors de la récupération des livres depuis le localStorage:', error);
+  }
+};
   });
   </script>
   
@@ -66,6 +96,7 @@
     flex-direction: column;
     gap: 30px;
     align-items: center;
+
   }
   
   .styled-form {

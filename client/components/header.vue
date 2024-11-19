@@ -13,6 +13,11 @@ const links = ref([
       icon: 'i-heroicons-book-open',
       to: 'addBook'
     },
+    {
+      label : 'Propositions de livres',
+      icon: 'i-heroicons-shopping-bag',
+      to: 'booksToBuy'
+    },
   ],
   [
     {
