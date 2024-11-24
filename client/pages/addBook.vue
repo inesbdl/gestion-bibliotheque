@@ -22,7 +22,7 @@
         <!-- Auteur -->
         <UTooltip text="Auteur·ice ou collectif" :popper="{ placement: 'right' }">
           <UFormGroup label="Auteur·ice" required>
-            <UInputMenu v-model="selectedAuthors" :options="authors" placeholder="Auteur·ice / collectif" />
+            <USelectMenu v-model="selectedAuthors" :options="authors" placeholder="Auteur·ice / collectif" multiple searchable />
           </UFormGroup>
         </UTooltip>
 
@@ -86,11 +86,12 @@
 
     <!-- Colonne informations -->
     <div class="alert-container">
-      <UAlert icon="i-heroicons-exclamation-triangle">
+      <UAlert icon="i-heroicons-exclamation-triangle" color="orange" variant="subtle">
         <template #description>
           Merci de vérifier que le livre n'est pas déjà enregistré dans l'application.
         </template>
       </UAlert>
+
       <h2>Si l'auteur·ice n'est pas présent·e dans la liste, vous pour l'ajouter. </h2>
       <form class="styled-form">
         <UFormGroup label="Ajouter un·e auteur·ice" required>
