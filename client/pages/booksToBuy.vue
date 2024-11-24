@@ -140,7 +140,7 @@
     try {
         const response = await fetch("/authors.json");
         const data = await response.json();
-        authors.value = data.authors.map((author) => author.name);
+        authors.value = data.authors.map((author: { name: string }) => author.name);
     } catch (error) {
         console.error("Erreur lors du chargement des auteurices:", error);
     }

@@ -1,6 +1,7 @@
 <template>
   <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 60px; margin-top: 60px;">
     <h2 class="title">Ajouter un nouveau livre</h2>
+    <h2>Vous pouvez enregistrer un livre déjà présent dans la bibliothèque ou proposer un livre à acheter. </h2>
   </div>
   
   <section class="form-section">
@@ -21,7 +22,7 @@
         <!-- Auteur -->
         <UTooltip text="Auteur·ice ou collectif" :popper="{ placement: 'right' }">
           <UFormGroup label="Auteur·ice" required>
-            <USelectMenu v-model="selectedAuthors" :options="authors" multiple placeholder="Auteur·ices / collectif" />
+            <UInputMenu v-model="selectedAuthors" :options="authors" placeholder="Auteur·ice / collectif" />
           </UFormGroup>
         </UTooltip>
 
@@ -40,21 +41,21 @@
         <!-- Type -->
         <UTooltip text="Type du livre" :popper="{ placement: 'right' }">
           <UFormGroup label="Type" required>
-            <UInputMenu v-model="selectedType" :options="types" class="input-field " placeholder="Type"/>
+            <USelectMenu v-model="selectedType" :options="types" class="input-field " placeholder="Sélectionner le type"/>
           </UFormGroup>
         </UTooltip>
 
         <!-- Thématiques -->
         <UTooltip text="Thématiques du livre" :popper="{ placement: 'right' }">
           <UFormGroup label="Thèmes" required>
-            <USelectMenu v-model="selectedThemes" :options="themes" multiple placeholder="Thématique(s)" />
+            <USelectMenu v-model="selectedThemes" :options="themes" multiple placeholder="Sélectionner le(s) thématique(s)" />
           </UFormGroup>
         </UTooltip>
 
         <!-- Edition -->
         <UTooltip text="Maison d'édition" :popper="{ placement: 'right' }">
           <UFormGroup label="Maison d'édition">
-            <UInputMenu v-model="selectedEdition" :options="editions" class="input-field"/>
+            <USelectMenu v-model="selectedEdition" :options="editions" class="input-field" placeholder="Sélectionner la maison d'édition"/>
           </UFormGroup>
         </UTooltip>
 
@@ -85,23 +86,21 @@
 
     <!-- Colonne informations -->
     <div class="alert-container">
-      <h2>Vous pouvez enregistrer un livre déjà présent dans la bibliothèque ou proposer un livre à acheter. </h2>
-      <span style="text-align: justify;">
-        Si vous avez un livre qui fait déjà partie de la bibliothèque, il vous suffit de l'enregistrer pour qu'il soit référencé. 
-        Avant de soumettre, merci de vérifier si ce livre n’est pas déjà inscrit afin d’éviter les doublons et garantir 
-        que notre base de données reste à jour. D'autre part, si le livre que vous souhaitez ajouter n'est pas encore disponible, vous avez 
-        la possibilité de proposer un achat. En soumettant des propositions, vous contribuez à enrichir la 
-        bibliothèque en fonction des besoins et des intérêts des bénévoles. 
-        </span>
-      <UAlert title="Attention!" icon="i-heroicons-exclamation-triangle">
-        <template #title="{ title }">
-          <span v-html="title" />
-        </template>
-
+      <UAlert icon="i-heroicons-exclamation-triangle">
         <template #description>
           Merci de vérifier que le livre n'est pas déjà enregistré dans l'application.
         </template>
       </UAlert>
+      <h2>Si l'auteur·ice n'est pas présent·e dans la liste, vous pour l'ajouter. </h2>
+      <form class="styled-form">
+        <UFormGroup label="Ajouter un·e auteur·ice" required>
+          <UInput placeholder="Angela Davis" class="input-field" />
+        </UFormGroup>
+  
+        <UButton block type="submit" class="submit-button">
+          Ajouter l'auteur
+        </UButton>
+      </form>
     </div>
   </section>
 </template>
@@ -121,6 +120,8 @@ const types = ref<string[]>([]);
 const themes = ref<string[]>([]);
 const editions = ref<string[]>([]);
 const authors = ref<string[]>([]);
+const booksIsbn = ref<string[]>([]);
+const toast = useToast()
 
 const fetchTypes = async () => {
   try {
@@ -156,14 +157,29 @@ const fetchAuthors = async () => {
   try {
     const response = await fetch('/authors.json');
     const data = await response.json();
-    authors.value = data.authors.map((author) => author.name);
+    authors.value = data.authors.map((author: { name: string }) => author.name);
   } catch (error) {
     console.error('Erreur lors du chargement des auteurs:', error);
   }
 };
 
+const fetchBooksIsbn = async () => {
+  try {
+    const response = await fetch('/books.json');
+    const data = await response.json();
+    booksIsbn.value = data.books.map((book: { isbn: string }) => book.isbn);
+  } catch (error) {
+    console.error('Erreur lors du chargement des isbn:', error);
+  }
+};
+
 const addBook = async (event: Event) => {
   event.preventDefault(); 
+  // vérifier que l isbn n existe pas deja
+  if (booksIsbn.value.includes(isbn.value)) {
+    toast.add({ title: 'Un livre possède déjà cet ISBN' , icon :"i-heroicons-exclamation-circle", color: "red"});
+    return;
+  }
 
   const book = {
     title: title.value,
@@ -176,6 +192,8 @@ const addBook = async (event: Event) => {
     number: number.value,
   };
 
+  // appel api
+  toast.add({ title: 'Livre ajouté avec succès' , icon :"i-heroicons-check"});
   console.log(book); 
 };
 
@@ -184,6 +202,7 @@ onMounted(() => {
   fetchThemes();
   fetchEditions();
   fetchAuthors();
+  fetchBooksIsbn();
 });
 </script>
 
@@ -249,4 +268,19 @@ onMounted(() => {
 section {
   margin-top: 40px;
 }
+
+.styled-form {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(152, 149, 149, 0.296);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+  
+  .styled-form .u-form-group {
+    margin-bottom: 20px;
+  }
 </style>
