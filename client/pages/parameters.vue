@@ -55,11 +55,6 @@
   <script setup lang="ts">
   import { ref, onMounted } from 'vue';
 
-  const router = useRouter();
-    const goToAddBook = () => {
-    router.push('/addBook');
-    };
-  
   interface Book {
     title: string;
     author: string;
@@ -67,12 +62,13 @@
     type: string;
     isbn: string;
     number?: number; 
+    owned: boolean;
+    edition: string;
   }
   
   const books = ref<Book[]>([]);
-  
-  onMounted(() => {
-    const fetchBooks = async () => {
+
+  const fetchBooks = async () => {
   try {
       const response = await fetch('/books.json');
       if (response.ok) {
@@ -87,6 +83,9 @@
     console.error('Erreur lors de la récupération des livres depuis le localStorage:', error);
   }
 };
+  
+  onMounted(() => {
+  fetchBooks();    
   });
   </script>
   

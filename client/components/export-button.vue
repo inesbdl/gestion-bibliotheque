@@ -17,7 +17,11 @@
       required: true
     }
   });
-  
+
+  onMounted(() => {
+  console.log('Livres reçus :', props.books);
+});
+
   const exportToExcel = () => {
     // Créer un nouveau classeur Excel
     const wb = XLSX.utils.book_new();

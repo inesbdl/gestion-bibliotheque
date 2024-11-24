@@ -156,6 +156,7 @@ const filteredBooks = computed(() => {
         book.title.toLowerCase().includes(searchQuery) ||
         book.edition.toLowerCase().includes(searchQuery) ||
         book.author.toLowerCase().includes(searchQuery) ||
+        book.isbn.toLowerCase().includes(searchQuery) ||
         book.themes.some((theme: string) =>
           theme.toLowerCase().includes(searchQuery)
         ) ||
