@@ -7,7 +7,7 @@
         <UInput
           v-model="q"
           name="q"
-          placeholder="Rechercher un livre, auteur·ice, thème, type, isbn..."
+          placeholder="Rechercher un livre, auteur·ice, thème, type..."
           icon="i-heroicons-magnifying-glass-20-solid"
           autocomplete="off"
           :ui="{ icon: { trailing: { pointer: '' } } }"
@@ -27,39 +27,55 @@
   
       <!-- Filtres -->
       <div class="filters">
-        <select v-model="selectedAuthor">
-          <option value="">Auteur·ice</option>
-          <option v-for="author in authors" :key="author" :value="author">
-            {{ author }}
-          </option>
-        </select>
-  
-        <select v-model="selectedTheme">
-          <option value="">Thématique</option>
-          <option v-for="theme in themes" :key="theme" :value="theme">
-            {{ theme }}
-          </option>
-        </select>
-  
-        <select v-model="selectedType">
-          <option value="">Type</option>
-          <option v-for="type in types" :key="type" :value="type">
-            {{ type }}
-          </option>
-        </select>
-  
-  
+      <!-- Auteur·ice filter -->
+      <UFormGroup label="Auteur·ice" required>
+        <USelectMenu 
+          v-model="selectedAuthor" 
+          :options="authors" 
+          placeholder="Auteur·ice / collectif" 
+          multiple 
+          searchable 
+        />
+      </UFormGroup>
+
+      <!-- Thématique filter -->
+      <UFormGroup label="Thématique">
+        <USelectMenu 
+          v-model="selectedTheme" 
+          :options="themes" 
+          placeholder="Thématique" 
+          multiple 
+          searchable 
+        />
+      </UFormGroup>
+
+      <!-- Type filter -->
+      <UFormGroup label="Type">
+        <USelectMenu 
+          v-model="selectedType" 
+          :options="types" 
+          placeholder="Type d'ouvrage" 
+          multiple 
+          searchable 
+        />
+      </UFormGroup>
+
+      <!-- Édition filter -->
+      <UFormGroup label="Édition">
+        <USelectMenu 
+          v-model="selectedEdition" 
+          :options="editions" 
+          placeholder="Maison d'édition" 
+          multiple 
+          searchable 
+        />
+      </UFormGroup>
+      <div style="display: flex; align-items: end;">
         <UButton color="gray" @click="resetFilters">
           Réinitialiser les filtres
         </UButton>
-
-        <UButton label="Proposer un livre" color="gray" @click="goToAddBook">
-            <template #trailing>
-            <UIcon name="i-heroicons-plus-20-solid" class="w-5 h-5" />
-            </template>
-        </UButton>
       </div>
-  
+    </div>
       <!-- Tableau -->
       <UTable :columns="columns" :rows="formattedBooks"/>
     </div>
@@ -165,8 +181,7 @@
           (book.themes.some((theme: string) =>
             theme.toLowerCase().includes(searchQuery)
           )) || 
-          book.type.toLowerCase().includes(searchQuery) ||
-          book.isbn.toLowerCase().includes(searchQuery)) &&
+          book.type.toLowerCase().includes(searchQuery) ) &&
         (!selectedAuthor.value || book.author === selectedAuthor.value) &&
         (!selectedTheme.value || book.themes.includes(selectedTheme.value)) && 
         (!selectedType.value || book.type === selectedType.value) &&
@@ -185,7 +200,6 @@
     },
     { key: 'type', label: 'Type', sortable: false },
     { key: 'edition', label: 'Édition', sortable: false },
-    // { key: 'isbn', label: 'ISBN' },
   ];
   
   const resetFilters = () => {
