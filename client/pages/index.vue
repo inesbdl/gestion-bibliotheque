@@ -27,37 +27,54 @@
 
     <!-- Filtres -->
     <div class="filters">
-      <select v-model="selectedAuthor">
-        <option value="">Auteur·ice</option>
-        <option v-for="author in authors" :key="author" :value="author">
-          {{ author }}
-        </option>
-      </select>
+      <!-- Auteur·ice filter -->
+      <UFormGroup label="Auteur·ice" required>
+        <USelectMenu 
+          v-model="selectedAuthor" 
+          :options="authors" 
+          placeholder="Auteur·ice / collectif" 
+          multiple 
+          searchable 
+        />
+      </UFormGroup>
 
-      <select v-model="selectedTheme">
-        <option value="">Thématique</option>
-        <option v-for="theme in themes" :key="theme" :value="theme">
-          {{ theme }}
-        </option>
-      </select>
+      <!-- Thématique filter -->
+      <UFormGroup label="Thématique">
+        <USelectMenu 
+          v-model="selectedTheme" 
+          :options="themes" 
+          placeholder="Thématique" 
+          multiple 
+          searchable 
+        />
+      </UFormGroup>
 
-      <select v-model="selectedType">
-        <option value="">Type</option>
-        <option v-for="type in types" :key="type" :value="type">
-          {{ type }}
-        </option>
-      </select>
+      <!-- Type filter -->
+      <UFormGroup label="Type">
+        <USelectMenu 
+          v-model="selectedType" 
+          :options="types" 
+          placeholder="Type d'ouvrage" 
+          multiple 
+          searchable 
+        />
+      </UFormGroup>
 
-      <select v-model="selectedEdition">
-        <option value="">Édition</option>
-        <option v-for="edition in editions" :key="edition" :value="edition">
-          {{ edition }}
-        </option>
-      </select>
-
-      <UButton color="gray" @click="resetFilters">
-        Réinitialiser les filtres
-      </UButton>
+      <!-- Édition filter -->
+      <UFormGroup label="Édition">
+        <USelectMenu 
+          v-model="selectedEdition" 
+          :options="editions" 
+          placeholder="Maison d'édition" 
+          multiple 
+          searchable 
+        />
+      </UFormGroup>
+      <div style="display: flex; align-items: end;">
+        <UButton color="gray" @click="resetFilters">
+          Réinitialiser les filtres
+        </UButton>
+      </div>
     </div>
 
     <!-- Tableau -->
