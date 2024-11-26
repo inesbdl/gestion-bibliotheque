@@ -1,7 +1,7 @@
 const { db } = require("./db");
 const { DataTypes } = require("sequelize")
 
-const Types = db.define("types", {
+const Type = db.define("types", {
     type: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -10,4 +10,4 @@ const Types = db.define("types", {
     
 });
 
-module.exports = { Types };
+module.exports = { Type };

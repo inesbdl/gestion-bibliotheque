@@ -1,7 +1,7 @@
 const { db } = require("./db");
 const { DataTypes } = require("sequelize")
 
-const Editions = db.define("editions", {
+const Edition = db.define("editions", {
     edition: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -10,4 +10,4 @@ const Editions = db.define("editions", {
     
 });
 
-module.exports = { Editions };
+module.exports = { Edition };

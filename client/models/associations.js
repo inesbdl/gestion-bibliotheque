@@ -1,21 +1,21 @@
-const { Authors } = require("./authors");
-const { Books } = require("./books");
-const { Editions } = require("./editions");
-const { Themes } = require("./themes");
-const { Types } = require("./type");
+const { Author } = require("./authors");
+const { Book } = require("./book");
+const { Edition } = require("./editions");
+const { Theme } = require("./themes");
+const { Type } = require("./type");
 
 
-Editions.hasMany(Books);
-Books.belongsTo(Editions);
+Edition.hasMany(Book);
+Book.belongsTo(Edition);
 
-Types.hasMany(Books);
-Books.belongsTo(Types);
+Type.hasMany(Book);
+Book.belongsTo(Type);
 
-Books.belongsToMany(Authors, { through: "booksAuthors" });
-Authors.belongsToMany(Books, { through: "booksAuthors" });
+Book.belongsToMany(Author, { through: "booksAuthors" });
+Author.belongsToMany(Book, { through: "booksAuthors" });
 
-Books.belongsToMany(Themes, { through: "booksThemes" });
-Themes.belongsToMany(Books, { through: "booksThemes" });
+Book.belongsToMany(Theme, { through: "booksThemes" });
+Theme.belongsToMany(Book, { through: "booksThemes" });
 
 
-module.exports = { Authors, Books, Editions, Themes, Types };
+module.exports = { Author, Book, Edition, Theme, Type };
