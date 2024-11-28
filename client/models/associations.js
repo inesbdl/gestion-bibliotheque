@@ -1,5 +1,5 @@
 const { Author } = require("./authors");
-const { Book } = require("./book");
+const { Book } = require("./books");
 const { Edition } = require("./editions");
 const { Theme } = require("./themes");
 const { Type } = require("./type");
