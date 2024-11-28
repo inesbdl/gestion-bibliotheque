@@ -1,4 +1,4 @@
-const { Book, Author } = require("../../models/associations");
+const { Book, Author } = require("../../../backend/models/associations");
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
