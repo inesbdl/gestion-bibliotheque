@@ -28,7 +28,7 @@
       <!-- Filtres -->
       <div class="filters">
       <!-- Auteur·ice filter -->
-      <UFormGroup label="Auteur·ice" required>
+      <UFormGroup label="Auteur·ice" >
         <USelectMenu 
           v-model="selectedAuthor" 
           :options="authors" 
@@ -171,24 +171,38 @@
   });
   
   const filteredBooks = computed(() => {
-    const searchQuery = q.value.toLowerCase();
-    return books.value.filter(book => {
-      return (
-        (!q.value ||
-          book.title.toLowerCase().includes(searchQuery) ||
-          book.edition.toLowerCase().includes(searchQuery) ||
-          book.author.toLowerCase().includes(searchQuery) ||
-          (book.themes.some((theme: string) =>
-            theme.toLowerCase().includes(searchQuery)
-          )) || 
-          book.type.toLowerCase().includes(searchQuery) ) &&
-        (!selectedAuthor.value || book.author === selectedAuthor.value) &&
-        (!selectedTheme.value || book.themes.includes(selectedTheme.value)) && 
-        (!selectedType.value || book.type === selectedType.value) &&
-        (!selectedEdition.value || book.edition === selectedEdition.value)
-      );
-    });
+  const searchQuery = q.value.toLowerCase();
+  return books.value.filter((book) => {
+    const matchesQuery =
+      !q.value ||
+      book.title.toLowerCase().includes(searchQuery) ||
+      book.edition.toLowerCase().includes(searchQuery) ||
+      book.author.toLowerCase().includes(searchQuery) ||
+      book.isbn.toLowerCase().includes(searchQuery) ||
+      book.themes.some((theme: String) => theme.toLowerCase().includes(searchQuery))||
+      book.type.toLowerCase().includes(searchQuery);
+
+    const matchesAuthor =
+      !selectedAuthor.value.length ||
+      selectedAuthor.value.includes(book.author);
+
+    const matchesTheme =
+      !selectedTheme.value.length ||
+      selectedTheme.value.some((theme: String) => book.themes.includes(theme));
+
+    const matchesType =
+      !selectedType.value.length ||
+      selectedType.value.includes(book.type);
+
+    const matchesEdition =
+      !selectedEdition.value.length ||
+      selectedEdition.value.includes(book.edition);
+
+    return (
+      matchesQuery && matchesAuthor && matchesTheme && matchesType && matchesEdition
+    );
   });
+});
   
   const columns = [
     { key: 'title', label: 'Titre', sortable: true },

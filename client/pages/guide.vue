@@ -47,11 +47,14 @@
           description="@oswinfreyr"
           :avatar="{ src: 'aurora.jpeg' }"
           title="Aurora (iel/elle)"
+          color="primary" variant="subtle"
         />
         <UAlert
           description="@tartines "
           :avatar="{ src: 'ines.jpg' }"
           title="Inès B (elle)"
+          color="primary" variant="subtle"
+
         />
       </div>
     </footer>

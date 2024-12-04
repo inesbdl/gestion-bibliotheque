@@ -27,8 +27,8 @@
 
     <!-- Filtres -->
     <div class="filters">
-      <!-- Auteur·ice filter -->
-      <UFormGroup label="Auteur·ice" required>
+      <!-- Auteur filter -->
+      <UFormGroup label="Auteur·ice" >
         <USelectMenu 
           v-model="selectedAuthor" 
           :options="authors" 
@@ -38,7 +38,7 @@
         />
       </UFormGroup>
 
-      <!-- Thématique filter -->
+      <!-- theme -->
       <UFormGroup label="Thématique">
         <USelectMenu 
           v-model="selectedTheme" 
@@ -49,7 +49,7 @@
         />
       </UFormGroup>
 
-      <!-- Type filter -->
+      <!--type -->
       <UFormGroup label="Type">
         <USelectMenu 
           v-model="selectedType" 
@@ -60,7 +60,7 @@
         />
       </UFormGroup>
 
-      <!-- Édition filter -->
+      <!-- filtre edition -->
       <UFormGroup label="Édition">
         <USelectMenu 
           v-model="selectedEdition" 
@@ -77,7 +77,6 @@
       </div>
     </div>
 
-    <!-- Tableau -->
     <UTable :columns="columns" :rows="formattedBooks" />
   </div>
 </template>
@@ -168,33 +167,42 @@ onMounted(() => {
 const filteredBooks = computed(() => {
   const searchQuery = q.value.toLowerCase();
   return books.value.filter((book) => {
+    const matchesQuery =
+      !q.value ||
+      book.title.toLowerCase().includes(searchQuery) ||
+      book.edition.toLowerCase().includes(searchQuery) ||
+      book.author.toLowerCase().includes(searchQuery) ||
+      book.isbn.toLowerCase().includes(searchQuery) ||
+      book.themes.some((theme: String) => theme.toLowerCase().includes(searchQuery))||
+      book.type.toLowerCase().includes(searchQuery);
+
+    const matchesAuthor =
+      !selectedAuthor.value.length ||
+      selectedAuthor.value.includes(book.author);
+
+    const matchesTheme =
+      !selectedTheme.value.length ||
+      selectedTheme.value.some((theme: String) => book.themes.includes(theme));
+
+    const matchesType =
+      !selectedType.value.length ||
+      selectedType.value.includes(book.type);
+
+    const matchesEdition =
+      !selectedEdition.value.length ||
+      selectedEdition.value.includes(book.edition);
+
     return (
-      (!q.value ||
-        book.title.toLowerCase().includes(searchQuery) ||
-        book.edition.toLowerCase().includes(searchQuery) ||
-        book.author.toLowerCase().includes(searchQuery) ||
-        book.isbn.toLowerCase().includes(searchQuery) ||
-        book.themes.some((theme: string) =>
-          theme.toLowerCase().includes(searchQuery)
-        ) ||
-        book.type.toLowerCase().includes(searchQuery) ||
-        book.isbn.toLowerCase().includes(searchQuery)) &&
-      (!selectedAuthor.value || book.author === selectedAuthor.value) &&
-      (!selectedTheme.value || book.themes.includes(selectedTheme.value)) &&
-      (!selectedType.value || book.type === selectedType.value) &&
-      (!selectedEdition.value || book.edition === selectedEdition.value)
+      matchesQuery && matchesAuthor && matchesTheme && matchesType && matchesEdition
     );
   });
 });
 
+
 const columns = [
   { key: "title", label: "Titre", sortable: true },
   { key: "author", label: "Auteur·ice", sortable: true },
-  {
-    key: "themes",
-    label: "Thèmes",
-    sortable: false,
-  },
+  {key: "themes",label: "Thèmes",sortable: false,},
   { key: "type", label: "Type", sortable: false },
   { key: "edition", label: "Édition", sortable: false },
   { key: "isbn", label: "ISBN" },
