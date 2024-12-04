@@ -44,45 +44,6 @@ const authors = ref<string[]>([]);
 const booksIsbn = ref<string[]>([]);
 const toast = useToast()
 
-const fetchTypes = async () => {
-  try {
-    const response = await fetch('/types.json');
-    const data = await response.json();
-    types.value = data.types.map((type: { type: string }) => type.type);
-  } catch (error) {
-    console.error('Erreur lors du chargement des types:', error);
-  }
-};
-
-const fetchThemes = async () => {
-  try {
-    const response = await fetch('/themes.json');
-    const data = await response.json();
-    themes.value = data.themes.map((theme: { theme: string }) => theme.theme);
-  } catch (error) {
-    console.error('Erreur lors du chargement des thèmes:', error);
-  }
-};
-
-const fetchEditions = async () => {
-  try {
-    const response = await fetch('/editions.json');
-    const data = await response.json();
-    editions.value = data.editions.map((edition: { name: string }) => edition.name);
-  } catch (error) {
-    console.error('Erreur lors du chargement des maisons d édition:', error);
-  }
-};
-
-const fetchAuthors = async () => {
-  try {
-    const response = await fetch('/authors.json');
-    const data = await response.json();
-    authors.value = data.authors.map((author: { name: string }) => author.name);
-  } catch (error) {
-    console.error('Erreur lors du chargement des auteurs:', error);
-  }
-};
 
 const fetchBooksIsbn = async () => {
   try {
@@ -119,10 +80,10 @@ const addBook = async (event: Event) => {
 };
 
 onMounted(() => {
-  fetchTypes();
-  fetchThemes();
-  fetchEditions();
-  fetchAuthors();
+  fetchTypes(types);
+  fetchThemes(themes);
+  fetchEditions(editions);
+  fetchAuthors(authors);
   fetchBooksIsbn();
 });
 </script>

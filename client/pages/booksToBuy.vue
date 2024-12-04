@@ -109,65 +109,16 @@
   const types = ref<string[]>([]);
   const themes = ref<string[]>([]);
   const editions = ref<string[]>([]);
-    const authors = ref<string[]>([]);
+  const authors = ref<string[]>([]);
 
   
-  const fetchTypes = async () => {
-    try {
-      const response = await fetch('/types.json');
-      const data = await response.json();
-      types.value = data.types.map((type: { type: string }) => type.type);
-    } catch (error) {
-      console.error('Erreur lors du chargement des types:', error);
-    }
-  };
-  
-  const fetchThemes = async () => {
-    try {
-      const response = await fetch('/themes.json');
-      const data = await response.json();
-      themes.value = data.themes.map((theme: { theme: string }) => theme.theme);
-    } catch (error) {
-      console.error('Erreur lors du chargement des thèmes:', error);
-    }
-  };
-  
-  const fetchEditions = async () => {
-    try {
-      const response = await fetch('/editions.json');
-      const data = await response.json();
-      editions.value = data.editions.map((edition: { name: string }) => edition.name);
-    } catch (error) {
-      console.error('Erreur lors du chargement des maisons d\'édition:', error);
-    }
-  };
-  
-  const fetchBooks = async () => {
-    try {
-      const response = await fetch('/books.json');
-      const data = await response.json();
-      books.value = data.books.filter((book: any) => !book.owned); 
-    } catch (error) {
-      console.error('Erreur lors du chargement des livres:', error);
-    }
-  };
-  
-    const fetchAuthors = async () => {
-    try {
-        const response = await fetch("/authors.json");
-        const data = await response.json();
-        authors.value = data.authors.map((author: { name: string }) => author.name);
-    } catch (error) {
-        console.error("Erreur lors du chargement des auteurices:", error);
-    }
-    };
   
   onMounted(() => {
-    fetchTypes();
-    fetchThemes();
-    fetchEditions();
-    fetchBooks();
-    fetchAuthors();
+    fetchTypes(types);
+    fetchThemes(themes);
+    fetchEditions(editions);
+    fetchBooks(books);
+    fetchAuthors(authors);
   });
   
   const filteredBooks = computed(() => {

@@ -21,7 +21,7 @@
       <div>
         <ExportButton :books="books" />
       </div>
-      
+
     </div>
   </template>
   
@@ -41,25 +41,9 @@
   }
   
   const books = ref<Book[]>([]);
-
-  const fetchBooks = async () => {
-  try {
-      const response = await fetch('/books.json');
-      if (response.ok) {
-        const data = await response.json();
-        books.value = data.books || [];
-      } else {
-        console.error('Erreur lors du chargement des livres');
-      }
-    }
-
-  catch (error) {
-    console.error('Erreur lors de la récupération des livres depuis le localStorage:', error);
-  }
-};
   
   onMounted(() => {
-  fetchBooks();    
+  fetchBooks(books);    
   });
   </script>
   
