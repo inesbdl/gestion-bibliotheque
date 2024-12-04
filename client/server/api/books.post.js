@@ -1,4 +1,4 @@
-const { Book, Author } = require("../../models/associations");
+import { Book, Author } from '@/models/associations'
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
@@ -20,7 +20,7 @@ async function addAuthorToBook(idAuthor, bookId) {
     if (isAuthor) {
         // verifier si Book et Author deja associés
         const isAuthorBook = await Book.findAll({ where: { id: bookId }, include: { model: Author, where: { id: idAuthor } } });
-        if (isAuthorBook.lenght > 0) {
+        if (isAuthorBook.length > 0) {
             return null;
         }
         else {

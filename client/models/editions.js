@@ -1,5 +1,5 @@
-const { db } = require("./db");
-const { DataTypes } = require("sequelize")
+import { db } from './db';
+import { DataTypes } from 'sequelize';
 
 const Edition = db.define("editions", {
     edition: {
@@ -10,4 +10,4 @@ const Edition = db.define("editions", {
     
 });
 
-module.exports = { Edition };
+export { Edition };

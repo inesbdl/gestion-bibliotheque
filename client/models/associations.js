@@ -1,8 +1,8 @@
-const { Author } = require("./authors");
-const { Book } = require("./books");
-const { Edition } = require("./editions");
-const { Theme } = require("./themes");
-const { Type } = require("./type");
+import { Author } from './authors';
+import { Edition } from './editions';
+import { Book } from './books';
+import { Theme } from './themes';
+import { Type } from './types';
 
 
 Edition.hasMany(Book);
@@ -18,4 +18,4 @@ Book.belongsToMany(Theme, { through: "booksThemes" });
 Theme.belongsToMany(Book, { through: "booksThemes" });
 
 
-module.exports = { Author, Book, Edition, Theme, Type };
+export { Author, Book, Edition, Theme, Type };

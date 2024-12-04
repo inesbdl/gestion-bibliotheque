@@ -1,7 +1,6 @@
 {
   "name": "nuxt-app",
   "private": true,
-  "type": "module",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -12,7 +11,12 @@
   "dependencies": {
     "@nuxt/ui": "^2.19.2",
     "nuxt": "^3.14.159",
+    "sequelize": "^6.37.5",
     "vue": "latest",
     "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@vue/compiler-sfc": "^3.5.13",
+    "vue-tsc": "^2.1.10"
   }
 }

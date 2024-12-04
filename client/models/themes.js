@@ -1,5 +1,5 @@
-const { db } = require("./db");
-const { DataTypes } = require("sequelize")
+import { db } from './db';
+import { DataTypes } from 'sequelize';
 
 const Theme = db.define("themes", {
     theme: {
@@ -10,4 +10,4 @@ const Theme = db.define("themes", {
     
 });
 
-module.exports = { Theme };
+export { Theme };

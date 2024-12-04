@@ -1,5 +1,5 @@
-const { db } = require("./db");
-const { DataTypes } = require("sequelize")
+import { db } from './db';
+import { DataTypes } from 'sequelize';
 
 const Type = db.define("types", {
     type: {
@@ -10,4 +10,4 @@ const Type = db.define("types", {
     
 });
 
-module.exports = { Type };
+export { Type };
