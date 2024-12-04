@@ -3,57 +3,31 @@
       <h1>Paramètres</h1>
 
       <!-- TYPE -->
-      <form class="styled-form">
-        <UFormGroup label="Ajouter un type" required>
-          <UInput placeholder="Essai" class="input-field" />
-        </UFormGroup>
-  
-        <UButton block type="submit" class="submit-button">
-          Ajouter le type
-        </UButton>
-      </form>
+      <addElementsForBooks label="Ajouter un type" placeholder="Essai" type="type"/>
+
   
       <!-- THEME -->
-      <form class="styled-form">
-        <UFormGroup label="Ajouter une thématique" required>
-          <UInput placeholder="Violences" class="input-field" />
-        </UFormGroup>
-  
-        <UButton block type="submit" class="submit-button">
-          Ajouter la thématique
-        </UButton>
-      </form>
+      <addElementsForBooks label="Ajouter une thématique" placeholder="Violences" type="theme"/>
+
 
       <!-- EDITION -->
-      <form class="styled-form">
-        <UFormGroup label="Ajouter une maison d\'édition'" required>
-          <UInput placeholder="Folio" class="input-field" />
-        </UFormGroup>
-  
-        <UButton block type="submit" class="submit-button">
-          Ajouter la thématique
-        </UButton>
-      </form>
+      <addElementsForBooks label="Ajouter une maison d'édition" placeholder="Hachette" type="edition"/>
+
 
       <!-- AUTEUR -->
-      <form class="styled-form">
-        <UFormGroup label="Ajouter un·e auteur·ice" required>
-          <UInput placeholder="Angela Davis" class="input-field" />
-        </UFormGroup>
-  
-        <UButton block type="submit" class="submit-button">
-          Ajouter l'auteur
-        </UButton>
-      </form>
+      <addElementsForBooks label="Ajouter un·e auteur·ice" placeholder="Marie Viaire" type="author"/>
+
 
       <div>
         <ExportButton :books="books" />
       </div>
+      
     </div>
   </template>
   
   <script setup lang="ts">
   import { ref, onMounted } from 'vue';
+  import addElementsForBooks from '~/components/add-elements-for-books.vue';
 
   interface Book {
     title: string;

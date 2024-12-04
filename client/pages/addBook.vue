@@ -1,88 +1,13 @@
 <template>
-  <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 60px; margin-top: 60px;">
-    <h2 class="title">Ajouter un nouveau livre</h2>
-    <h2>Vous pouvez enregistrer un livre déjà présent dans la bibliothèque ou proposer un livre à acheter. </h2>
-  </div>
-  
-  <section class="form-section">
-    <div class="form-container">
-      <form action="" class="form">
-        <!-- Titre -->
-        <UTooltip text="Titre du livre" :popper="{ placement: 'right' }">
-          <UFormGroup label="Titre" required>
-            <UInput 
-              v-model="title"  
-              placeholder="Sociologie des nids" 
-              icon="i-heroicons-pencil" 
-              class="input-field"
-            />
-          </UFormGroup>
-        </UTooltip>
-
-        <!-- Auteur -->
-        <UTooltip text="Auteur·ice ou collectif" :popper="{ placement: 'right' }">
-          <UFormGroup label="Auteur·ice" required>
-            <USelectMenu v-model="selectedAuthors" :options="authors" placeholder="Auteur·ice / collectif" multiple searchable />
-          </UFormGroup>
-        </UTooltip>
-
-        <!-- ISBN -->
-        <UTooltip text="Code composé de 13 chiffres." :popper="{ placement: 'right' }">
-          <UFormGroup label="ISBN">
-            <UInput 
-              v-model="isbn"  
-              placeholder="9782070344463" 
-              icon="i-heroicons-pencil" 
-              class="input-field"
-            />
-          </UFormGroup>
-        </UTooltip>
-
-        <!-- Type -->
-        <UTooltip text="Type du livre" :popper="{ placement: 'right' }">
-          <UFormGroup label="Type" required>
-            <USelectMenu v-model="selectedType" :options="types" class="input-field " placeholder="Sélectionner le type"/>
-          </UFormGroup>
-        </UTooltip>
-
-        <!-- Thématiques -->
-        <UTooltip text="Thématiques du livre" :popper="{ placement: 'right' }">
-          <UFormGroup label="Thèmes" required>
-            <USelectMenu v-model="selectedThemes" :options="themes" multiple placeholder="Sélectionner le(s) thématique(s)" />
-          </UFormGroup>
-        </UTooltip>
-
-        <!-- Edition -->
-        <UTooltip text="Maison d'édition" :popper="{ placement: 'right' }">
-          <UFormGroup label="Maison d'édition">
-            <USelectMenu v-model="selectedEdition" :options="editions" class="input-field" placeholder="Sélectionner la maison d'édition"/>
-          </UFormGroup>
-        </UTooltip>
-
-        <!-- Nb exemplaires -->
-        <UTooltip text="Si recommandation ne rien mettre ou 1" :popper="{ placement: 'right' }">
-          <UFormGroup label="Nombre d'exemplaires">
-            <UInput 
-              v-model="number"  
-              placeholder=" 1" 
-              icon="i-heroicons-pencil" 
-              class="input-field"
-              type="number"
-            />
-          </UFormGroup>
-        </UTooltip>
-
-        <UCheckbox v-model="owned" name="owned" label="Ce livre est une proposition" />
-
-        <UButton 
-          block 
-          class="submit-button"
-          @click="addBook"
-        >
-          Ajouter le livre
-        </UButton>
-      </form>
+  <section >
+    <!-- titre sous titre -->
+    <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 60px; margin-top: 60px;">
+      <h2 class="title">Ajouter un nouveau livre</h2>
+      <h2>Vous pouvez enregistrer un livre déjà présent dans la bibliothèque ou proposer un livre à acheter. </h2>
     </div>
+  
+    <!-- formulaire ajout livre -->
+    <addBookForm :authors="authors" :types="types" :themes="themes" :editions="editions"/>
 
     <!-- Colonne informations -->
     <div class="alert-container">
@@ -93,21 +18,16 @@
       </UAlert>
 
       <h2>Si l'auteur·ice n'est pas présent·e dans la liste, vous pour l'ajouter. </h2>
-      <form class="styled-form">
-        <UFormGroup label="Ajouter un·e auteur·ice" required>
-          <UInput placeholder="Angela Davis" class="input-field" />
-        </UFormGroup>
-  
-        <UButton block type="submit" class="submit-button">
-          Ajouter l'auteur
-        </UButton>
-      </form>
+      <addElementsForBooks label="Ajouter un·e auteur·ice" placeholder="Marie Viaire" type="author"/>
     </div>
   </section>
+  
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import addBookForm from '../components/add-book-form.vue'
+import addElementsForBooks from '../components/add-elements-for-books.vue'
 
 const title = ref('');
 const isbn = ref('');
