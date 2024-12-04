@@ -20,12 +20,12 @@ async function getAllBooks(criterias = {}) {
     }
     const books = await Book.findAll({
         where,
-        include: {
-            model: Author,
-            model: Edition,
-            model: Theme,
-            model: Type,
-        }
+        include: [
+            {model: Author},
+            {model: Edition},
+            {model: Theme},
+            {model: Type},
+        ]
     });
     if(books) {
         return books;
@@ -37,12 +37,12 @@ async function getAllBooks(criterias = {}) {
 
 async function getBookById(id) {
     const book = await Book.findByPk(id, {
-        include: {
-            model: Author,
-            model: Edition,
-            model: Theme,
-            model: Type,
-        }
+        include: [
+            {model: Author},
+            {model: Edition},
+            {model: Theme},
+            {model: Type},
+        ]
     });
     if (book) {
         return book.toJSON();
