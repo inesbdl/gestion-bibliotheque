@@ -21,17 +21,17 @@
         {
           label: '2. Ajouter un livre',
           content:
-            'Sur la page Ajouter un livre, vous pouvez entrer toutes les informations relatives à un nouveau livre que vous souhaitez ajouter à la bibliothèque. Titre : Le titre du livre à ajouter. Auteur : L\'auteur·ice ou le collectif ayant écrit le livre. Thématique : La thématique du livre (par exemple, Éducation, Sexualité, etc.). Type : Le type du livre (Roman, essai, biographie, etc.). Une fois le formulaire rempli, cliquez sur Ajouter pour enregistrer le livre dans la base de données.',
+            'Sur la page Ajouter un livre, vous pouvez entrer toutes les informations relatives à un nouveau livre que vous souhaitez ajouter à la bibliothèque. Titre : Le titre du livre à ajouter. Auteur : L\'auteur·ice ou le collectif ayant écrit le livre. Thématique : La thématique du livre (par exemple, Éducation, Sexualité, etc.). Type : Le type du livre (Roman, essai, biographie, etc.). Si ce livre est une proposition, vous pouvez cocher la case Ce livre est une proposition. Une fois le formulaire rempli, cliquez sur Ajouter pour enregistrer le livre dans la base de données.',
         },
         {
-          label: '3. Modifier ou Supprimer un livre',
+          label: '3. Modifier ou Supprimer un livre | Pas encore disponible',
           content:
             'Une fois que les livres sont ajoutés à la bibliothèque, vous pouvez les consulter, les modifier ou les supprimer. Modifier : Cliquez sur un livre pour modifier ses informations. Supprimer : Vous pouvez supprimer un livre de la bibliothèque en cliquant sur l\'icône de suppression.',
         },
         {
           label: '4. Exporter la bibliothèque',
           content:
-            'Vous avez également la possibilité d\'exporter la bibliothèque au format Excel, pour un usage externe. Utilisez le bouton Exporter sur la page d\'accueil pour générer un fichier Excel contenant toutes les données des livres.',
+            'Vous avez également la possibilité d\'exporter la bibliothèque au format Excel, pour un usage externe. Utilisez le bouton Exporter sur la page paramètres pour générer un fichier Excel contenant les dpnnées.',
         },
       ]"
     />
@@ -45,7 +45,7 @@
       <div class="contact">
         <UAlert
           description="@oswinfreyr"
-          :avatar="{ src: 'aurora.jpeg' }"
+          :avatar="{ src: 'aurora.png' }"
           title="Aurora (iel/elle)"
           color="primary" variant="subtle"
         />

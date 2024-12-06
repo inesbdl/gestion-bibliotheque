@@ -82,7 +82,8 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
+
     const props = defineProps({
     authors: {
       type: Array,
@@ -100,7 +101,69 @@
       type: Array,
       required: true
     },
+    booksIsbn: {
+      type: Array,
+      required: true
+    }
   });
+
+  const title = ref('');
+    const isbn = ref('');
+    const number = ref('');
+    const selectedType = ref<string>('');
+    const selectedThemes = ref<string[]>([]); 
+    const selectedAuthors = ref<string[]>([]); 
+    const selectedEdition = ref<string>('');
+    const owned = ref<boolean>(false);
+    const toast = useToast()
+
+    onMounted(() => {
+    })
+    
+    const validateForm = () => {
+        if (!title.value.trim()) {
+            toast.add({ title: 'Le titre est requis.', icon: "i-heroicons-exclamation-circle", color: "red" });
+            return false;
+        }
+        if (!selectedAuthors.value.length) {
+            toast.add({ title: 'Veuillez sélectionner au moins un auteur.', icon: "i-heroicons-exclamation-circle", color: "red" });
+            return false;
+        }
+        if (!selectedType.value) {
+            toast.add({ title: 'Le type est obligatoire.', icon: "i-heroicons-exclamation-circle", color: "red" });
+            return false;
+        }
+        return true;
+    };
+    
+    
+    const addBook = async (event: Event) => {
+        console.log("coucou")
+        console.log(props.booksIsbn)
+        event.preventDefault(); 
+        if (!validateForm()) return;
+
+        if (booksIsbn.value.includes(isbn.value)) {
+            toast.add({ title: 'Un livre possède déjà cet ISBN', icon: "i-heroicons-exclamation-circle", color: "red" });
+            return;
+        }
+
+        const book = {
+            title: title.value,
+            author: selectedAuthors.value,
+            isbn: isbn.value,
+            type: selectedType.value,
+            themes: selectedThemes.value,
+            edition: selectedEdition.value,
+            owned: !owned.value,
+            number: number.value,
+        };
+
+        // API Call
+        toast.add({ title: 'Livre ajouté avec succès', icon: "i-heroicons-check" });
+        console.log(book);
+};
+
 </script>
 
 <style scoped>
@@ -135,15 +198,6 @@
   /* gap: 10px; */
 }
 
-.title {
-  font-size: 2rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  font-family: 'Arial', sans-serif;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
 .input-field {
   width: 100%;
 }
@@ -161,5 +215,7 @@
 section {
   margin-top: 40px;
 }
+
+
 
 </style>
