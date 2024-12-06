@@ -19,7 +19,7 @@ const Book = db.define("book", {
         allowNull: false,
     },
     owned: {
-        type: DataTypes.STRING,
+        type: DataTypes.BOOLEAN,
         allowNull: false,
     },
 }, {

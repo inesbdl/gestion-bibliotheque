@@ -125,3 +125,4 @@ async function addEditionToBook(idEdition, bookId) {
     }
 }
 
+module.exports = { createBook, getBookById, getAllBooks, getLimitedBooks, addAuthorToBook, addThemeToBook, addEditionToBook }

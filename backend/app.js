@@ -14,7 +14,7 @@ app.use(cors({
 
 app.use(express.json({limit: "2mb"}));
 
-app.use("/api/v1/books", bookRouter);
+app.use("/api/v1/books",bookRouter);
 
 db.sync(/*{force : true}*/)
     .then(async () => {
