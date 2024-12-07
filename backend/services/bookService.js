@@ -1,4 +1,4 @@
-const { Book } = require("../models/associations");
+const { Book, Author, Edition, Theme, Type } = require("../models/associations");
 
 
 async function createBook(book) {
@@ -7,12 +7,12 @@ async function createBook(book) {
 
 async function getBookById(id) {
     const book = await Book.findByPk(id, {
-        include: {
-            model: Author,
-            model: Edition,
-            model: Theme,
-            model: Type,
-        }
+        include: [
+            {model: Author},
+            {model: Edition},
+            {model: Theme},
+            {model: Type},
+        ]
     });
     if (book) {
         return book.toJSON();
@@ -32,12 +32,12 @@ async function getAllBooks(criterias = {}) {
     }
     const books = await Book.findAll({
         where,
-        include: {
-            model: Author,
-            model: Edition,
-            model: Theme,
-            model: Type,
-        }
+        include: [
+            {model: Author},
+            {model: Edition},
+            {model: Theme},
+            {model: Type},
+        ]
     });
     if(books) {
         return books;

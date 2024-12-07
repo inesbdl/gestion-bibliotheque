@@ -28,8 +28,8 @@ async function getBookById(req, res) {
 
 async function getAllBooks(req, res) {
     try{
-        const { offset, limit, nom, age, titre, genre, poids, vitesse_moy, vitesse_max, nb_participations, nb_victoires} = req.query;
-        const books = await bookService.getAllBooks({ offset, limit, nom, age, titre, genre, poids, vitesse_moy, vitesse_max, nb_participations, nb_victoires});
+        const { offset, limit, title, isbn } = req.query;
+        const books = await bookService.getAllBooks({ offset, limit, title, isbn });
         res.json(books);    
     }
     catch (err) {
@@ -39,24 +39,17 @@ async function getAllBooks(req, res) {
 
 async function getLimitedBooks(req, res) {
     try{
-        const { pageId: pageId1, itemsPerPage: itemsPerPage1, offset, limit, nom, age, titre, genre, poids, vitesse_moy, vitesse_max, nb_participations, nb_victoires } = req.query;
+        const { pageId: pageId1, itemsPerPage: itemsPerPage1, offset, limit, title, isbn } = req.query;
         const pageId = parseInt(pageId1) || 1;
         const itemsPerPage = parseInt(itemsPerPage1) || 10;
         
-        const paginationData = await bookService.getLimitedBooks({ offset, limit, nom, age, titre, genre, poids, vitesse_moy, vitesse_max, nb_participations, nb_victoires }, pageId, itemsPerPage);
+        const paginationData = await bookService.getLimitedBooks({ offset, limit, title, isbn }, pageId, itemsPerPage);
         const baseUri = `${req.protocol}://${req.get("host")}${req.baseUrl}${req.path}`
 
         let queryParams = "";
         queryParams += itemsPerPage ? `&itemsPerPage=${itemsPerPage}` : itemsPerPage1;
-        queryParams += genre ? `&genre=${genre}` : "";
-        queryParams += nom ? `&nom=${nom}` : "";
-        queryParams += titre ? `&titre=${titre}` : "";
-        queryParams += age ? `&age=${age}` : "";
-        queryParams += poids ? `&poids=${poids}` : "";
-        queryParams += vitesse_moy ? `&vitesse_moy=${vitesse_moy}` : "";
-        queryParams += vitesse_max ? `&vitesse_max=${vitesse_max}` : "";
-        queryParams += nb_participations ? `&nb_participations=${nb_participations}` : "";
-        queryParams += nb_victoires ? `&nb_victoires=${nb_victoires}` : "";
+        queryParams += title ? `&title=${title}` : "";
+        queryParams += isbn ? `&isbn=${isbn}` : "";
 
         const previousUrl = pageId > 1 ? `${baseUri}?pageId=${pageId - 1}${queryParams}` : null;
         const nextUrl = paginationData.hasMore ? `${baseUri}?pageId=${pageId + 1}${queryParams}` : null;

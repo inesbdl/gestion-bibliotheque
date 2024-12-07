@@ -1,3 +1,4 @@
+const { defaultValueSchemable } = require("sequelize/lib/utils");
 const { db } = require("./db");
 const { DataTypes } = require("sequelize")
 
@@ -7,6 +8,10 @@ const Author = db.define("authors", {
         allowNull: false,
     },
     firstname: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    fullname: {
         type: DataTypes.STRING,
         allowNull: false,
     },
