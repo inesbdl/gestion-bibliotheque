@@ -110,4 +110,66 @@ async function addThemeToBook(idTheme, bookId) {
     }
 }
 
-module.exports = { createBook, getBookById, getAllBooks, getLimitedBooks, addAuthorToBook, addThemeToBook }
+async function updateBook(bookId, updatedData) {
+    const book = await Book.findByPk(bookId);
+    if (book) {
+        if (updatedData.editionId) {
+            const edition = await Edition.findByPk(updatedData.editionId);
+            if (edition) {
+                await book.setEdition(edition);
+            } else {
+                return { success: false, message: "Edition not found" };
+            }
+        }
+
+        if (updatedData.typeId) {
+            const type = await Type.findByPk(updatedData.typeId);
+            if (type) {
+                await book.setType(type);
+            } else {
+                return { success: false, message: "Type not found" };
+            }
+        }
+
+        if (updatedData.themeIds && Array.isArray(updatedData.themeIds)) {
+            const themes = await Theme.findAll({
+                where: { id: updatedData.themeIds }
+            });
+
+            if (themes.length === updatedData.themeIds.length) {
+                await book.setThemes(themes);
+            } else {
+                return { success: false, message: "One or more Themes not found" };
+            }
+        }
+
+        if (updatedData.authorIds && Array.isArray(updatedData.authorIds)) {
+            const authors = await Author.findAll({
+                where: { id: updatedData.authorIds }
+            });
+
+            if (authors.length === updatedData.authorIds.length) {
+                await book.setAuthors(authors);
+            } else {
+                return { success: false, message: "One or more Authors not found" };
+            }
+        }
+
+        return book.update(updatedData);
+    }
+    else {
+        return null;
+    }
+}
+
+async function deleteBook(bookId) {
+    const book = await Book.findByPk(bookId);
+    if (book) {
+        return book.destroy();
+    }
+    else {
+        return null;
+    }
+}
+
+module.exports = { createBook, getBookById, getAllBooks, getLimitedBooks, addAuthorToBook, addThemeToBook, updateBook, deleteBook }

@@ -71,4 +71,24 @@ async function addBookToType(req, res){
     }
 }
 
-module.exports = { createType, getTypeById, getAllTypes, getLimitedTypes, addBookToType }
+async function updateType (req, res){
+    try {
+        const idType = req.params.idType;
+        const type = await typeService.updateType(idType, req.body);
+        res.json(type);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}
+
+async function deleteType (req, res){
+    try {
+        const idType = req.params.idType;
+        const type = await typeService.deleteType(idType);
+        res.json(type);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}
+
+module.exports = { createType, getTypeById, getAllTypes, getLimitedTypes, addBookToType, updateType, deleteType }

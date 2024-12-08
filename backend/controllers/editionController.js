@@ -71,4 +71,24 @@ async function addBookToEdition(req, res){
     }
 }
 
-module.exports = { createEdition, getEditionById, getAllEditions, getLimitedEditions, addBookToEdition }
+async function updateEdition (req, res){
+    try {
+        const idEdition = req.params.idEdition;
+        const edition = await editionService.updateEdition(idEdition, req.body);
+        res.json(edition)
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}
+
+async function deleteEdition (req, res){
+    try {
+        const idEdition = req.params.idEdition;
+        const edition = await editionService.deleteEdition(idEdition);
+        res.json(edition);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}
+
+module.exports = { createEdition, getEditionById, getAllEditions, getLimitedEditions, addBookToEdition, updateEdition, deleteEdition }

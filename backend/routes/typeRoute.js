@@ -10,8 +10,8 @@ router.get("/:id", typeController.getTypeById);
 router.post("/", typeController.createType);
 router.post("/bookType/:idType/:idBook", typeController.addBookToType);
 
-// router.patch("/update/:idType", typeController.updateType);
+router.patch("/update/:idType", typeController.updateType);
 
-// router.delete("/:idType", typeController.deleteType)
+router.delete("/:idType", typeController.deleteType)
 
 module.exports = router;

@@ -71,4 +71,24 @@ async function addBookToTheme(req, res){
     }
 }
 
-module.exports = { createTheme, getThemeById, getAllThemes, getLimitedThemes, addBookToTheme }
+async function updateTheme (req, res){
+    try {
+        const idTheme = req.params.idTheme;
+        const theme = await themeService.updateTheme(idTheme, req.body);
+        res.json(theme);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}
+
+async function deleteTheme (req, res){
+    try {
+        const idTheme = req.params.idTheme;
+        const theme = await themeService.deleteTheme(idTheme);
+        res.json(theme);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}
+
+module.exports = { createTheme, getThemeById, getAllThemes, getLimitedThemes, addBookToTheme, updateTheme, deleteTheme }

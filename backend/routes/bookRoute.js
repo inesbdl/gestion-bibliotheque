@@ -11,8 +11,8 @@ router.post("/", bookController.createBook);
 router.post("/bookAuthor/:idBook/:idAuthor", bookController.addAuthorToBook);
 router.post("/bookTheme/:idBook/:idTheme", bookController.addThemeToBook);
 
-// router.patch("/update/:idCanard", bookController.updateCanard);
+router.patch("/update/:idBook", bookController.updateBook);
 
-// router.delete("/:idCanard", bookController.deleteCanard)
+router.delete("/:idBook", bookController.deleteBook);
 
 module.exports = router;

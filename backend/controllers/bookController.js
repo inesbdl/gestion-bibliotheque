@@ -84,4 +84,24 @@ async function addThemeToBook(req, res){
     }
 }
 
-module.exports = { createBook, getBookById, getAllBooks, getLimitedBooks, addAuthorToBook, addThemeToBook }
+async function updateBook (req, res){
+    try {
+        const idBook = req.params.idBook;
+        const book = await bookService.updateBook(idBook, req.body);
+        res.json(book);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}
+
+async function deleteBook (req, res){
+    try {
+        const idBook = req.params.idBook;
+        const book = await bookService.deleteBook(idBook);
+        res.json(book);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}
+
+module.exports = { createBook, getBookById, getAllBooks, getLimitedBooks, addAuthorToBook, addThemeToBook, updateBook, deleteBook }

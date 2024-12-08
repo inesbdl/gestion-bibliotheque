@@ -73,4 +73,24 @@ async function addBookToAuthor(req, res){
     }
 }
 
-module.exports = { createAuthor, getAuthorById, getAllAuthors, getLimitedAuthors, addBookToAuthor }
+async function updateAuthor (req, res){
+    try {
+        const idAuthor = req.params.idAuthor;
+        const author = await authorService.updateAuthor(idAuthor, req.body);
+        res.json(author);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}
+
+async function deleteAuthor (req, res){
+    try {
+        const idAuthor = req.params.idAuthor;
+        const author = await authorService.deleteAuthor(idAuthor);
+        res.json(author);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}
+
+module.exports = { createAuthor, getAuthorById, getAllAuthors, getLimitedAuthors, addBookToAuthor, updateAuthor, deleteAuthor }

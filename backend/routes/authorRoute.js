@@ -10,8 +10,8 @@ router.get("/:id", authorController.getAuthorById);
 router.post("/", authorController.createAuthor);
 router.post("/bookAuthor/:idAuthor/:idBook", authorController.addBookToAuthor);
 
-// router.patch("/update/:idAuthor", authorController.updateAuthor);
+router.patch("/update/:idAuthor", authorController.updateAuthor);
 
-// router.delete("/:idAuthor", authorController.deleteAuthor)
+router.delete("/:idAuthor", authorController.deleteAuthor)
 
 module.exports = router;

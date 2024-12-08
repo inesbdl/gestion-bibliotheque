@@ -80,4 +80,24 @@ async function addBookToTheme(idBook, themeId) {
     }
 }
 
-module.exports = { createTheme, getThemeById, getAllThemes, getLimitedThemes, addBookToTheme, }
+async function updateTheme(themeId, updatedData) {
+    const theme = await Theme.findByPk(themeId);
+    if (theme) {
+        return theme.update(updatedData);
+    }
+    else {
+        return null;
+    }
+}
+
+async function deleteTheme(themeId) {
+    const theme = await Theme.findByPk(themeId);
+    if (theme) {
+        return theme.destroy();
+    }
+    else {
+        return null;
+    }
+}
+
+module.exports = { createTheme, getThemeById, getAllThemes, getLimitedThemes, addBookToTheme, updateTheme, deleteTheme }

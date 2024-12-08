@@ -80,4 +80,24 @@ async function addBookToType(idBook, typeId) {
     }
 }
 
-module.exports = { createType, getTypeById, getAllTypes, getLimitedTypes, addBookToType, }
+async function updateType(typeId, updatedData) {
+    const type = await Type.findByPk(typeId);
+    if (type) {
+        return type.update(updatedData);
+    }
+    else {
+        return null;
+    }
+}
+
+async function deleteType(typeId) {
+    const type = await Type.findByPk(typeId);
+    if (type) {
+        return type.destroy();
+    }
+    else {
+        return null;
+    }
+}
+
+module.exports = { createType, getTypeById, getAllTypes, getLimitedTypes, addBookToType, updateType, deleteType }

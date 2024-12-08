@@ -10,8 +10,8 @@ router.get("/:id", themeController.getThemeById);
 router.post("/", themeController.createTheme);
 router.post("/bookTheme/:idTheme/:idBook", themeController.addBookToTheme);
 
-// router.patch("/update/:idTheme", themeController.updateTheme);
+router.patch("/update/:idTheme", themeController.updateTheme);
 
-// router.delete("/:idTheme", themeController.deleteTheme)
+router.delete("/:idTheme", themeController.deleteTheme)
 
 module.exports = router;

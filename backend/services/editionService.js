@@ -80,4 +80,24 @@ async function addBookToEdition(idBook, editionId) {
     }
 }
 
-module.exports = { createEdition, getEditionById, getAllEditions, getLimitedEditions, addBookToEdition, }
+async function updateEdition(editionId, updatedData) {
+    const edition = await Edition.findByPk(editionId);
+    if (edition) {
+        return edition.update(updatedData);
+    }
+    else {
+        return null;
+    }
+}
+
+async function deleteEdition(editionId) {
+    const edition = await Edition.findByPk(editionId);
+    if (edition) {
+        return edition.destroy();
+    }
+    else {
+        return null;
+    }
+}
+
+module.exports = { createEdition, getEditionById, getAllEditions, getLimitedEditions, addBookToEdition, updateEdition, deleteEdition }

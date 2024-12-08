@@ -86,4 +86,24 @@ async function addBookToAuthor(idBook, authorId) {
     }
 }
 
-module.exports = { createAuthor, getAuthorById, getAllAuthors, getLimitedAuthors, addBookToAuthor, }
+async function updateAuthor(authorId, updatedData) {
+    const author = await Author.findByPk(authorId);
+    if (author) {
+        return author.update(updatedData);
+    }
+    else {
+        return null;
+    }
+}
+
+async function deleteAuthor(authorId) {
+    const author = await Author.findByPk(authorId);
+    if (author) {
+        return author.destroy();
+    }
+    else {
+        return null;
+    }
+}
+
+module.exports = { createAuthor, getAuthorById, getAllAuthors, getLimitedAuthors, addBookToAuthor, updateAuthor, deleteAuthor }
