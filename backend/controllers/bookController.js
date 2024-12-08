@@ -72,4 +72,16 @@ async function addAuthorToBook(req, res){
     }
 }
 
-module.exports = { createBook, getBookById, getAllBooks, getLimitedBooks, addAuthorToBook }
+async function addThemeToBook(req, res){
+    try {
+        const idBook = req.params.idBook;
+        const idTheme = req.params.idTheme;
+        const themeBook = await bookService.addThemeToBook(idTheme,idBook);
+        res.json({ themeBook: themeBook, });
+        
+    } catch (err) {
+        res.status(500).json({message: err.message})
+    }
+}
+
+module.exports = { createBook, getBookById, getAllBooks, getLimitedBooks, addAuthorToBook, addThemeToBook }

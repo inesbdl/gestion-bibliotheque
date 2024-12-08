@@ -54,7 +54,7 @@ async function getLimitedAuthors(req, res) {
 
         const previousUrl = pageId > 1 ? `${baseUri}?pageId=${pageId - 1}${queryParams}` : null;
         const nextUrl = paginationData.hasMore ? `${baseUri}?pageId=${pageId + 1}${queryParams}` : null;
-        res.json({data: paginationData.books, count: paginationData.count, previousUrl, nextUrl});    
+        res.json({data: paginationData.authors, count: paginationData.count, previousUrl, nextUrl});    
     }
     catch (err) {
         res.status(500).json({message: err.message});

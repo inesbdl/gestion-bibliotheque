@@ -9,9 +9,7 @@ router.get("/:id", bookController.getBookById);
 
 router.post("/", bookController.createBook);
 router.post("/bookAuthor/:idBook/:idAuthor", bookController.addAuthorToBook);
-// router.post("/canardUtilisateur/:idCanard/:idUtilisateur", bookController.addUtilisateurToCanard);
-// router.post("/canardCompetition/:idCanard/:idCompetition", bookController.addCompetitionToCanard);
-// router.post("/canardCommentaireCanard/:idCanard/:idCommentaireCanard", bookController.addCommentaireCanardToCanard);
+router.post("/bookTheme/:idBook/:idTheme", bookController.addThemeToBook);
 
 // router.patch("/update/:idCanard", bookController.updateCanard);
 
