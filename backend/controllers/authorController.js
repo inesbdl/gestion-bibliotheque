@@ -13,7 +13,7 @@ async function createAuthor(req, res) {
 
 async function getAuthorById(req, res) {
     try {
-        const id = req.params.id;
+        const id = req.query.id;
         const author = await authorService.getAuthorById(id);
         if(author){
             res.json(author);
@@ -63,8 +63,8 @@ async function getLimitedAuthors(req, res) {
 
 async function addBookToAuthor(req, res){
     try {
-        const idAuthor = req.params.idAuthor;
-        const idBook = req.params.idBook;
+        const idAuthor = req.query.idAuthor;
+        const idBook = req.query.idBook;
         const bookAuthor = await authorService.addBookToAuthor(idBook,idAuthor);
         res.json({ BookAuthor: bookAuthor, });
         
@@ -75,7 +75,7 @@ async function addBookToAuthor(req, res){
 
 async function updateAuthor (req, res){
     try {
-        const idAuthor = req.params.idAuthor;
+        const idAuthor = req.query.idAuthor;
         const author = await authorService.updateAuthor(idAuthor, req.body);
         res.json(author);
     } catch (error) {
@@ -85,7 +85,7 @@ async function updateAuthor (req, res){
 
 async function deleteAuthor (req, res){
     try {
-        const idAuthor = req.params.idAuthor;
+        const idAuthor = req.query.idAuthor;
         const author = await authorService.deleteAuthor(idAuthor);
         res.json(author);
     } catch (error) {

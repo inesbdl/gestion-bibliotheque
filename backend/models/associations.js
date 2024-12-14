@@ -5,9 +5,6 @@ const { Theme } = require("./themes");
 const { Type } = require("./type");
 
 
-Edition.hasMany(Book);
-Book.belongsTo(Edition);
-
 Type.hasMany(Book);
 Book.belongsTo(Type);
 
@@ -16,6 +13,9 @@ Author.belongsToMany(Book, { through: "booksAuthors" });
 
 Book.belongsToMany(Theme, { through: "booksThemes" });
 Theme.belongsToMany(Book, { through: "booksThemes" });
+
+Book.belongsToMany(Edition, { through: "booksEditions" });
+Edition.belongsToMany(Book, { through: "booksEditions" });
 
 
 module.exports = { Author, Book, Edition, Theme, Type };

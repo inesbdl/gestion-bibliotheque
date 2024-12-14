@@ -12,7 +12,7 @@ async function createTheme(req, res) {
 
 async function getThemeById(req, res) {
     try {
-        const id = req.params.id;
+        const id = req.query.id;
         const theme = await themeService.getThemeById(id);
         if(theme){
             res.json(theme);
@@ -61,8 +61,8 @@ async function getLimitedThemes(req, res) {
 
 async function addBookToTheme(req, res){
     try {
-        const idTheme = req.params.idTheme;
-        const idBook = req.params.idBook;
+        const idTheme = req.query.idTheme;
+        const idBook = req.query.idBook;
         const bookTheme = await themeService.addBookToTheme(idBook,idTheme);
         res.json({ BookTheme: bookTheme, });
         
@@ -73,7 +73,7 @@ async function addBookToTheme(req, res){
 
 async function updateTheme (req, res){
     try {
-        const idTheme = req.params.idTheme;
+        const idTheme = req.query.idTheme;
         const theme = await themeService.updateTheme(idTheme, req.body);
         res.json(theme);
     } catch (error) {
@@ -83,7 +83,7 @@ async function updateTheme (req, res){
 
 async function deleteTheme (req, res){
     try {
-        const idTheme = req.params.idTheme;
+        const idTheme = req.query.idTheme;
         const theme = await themeService.deleteTheme(idTheme);
         res.json(theme);
     } catch (error) {

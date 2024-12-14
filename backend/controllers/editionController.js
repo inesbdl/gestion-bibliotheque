@@ -12,7 +12,7 @@ async function createEdition(req, res) {
 
 async function getEditionById(req, res) {
     try {
-        const id = req.params.id;
+        const id = req.query.id;
         const edition = await editionService.getEditionById(id);
         if(edition){
             res.json(edition);
@@ -61,8 +61,8 @@ async function getLimitedEditions(req, res) {
 
 async function addBookToEdition(req, res){
     try {
-        const idEdition = req.params.idEdition;
-        const idBook = req.params.idBook;
+        const idEdition = req.query.idEdition;
+        const idBook = req.query.idBook;
         const bookEdition = await editionService.addBookToEdition(idBook,idEdition);
         res.json({ BookEdition: bookEdition, });
         
@@ -73,7 +73,7 @@ async function addBookToEdition(req, res){
 
 async function updateEdition (req, res){
     try {
-        const idEdition = req.params.idEdition;
+        const idEdition = req.query.idEdition;
         const edition = await editionService.updateEdition(idEdition, req.body);
         res.json(edition)
     } catch (error) {
@@ -83,7 +83,7 @@ async function updateEdition (req, res){
 
 async function deleteEdition (req, res){
     try {
-        const idEdition = req.params.idEdition;
+        const idEdition = req.query.idEdition;
         const edition = await editionService.deleteEdition(idEdition);
         res.json(edition);
     } catch (error) {

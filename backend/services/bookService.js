@@ -110,6 +110,21 @@ async function addThemeToBook(idTheme, bookId) {
     }
 }
 
+async function addEditionToBook(idEdition, bookId) {
+    const book = await Book.findByPk(bookId);
+    const isEdition = await Edition.findByPk(idEdition)
+    if (isEdition) {
+        // verifier si Book et Edition deja associés
+        const isEditionBook = await Book.findAll({ where: { id: bookId }, include: { model: Edition, where: { id: idEdition } } });
+        if (isEditionBook.lenght > 0) {
+            return null;
+        }
+        else {
+            return book.addEdition(idEdition);
+        }
+    }
+}
+
 async function updateBook(bookId, updatedData) {
     const book = await Book.findByPk(bookId);
     if (book) {
@@ -172,4 +187,4 @@ async function deleteBook(bookId) {
     }
 }
 
-module.exports = { createBook, getBookById, getAllBooks, getLimitedBooks, addAuthorToBook, addThemeToBook, updateBook, deleteBook }
+module.exports = { createBook, getBookById, getAllBooks, getLimitedBooks, addAuthorToBook, addThemeToBook, addEditionToBook, updateBook, deleteBook }

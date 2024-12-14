@@ -12,7 +12,7 @@ async function createType(req, res) {
 
 async function getTypeById(req, res) {
     try {
-        const id = req.params.id;
+        const id = req.query.id;
         const type = await typeService.getTypeById(id);
         if(type){
             res.json(type);
@@ -61,8 +61,8 @@ async function getLimitedTypes(req, res) {
 
 async function addBookToType(req, res){
     try {
-        const idType = req.params.idType;
-        const idBook = req.params.idBook;
+        const idType = req.query.idType;
+        const idBook = req.query.idBook;
         const bookType = await typeService.addBookToType(idBook,idType);
         res.json({ BookType: bookType, });
         
@@ -73,7 +73,7 @@ async function addBookToType(req, res){
 
 async function updateType (req, res){
     try {
-        const idType = req.params.idType;
+        const idType = req.query.idType;
         const type = await typeService.updateType(idType, req.body);
         res.json(type);
     } catch (error) {
@@ -83,7 +83,7 @@ async function updateType (req, res){
 
 async function deleteType (req, res){
     try {
-        const idType = req.params.idType;
+        const idType = req.query.idType;
         const type = await typeService.deleteType(idType);
         res.json(type);
     } catch (error) {

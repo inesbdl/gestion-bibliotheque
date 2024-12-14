@@ -5,13 +5,17 @@ const themeController = require("../controllers/themeController");
 
 router.get("/", themeController.getAllThemes);
 router.get("/limit", themeController.getLimitedThemes);
-router.get("/:id", themeController.getThemeById);
+router.get("/id", themeController.getThemeById);
+// router.get("/:id", themeController.getThemeById);
 
 router.post("/", themeController.createTheme);
-router.post("/bookTheme/:idTheme/:idBook", themeController.addBookToTheme);
+router.post("/bookTheme", themeController.addBookToTheme);
+// router.post("/bookTheme/:idTheme/:idBook", themeController.addBookToTheme);
 
-router.patch("/update/:idTheme", themeController.updateTheme);
+router.patch("/update", themeController.updateTheme);
+// router.patch("/update/:idTheme", themeController.updateTheme);
 
-router.delete("/:idTheme", themeController.deleteTheme)
+router.delete("/delete", themeController.deleteTheme)
+// router.delete("/:idTheme", themeController.deleteTheme)
 
 module.exports = router;

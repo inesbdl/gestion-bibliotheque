@@ -12,7 +12,7 @@ async function createBook(req, res) {
 
 async function getBookById(req, res) {
     try {
-        const id = req.params.id;
+        const id = req.query.id;
         const book = await bookService.getBookById(id);
         if(book){
             res.json(book);
@@ -62,8 +62,8 @@ async function getLimitedBooks(req, res) {
 
 async function addAuthorToBook(req, res){
     try {
-        const idBook = req.params.idBook;
-        const idAuthor = req.params.idAuthor;
+        const idBook = req.query.idBook;
+        const idAuthor = req.query.idAuthor;
         const authorBook = await bookService.addAuthorToBook(idAuthor,idBook);
         res.json({ authorBook: authorBook, });
         
@@ -74,9 +74,21 @@ async function addAuthorToBook(req, res){
 
 async function addThemeToBook(req, res){
     try {
-        const idBook = req.params.idBook;
-        const idTheme = req.params.idTheme;
+        const idBook = req.query.idBook;
+        const idTheme = req.query.idTheme;
         const themeBook = await bookService.addThemeToBook(idTheme,idBook);
+        res.json({ themeBook: themeBook, });
+        
+    } catch (err) {
+        res.status(500).json({message: err.message})
+    }
+}
+
+async function addEditionToBook(req, res){
+    try {
+        const idBook = req.query.idBook;
+        const idEdition = req.query.idEdition;
+        const themeBook = await bookService.addEditionToBook(idEdition,idBook);
         res.json({ themeBook: themeBook, });
         
     } catch (err) {
@@ -86,7 +98,7 @@ async function addThemeToBook(req, res){
 
 async function updateBook (req, res){
     try {
-        const idBook = req.params.idBook;
+        const idBook = req.query.idBook;
         const book = await bookService.updateBook(idBook, req.body);
         res.json(book);
     } catch (error) {
@@ -96,7 +108,7 @@ async function updateBook (req, res){
 
 async function deleteBook (req, res){
     try {
-        const idBook = req.params.idBook;
+        const idBook = req.query.idBook;
         const book = await bookService.deleteBook(idBook);
         res.json(book);
     } catch (error) {
@@ -104,4 +116,4 @@ async function deleteBook (req, res){
     }
 }
 
-module.exports = { createBook, getBookById, getAllBooks, getLimitedBooks, addAuthorToBook, addThemeToBook, updateBook, deleteBook }
+module.exports = { createBook, getBookById, getAllBooks, getLimitedBooks, addAuthorToBook, addThemeToBook, addEditionToBook, updateBook, deleteBook }
