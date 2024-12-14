@@ -1,0 +1,12 @@
+{
+    "types": [
+      { "id": 1, "type": "Essai" },
+      { "id": 2, "type": "Autobiographie" },
+      { "id": 3, "type": "Roman" },
+      { "id": 4, "type": "Théâtre" },
+      { "id": 5, "type": "Mémoires" },
+      { "id": 6, "type": "Biographie" },
+      { "id": 6, "type": "Band dessinée" }
+    ]
+  }
+  

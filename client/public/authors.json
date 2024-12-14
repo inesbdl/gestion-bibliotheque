@@ -1,0 +1,43 @@
+{"authors" :[
+    {
+      "id": 1,
+      "name": "Simone de Beauvoir"
+    },
+    {
+      "id": 2,
+      "name": "Audre Lorde"
+    },
+    {
+      "id": 3,
+      "name": "bell hooks"
+    },
+    {
+      "id": 4,
+      "name": "Angela Davis"
+    },
+    {
+      "id": 5,
+      "name": "Gloria Steinem"
+    },
+    {
+      "id": 6,
+      "name": "Mary Wollstonecraft"
+    },
+    {
+      "id": 7,
+      "name": "Chimamanda Ngozi Adichie"
+    },
+    {
+      "id": 8,
+      "name": "Mona Eltahawy"
+    },
+    {
+      "id": 9,
+      "name": "Kate Millett"
+    },
+    {
+      "id": 10,
+      "name": "Germaine Greer"
+    }
+  ]
+  }
