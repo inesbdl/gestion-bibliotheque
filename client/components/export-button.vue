@@ -1,7 +1,7 @@
 <template>
-    <UButton label="Exporter en Excel" color="gray" @click="exportToExcel">
+    <UButton label="Exporter les livres en Excel" color="gray" @click="exportToExcel">
       <template #trailing>
-        <UIcon name="i-heroicons-arrow-down-tray-20-solid" class="w-5 h-5" />
+        <UIcon name="i-heroicons-arrow-up-tray-20-solid" class="w-5 h-5" />
       </template>
     </UButton>
   </template>

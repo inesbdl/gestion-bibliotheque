@@ -38,7 +38,7 @@
 
     <footer class="guide-footer">
       <UDivider icon="i-simple-icons-discord" />
-      <p>
+      <p style="margin-top: 20px;">
         <strong>Besoin d'aide ?</strong> Si vous avez des questions ou des
         suggestions, contactez-nous sur discord !
       </p>
@@ -55,7 +55,13 @@
           title="Inès B (elle)"
           color="primary" variant="subtle"
 
-        />
+        >
+      </UAlert>
+      <div class="contact">
+        <a href="https://discord.com/users/449290197310373899" target="_blank" class="discord-link">
+          <button class="discord-button">Ouvrir Discord</button>
+        </a>
+      </div>
       </div>
     </footer>
   </div>
@@ -85,19 +91,19 @@
 
 .guide-header h1 {
   font-size: 2.5rem;
-  color: #333;
+  color: #cfcece;
 }
 
 .guide-header p {
   font-size: 1.1rem;
-  color: #555;
+  color: #797878;
 }
 
 .guide-footer {
   text-align: center;
   /* margin-top: 30px; */
   font-size: 1.1rem;
-  color: #666;
+  color: #797878;
   padding-top: 40px;
 }
 </style>

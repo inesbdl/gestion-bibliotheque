@@ -4,8 +4,8 @@ import { ref } from 'vue';
 const links = ref([
   [
     {
-      label: 'Accueil',
-      icon: 'i-heroicons-home',
+      label: 'Bibliothèque',
+      icon: 'i-heroicons-building-library',
       to: '/'
     },
     {
@@ -32,6 +32,17 @@ const links = ref([
     }
   ]
 ]);
+
+// mode sombre / clair
+const colorMode = useColorMode()
+const isDark = computed({
+  get () {
+    return colorMode.value === 'dark'
+  },
+  set () {
+    colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+  }
+})
 </script>
 
 <template>
@@ -39,6 +50,20 @@ const links = ref([
         <UHorizontalNavigation :links="links" class="border-b border-gray-200 dark:border-gray-800" />
     </header>
 </template>
+
+<!-- a mettre dans le template pour mode sombre sous la navigation -->
+<!--  <ClientOnly>
+          <UButton
+            :icon="isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'"
+            color="gray"
+            variant="ghost"
+            aria-label="Theme"
+            @click="isDark = !isDark"
+          />
+          <template #fallback>
+            <div class="w-8 h-8" />
+          </template>
+        </ClientOnly> -->
 
 <style scoped>
 .header {
@@ -55,6 +80,5 @@ const links = ref([
   align-items: center;
   height: 50px;
 }
-
 
 </style>
