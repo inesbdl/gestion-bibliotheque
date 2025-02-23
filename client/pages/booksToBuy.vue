@@ -2,9 +2,19 @@
     <div class="home-container">
         <h1 class="title">PROPOSITIONS DE LIVRES</h1>
     </div>
+    <div style="width: 30%; display: flex; justify-content: center;  justify-self: center; margin-bottom: 40px;" >
+      <UAlert
+          icon="i-heroicons-exclamation-triangle"
+          color="orange"
+          variant="subtle"
+        >
+          <template #description>
+            Ces livres ne sont pas présents dans la biliothèque.
+          </template>
+        </UAlert>
+    </div>
     <div>
       <BookTable
-        :books="books" 
         :proposition="true" 
       />
     </div>

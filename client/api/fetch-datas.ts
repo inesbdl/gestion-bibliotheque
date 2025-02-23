@@ -16,7 +16,7 @@ export const fetchTypes = async () => {
     return data.types;
   } catch (error) {
     console.error("Erreur lors du chargement des types:", error);
-    types.value = []; 
+    return []; 
   }
 };
 
