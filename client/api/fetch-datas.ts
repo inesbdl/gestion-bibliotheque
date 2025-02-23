@@ -1,14 +1,8 @@
 import { ref } from 'vue';
 
-// export const types = ref<string[]>([]);
-// export const themes = ref<{ id: number; theme: string }[]>([]);
-// export const authors = ref<{ id: number; name: string }[]>([]);
-// export const editions = ref<{ id: number; edition: string }[]>([]);
-// export const books = ref<any[]>([]);
-
 export const fetchTypes = async () => {
   try {
-    const response = await fetch("/types.json");
+    const response = await fetch("http://localhost:2000/api/v1/types/");
     if (!response.ok) {
       throw new Error(`Erreur HTTP ${response.status}: Impossible de charger les types.`);
     }
@@ -16,14 +10,14 @@ export const fetchTypes = async () => {
     return data.types;
   } catch (error) {
     console.error("Erreur lors du chargement des types:", error);
-    types.value = []; 
+    return []; 
   }
 };
 
 // Fonction pour récupérer les thèmes
 export const fetchThemes = async () => {
   try {
-    const response = await fetch("/themes.json");
+    const response = await fetch("http://localhost:2000/api/v1/themes/");
     if (!response.ok) {
       throw new Error(`Erreur HTTP ${response.status}: Impossible de charger les thèmes.`);
     }
@@ -38,7 +32,7 @@ export const fetchThemes = async () => {
 // Fonction pour récupérer les auteurs
 export const fetchAuthors = async () => {
   try {
-    const response = await fetch("/authors.json");
+    const response = await fetch("http://localhost:2000/api/v1/authors/");
     if (!response.ok) {
       throw new Error(`Erreur HTTP ${response.status}: Impossible de charger les auteurices.`);
     }
@@ -53,7 +47,7 @@ export const fetchAuthors = async () => {
 // Fonction pour récupérer les éditions
 export const fetchEditions = async () => {
   try {
-    const response = await fetch("/editions.json");
+    const response = await fetch("http://localhost:2000/api/v1/editions/");
     if (!response.ok) {
       throw new Error(`Erreur HTTP ${response.status}: Impossible de charger les maisons d'édition.`);
     }
@@ -69,7 +63,7 @@ export const fetchEditions = async () => {
 // Fonction pour récupérer les livres
 export const fetchBooks = async () => {
   try {
-    const response = await fetch("/books.json");
+    const response = await fetch("http://localhost:2000/api/v1/books/");
     if (!response.ok) {
       throw new Error(`Erreur HTTP ${response.status}: Impossible de charger les livres.`);
     }

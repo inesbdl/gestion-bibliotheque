@@ -70,19 +70,24 @@ const submitElement = async () => {
     }
 
     let apiEndpoint = '';
+    let payload = {};
 
     switch (props.elementType) {
         case 'author':
-            apiEndpoint = 'api/author';
+            apiEndpoint = 'http://localhost:2000/api/v1/authors/';
+            payload = { firstname: firstName.value, lastname: lastName.value };
             break;
         case 'theme':
-            apiEndpoint = 'api/theme';
+            apiEndpoint = 'http://localhost:2000/api/v1/themes/';
+            payload = { theme: inputValue.value };
             break;
         case 'edition':
-            apiEndpoint = 'api/edition';
+            apiEndpoint = 'http://localhost:2000/api/v1/editions/';
+            payload = { edition: inputValue.value };
             break;
         case 'type':
-            apiEndpoint = 'api/type';
+            apiEndpoint = 'http://localhost:2000/api/v1/types/';
+            payload = { type: inputValue.value };
             break;
         default:
             toast.add({ title: `Type d'élément invalide.`, icon: "i-heroicons-exclamation-circle" });
@@ -90,11 +95,6 @@ const submitElement = async () => {
     }
 
     try {
-        const payload =
-            props.elementType === 'author'
-                ? { firstName: firstName.value, lastName: lastName.value }
-                : { name: inputValue.value };
-
         const response = await fetch(apiEndpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
