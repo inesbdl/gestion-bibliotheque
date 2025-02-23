@@ -1,182 +1,72 @@
 <template>
-  <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 60px; margin-top: 60px;">
-    <h2 class="title">Ajouter un nouveau livre</h2>
-  </div>
-  
-  <section class="form-section">
-    <div class="form-container">
-      <form action="" class="form">
-        <!-- Titre -->
-        <UTooltip text="Titre du livre" :popper="{ placement: 'right' }">
-          <UFormGroup label="Titre" required>
-            <UInput 
-              v-model="title"  
-              placeholder="Sociologie des nids" 
-              icon="i-heroicons-pencil" 
-              class="input-field"
-            />
-          </UFormGroup>
-        </UTooltip>
-
-        <!-- Auteur -->
-        <UTooltip text="Auteur·ice ou collectif" :popper="{ placement: 'right' }">
-          <UFormGroup label="Auteur·ice" required>
-            <USelectMenu v-model="selectedAuthors" :options="authors" multiple placeholder="Auteur·ices / collectif" />
-          </UFormGroup>
-        </UTooltip>
-
-        <!-- ISBN -->
-        <UTooltip text="Code composé de 13 chiffres." :popper="{ placement: 'right' }">
-          <UFormGroup label="ISBN">
-            <UInput 
-              v-model="isbn"  
-              placeholder="9782070344463" 
-              icon="i-heroicons-pencil" 
-              class="input-field"
-            />
-          </UFormGroup>
-        </UTooltip>
-
-        <!-- Type -->
-        <UTooltip text="Type du livre" :popper="{ placement: 'right' }">
-          <UFormGroup label="Type" required>
-            <UInputMenu v-model="selectedType" :options="types" class="input-field " placeholder="Type"/>
-          </UFormGroup>
-        </UTooltip>
-
-        <!-- Thématiques -->
-        <UTooltip text="Thématiques du livre" :popper="{ placement: 'right' }">
-          <UFormGroup label="Thèmes" required>
-            <USelectMenu v-model="selectedThemes" :options="themes" multiple placeholder="Thématique(s)" />
-          </UFormGroup>
-        </UTooltip>
-
-        <!-- Edition -->
-        <UTooltip text="Maison d'édition" :popper="{ placement: 'right' }">
-          <UFormGroup label="Maison d'édition">
-            <UInputMenu v-model="selectedEdition" :options="editions" class="input-field"/>
-          </UFormGroup>
-        </UTooltip>
-
-        <!-- Nb exemplaires -->
-        <UTooltip text="Si recommandation ne rien mettre ou 1" :popper="{ placement: 'right' }">
-          <UFormGroup label="Nombre d'exemplaires">
-            <UInput 
-              v-model="number"  
-              placeholder=" 1" 
-              icon="i-heroicons-pencil" 
-              class="input-field"
-              type="number"
-            />
-          </UFormGroup>
-        </UTooltip>
-
-        <UCheckbox v-model="owned" name="owned" label="Ce livre est une proposition" />
-
-        <UButton 
-          block 
-          class="submit-button"
-          @click="addBook"
-        >
-          Ajouter le livre
-        </UButton>
-      </form>
+  <section>
+    <!-- titre sous titre -->
+    <div
+      style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 60px;
+        margin-top: 60px;
+      "
+    >
+      <h2 class="title">Ajouter un nouveau livre</h2>
+      <h2>
+        Vous pouvez enregistrer un livre déjà présent dans la bibliothèque ou
+        proposer un livre à acheter.
+      </h2>
     </div>
-
     <!-- Colonne informations -->
     <div class="alert-container">
-      <h2>Vous pouvez enregistrer un livre déjà présent dans la bibliothèque ou proposer un livre à acheter. </h2>
-      <span style="text-align: justify;">
-        Si vous avez un livre qui fait déjà partie de la bibliothèque, il vous suffit de l'enregistrer pour qu'il soit référencé. 
-        Avant de soumettre, merci de vérifier si ce livre n’est pas déjà inscrit afin d’éviter les doublons et garantir 
-        que notre base de données reste à jour. D'autre part, si le livre que vous souhaitez ajouter n'est pas encore disponible, vous avez 
-        la possibilité de proposer un achat. En soumettant des propositions, vous contribuez à enrichir la 
-        bibliothèque en fonction des besoins et des intérêts des bénévoles. 
-        </span>
-      <UAlert title="Attention!" icon="i-heroicons-exclamation-triangle">
-        <template #title="{ title }">
-          <span v-html="title" />
-        </template>
-
+      <UAlert
+        icon="i-heroicons-exclamation-triangle"
+        color="orange"
+        variant="subtle"
+      >
         <template #description>
-          Merci de vérifier que le livre n'est pas déjà enregistré dans l'application.
+          Merci de vérifier que le livre n'est pas déjà enregistré dans
+          l'application.
         </template>
       </UAlert>
+
+    </div>
+    <div class="container">
+      <div class="form-container">
+        <!-- formulaire ajout livre -->
+        <addBookForm
+          :authors="authors"
+          :types="types"
+          :themes="themes"
+          :editions="editions"
+          :booksIsbn="booksIsbn"
+        />
+      </div>
+
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from "vue";
+import addBookForm from "../components/add-book-form.vue";
+import addElementsForBooks from "../components/add-elements-for-books.vue";
+import { fetchAuthors, fetchEditions, fetchThemes, fetchTypes } from "~/api/fetch-datas";
 
-const title = ref('');
-const isbn = ref('');
-const number = ref('');
-const selectedType = ref<string>('');
-const selectedThemes = ref<string[]>([]); 
-const selectedAuthors = ref<string[]>([]); 
-const selectedEdition = ref<string>('');
-const owned = ref<boolean>(false);
-const types = ref<string[]>([]);
-const themes = ref<string[]>([]);
-const editions = ref<string[]>([]);
-const authors = ref<string[]>([]);
+const types = ref<{ id: number; type: string }[]>([]);
+const themes = ref<{ id: number; theme: string }[]>([]);
+const editions = ref<{ id: number; name: string }[]>([]);
+const authors = ref<{ id: number; name: string }[]>([]);
 
-const fetchTypes = async () => {
+const booksIsbn = ref<string[]>([]);
+
+const fetchBooksIsbn = async () => {
   try {
-    const response = await fetch('/types.json');
+    const response = await fetch("/books.json");
     const data = await response.json();
-    types.value = data.types.map((type: { type: string }) => type.type);
+    booksIsbn.value = data.books.map((book: { isbn: string }) => book.isbn);
   } catch (error) {
-    console.error('Erreur lors du chargement des types:', error);
+    console.error("Erreur lors du chargement des isbn:", error);
   }
-};
-
-const fetchThemes = async () => {
-  try {
-    const response = await fetch('/themes.json');
-    const data = await response.json();
-    themes.value = data.themes.map((theme: { theme: string }) => theme.theme);
-  } catch (error) {
-    console.error('Erreur lors du chargement des thèmes:', error);
-  }
-};
-
-const fetchEditions = async () => {
-  try {
-    const response = await fetch('/editions.json');
-    const data = await response.json();
-    editions.value = data.editions.map((edition: { name: string }) => edition.name);
-  } catch (error) {
-    console.error('Erreur lors du chargement des maisons d édition:', error);
-  }
-};
-
-const fetchAuthors = async () => {
-  try {
-    const response = await fetch('/authors.json');
-    const data = await response.json();
-    authors.value = data.authors.map((author) => author.name);
-  } catch (error) {
-    console.error('Erreur lors du chargement des auteurs:', error);
-  }
-};
-
-const addBook = async (event: Event) => {
-  event.preventDefault(); 
-
-  const book = {
-    title: title.value,
-    author: selectedAuthors.value,
-    isbn: isbn.value,
-    type: selectedType.value,
-    themes: selectedThemes.value,
-    edition: selectedEdition.value,
-    owned: owned.value ? false : true, 
-    number: number.value,
-  };
-
-  console.log(book); 
 };
 
 onMounted(() => {
@@ -184,69 +74,59 @@ onMounted(() => {
   fetchThemes();
   fetchEditions();
   fetchAuthors();
+  fetchBooksIsbn();
 });
 </script>
 
-
 <style scoped>
-.form-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr; 
-  /* gap: 40px;  */
-  justify-items: center; 
-}
-
-.form-container {
-  width: 50%; 
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(176, 174, 174, 0.1);
+.container {
+  /* display: grid; */
+  /* grid-template-columns: 2fr 1fr; */
   display: flex;
   flex-direction: column;
-  /* gap: 20px; */
-  /* align-items: center;  */
 }
 
-.form-container:hover {
-  box-shadow: #52db7b3c 0 4px 10px;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.UFormGroup {
-  display: flex;
-  flex-direction: column;
-  /* gap: 10px; */
-}
-
+/* .form-container {
+  width: 50%;
+} */
 .title {
   font-size: 2rem;
   font-weight: bold;
   text-transform: uppercase;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   text-align: center;
   margin-bottom: 20px;
 }
 
-.input-field {
-  width: 100%;
-}
-
 .alert-container {
-  width: 70%; 
+  width: 40%;
   display: flex;
   flex-direction: column;
-  align-items: center; 
-  justify-content: center; 
+  align-items: center;
+  justify-content: center;
   gap: 20px;
-  text-align: center; 
+  text-align: center;
 }
 
 section {
   margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.styled-form {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(152, 149, 149, 0.296);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.styled-form .u-form-group {
+  margin-bottom: 20px;
 }
 </style>

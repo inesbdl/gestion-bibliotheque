@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Header from './components/header.vue';
+
 </script>
 
 <template>
@@ -8,6 +9,7 @@ import Header from './components/header.vue';
     <div class="body">
       <NuxtPage />
     </div>
+    <UNotifications/>
   </div>
 </template>
 

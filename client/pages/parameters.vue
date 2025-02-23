@@ -1,65 +1,36 @@
 <template>
     <div class="form-container">
-      <h1>Paramètres</h1>
+      <h1 class="title">PARAMETRES</h1>
+
+      <!-- Export -->
+      <div class="data">
+        <ExportButton  :books="books" />
+        <ImportButton/>
+      </div>
 
       <!-- TYPE -->
-      <form class="styled-form">
-        <UFormGroup label="Ajouter un type" required>
-          <UInput placeholder="Essai" class="input-field" />
-        </UFormGroup>
-  
-        <UButton block type="submit" class="submit-button">
-          Ajouter le type
-        </UButton>
-      </form>
+      <addElementsForBooks label="Ajouter un type" placeholder="Essai" elementType="type"/>
+
   
       <!-- THEME -->
-      <form class="styled-form">
-        <UFormGroup label="Ajouter une thématique" required>
-          <UInput placeholder="Violences" class="input-field" />
-        </UFormGroup>
-  
-        <UButton block type="submit" class="submit-button">
-          Ajouter la thématique
-        </UButton>
-      </form>
+      <addElementsForBooks label="Ajouter une thématique" placeholder="Violences" elementType="theme"/>
+
 
       <!-- EDITION -->
-      <form class="styled-form">
-        <UFormGroup label="Ajouter une maison d\'édition'" required>
-          <UInput placeholder="Folio" class="input-field" />
-        </UFormGroup>
-  
-        <UButton block type="submit" class="submit-button">
-          Ajouter la thématique
-        </UButton>
-      </form>
+      <addElementsForBooks label="Ajouter une maison d'édition" placeholder="Hachette" elementType="edition"/>
+
 
       <!-- AUTEUR -->
-      <form class="styled-form">
-        <UFormGroup label="Ajouter un·e auteur·ice" required>
-          <UInput placeholder="Angela Davis" class="input-field" />
-        </UFormGroup>
-  
-        <UButton block type="submit" class="submit-button">
-          Ajouter l'auteur
-        </UButton>
-      </form>
+      <addElementsForBooks label="Ajouter un·e auteur·ice" placeholder="Marie Viaire" elementType="author"/>
 
-      <div>
-        <ExportButton :books="books" />
-      </div>
     </div>
   </template>
   
   <script setup lang="ts">
   import { ref, onMounted } from 'vue';
+  import { fetchBooks } from '~/api/fetch-datas';
+  import addElementsForBooks from '~/components/add-elements-for-books.vue';
 
-  const router = useRouter();
-    const goToAddBook = () => {
-    router.push('/addBook');
-    };
-  
   interface Book {
     title: string;
     author: string;
@@ -67,36 +38,25 @@
     type: string;
     isbn: string;
     number?: number; 
+    owned: boolean;
+    edition: string;
   }
   
   const books = ref<Book[]>([]);
   
   onMounted(() => {
-    const fetchBooks = async () => {
-  try {
-      const response = await fetch('/books.json');
-      if (response.ok) {
-        const data = await response.json();
-        books.value = data.books || [];
-      } else {
-        console.error('Erreur lors du chargement des livres');
-      }
-    }
-
-  catch (error) {
-    console.error('Erreur lors de la récupération des livres depuis le localStorage:', error);
-  }
-};
+  fetchBooks();    
   });
   </script>
   
   <style scoped>
+
   .form-container {
     display: flex;
     flex-direction: column;
     gap: 30px;
     align-items: center;
-
+    margin-bottom: 10px;
   }
   
   .styled-form {
@@ -110,6 +70,20 @@
   
   .styled-form .u-form-group {
     margin-bottom: 20px;
+  }
+  .title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: "Arial", sans-serif;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+
+  .data {
+    display: flex;
+    gap: 15px ;
   }
   </style>
   
