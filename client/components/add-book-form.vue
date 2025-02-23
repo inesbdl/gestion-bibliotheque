@@ -247,16 +247,15 @@ const handleFormSubmit = async (): Promise<void> => {
   };
 
   try {
-    console.log(book);
     const response = await fetch('http://localhost:2000/api/v1/books/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(book),
     });
 
-    // if (!response.ok) {
-    //   throw new Error('Erreur lors de l\'ajout du livre');
-    // }
+    if (!response.ok) {
+      throw new Error('Erreur lors de l\'ajout du livre');
+    }
 
     toast.add({ title: 'Livre ajouté avec succès', icon: "i-heroicons-check" });
     resetForm();
