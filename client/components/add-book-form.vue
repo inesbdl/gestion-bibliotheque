@@ -197,12 +197,12 @@ const resetForm = (): void => {
 const handleAuthorCreation = async (): Promise<number | null> => {
   if (authorNotFound.value && authorFirstName.value.trim() && authorLastName.value.trim()) {
     try {
-      const response = await fetch('/api/authors', {
+      const response = await fetch('http://localhost:2000/api/v1/authors/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          firstName: authorFirstName.value,
-          lastName: authorLastName.value,
+          firstname: authorFirstName.value,
+          lastname: authorLastName.value,
         }),
       });
 
@@ -248,11 +248,11 @@ const handleFormSubmit = async (): Promise<void> => {
 
   try {
     console.log(book);
-    // const response = await fetch('/api/books', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(book),
-    // });
+    const response = await fetch('http://localhost:2000/api/v1/books/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(book),
+    });
 
     // if (!response.ok) {
     //   throw new Error('Erreur lors de l\'ajout du livre');

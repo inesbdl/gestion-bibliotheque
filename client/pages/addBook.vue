@@ -61,7 +61,7 @@ const booksIsbn = ref<string[]>([]);
 
 const fetchBooksIsbn = async () => {
   try {
-    const response = await fetch("/books.json");
+    const response = await fetch("http://localhost:2000/api/v1/books/");
     const data = await response.json();
     booksIsbn.value = data.books.map((book: { isbn: string }) => book.isbn);
   } catch (error) {
