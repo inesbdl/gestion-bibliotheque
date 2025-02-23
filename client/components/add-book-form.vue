@@ -15,12 +15,15 @@
         </UTooltip>
 
         <!-- Auteur -->
-        <label for="author-select">Auteurice :</label>
-        <select v-model="selectedAuthors" multiple>
-          <option v-for="author in sortedAuthors" :key="author.id" :value="author.id">
-            {{ author.name }}
-          </option>
-        </select>
+        <UFormGroup label="Auteurices" required>
+          <USelectMenu 
+            v-model="selectedAuthors" 
+            :options="authorOptions" 
+            multiple 
+            placeholder="Sélectionnez des auteurs" 
+          />
+        </UFormGroup>
+
 
         <UTooltip text="Ajouter un auteur non trouvé" :popper="{ placement: 'right' }">
           <UCheckbox v-model="authorNotFound" label="Je ne trouve pas l'auteur" />
@@ -53,37 +56,40 @@
               placeholder="9782070344463" 
               icon="i-heroicons-pencil" 
               class="input-field"
+              :maxlength="13"
             />
           </UFormGroup>
         </UTooltip>
 
         <!-- Type -->
-        <label for="type-select">Type :</label>
-        <select v-model="selectedType">
-          <option value="" disabled selected>-- Sélectionnez un type --</option>
-          <option v-for="type in types" :key="type.id" :value="type.id">
-            {{ type.type }}
-          </option>
-        </select>
+        <UFormGroup label="Type" required>
+          <USelectMenu 
+            v-model="selectedType" 
+            :options="typeOptions" 
+            placeholder="Sélectionnez le type" 
+          />
+        </UFormGroup>
 
 
         <!-- Thématiques -->
-        <label for="type-select">Thème :</label>
-        <select v-model="selectedThemes" multiple size="5">
-          <option value="" disabled selected>-- Sélectionnez un thème --</option>
-          <option v-for="theme in themes" :key="theme.id" :value="theme.id">
-            {{ theme.theme }}
-          </option>
-        </select>
+        <UFormGroup label="Titre" required>
+          <USelectMenu 
+            v-model="selectedThemes" 
+            :options="themeOptions" 
+            placeholder="Sélectionnez les thèmes" 
+            multiple
+          />
+        </UFormGroup>
+        
 
         <!-- Edition -->
-        <label for="type-select">Maison d'édition :</label>
-        <select v-model="selectedEdition">
-          <option value="" disabled selected>-- Sélectionnez une maison d'édition --</option>
-          <option v-for="edition in editions" :key="edition.id" :value="edition.id">
-            {{ edition.edition }}
-          </option>
-        </select>
+        <UFormGroup label="Titre" required>
+          <USelectMenu 
+            v-model="selectedEdition" 
+            :options="editionOptions" 
+            placeholder="Sélectionnez une maison d'édition"  
+          />
+        </UFormGroup>        
 
         <!-- Nb exemplaires -->
         <UTooltip text="Si recommandation ne rien mettre ou 1" :popper="{ placement: 'right' }">
@@ -115,6 +121,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 
+
 const props = defineProps({
   authors: { type: Array as () => { id: number; name: string }[], required: true },
   types: { type: Array as () => { id: number; type: string }[], required: true },
@@ -126,10 +133,10 @@ const props = defineProps({
 const title = ref('');
 const isbn = ref('');
 const number = ref(1);
-const selectedType = ref<number | null>(null);
+const selectedType = ref<number>();
 const selectedThemes = ref<number[]>([]);
 const selectedAuthors = ref<number[]>([]);
-const selectedEdition = ref<number | null>(null);
+const selectedEdition = ref<number>();
 const authorNotFound = ref(false);
 const authorFirstName = ref('');
 const authorLastName = ref('');
@@ -138,6 +145,19 @@ const toast = useToast();
 const sortedAuthors = computed(() => {
   return [...props.authors].sort((a, b) => a.name.localeCompare(b.name));
 });
+const authorOptions = computed(() => {
+  return sortedAuthors.value.map(a => ({ label: a.name, value: a.id }));
+});
+const typeOptions = computed(() => {
+  return props.types.map(t => ({ label: t.type, value: t.id }));
+});
+const themeOptions = computed(() => {
+  return props.themes.map(t => ({ label: t.theme, value: t.id }));
+});
+const editionOptions = computed(() => {
+  return props.editions.map(e => ({ label: e.edition, value: e.id }));
+});
+
 
 const validateForm = (): boolean => {
   if (!title.value.trim()) {
@@ -160,10 +180,10 @@ const resetForm = (): void => {
   title.value = '';
   isbn.value = '';
   number.value = 1;
-  selectedType.value = null;
+  selectedType.value = 0;
   selectedThemes.value = [];
   selectedAuthors.value = [];
-  selectedEdition.value = null;
+  selectedEdition.value = 0;
   authorNotFound.value = false;
   authorFirstName.value = '';
   authorLastName.value = '';
@@ -251,10 +271,6 @@ const handleFormSubmit = async (): Promise<void> => {
   flex-direction: column;
 }
 
-.form-container:hover {
-  box-shadow: #52db7b3c 0 4px 10px;
-}
-
 .form {
   display: flex;
   flex-direction: column;
@@ -275,4 +291,21 @@ select{
   padding: 5px;
   background-color: #111828;
 }
+
+select[multiple] {
+  height: auto;
+  overflow-y: hidden;
+}
+
+select[multiple]:focus {
+  height: auto;
+  overflow-y: auto;
+}
+
+.new-author-fields{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
 </style>
