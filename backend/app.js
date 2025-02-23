@@ -12,7 +12,7 @@ const typeRouter = require("./routes/typeRoute");
 const app = express();
 const PORT = 2000;
 app.use(cors({
-    origin: 'http://localhost:3000', 
+    origin: 'http://localhost:4000', 
     methods: ['GET', 'POST', 'PUT', 'DELETE'], 
     allowedHeaders: ['Content-Type'],
 }));
