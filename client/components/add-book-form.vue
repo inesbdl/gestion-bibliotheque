@@ -20,6 +20,7 @@
             v-model="selectedAuthors" 
             :options="authorOptions" 
             multiple 
+            searchable
             placeholder="Sélectionnez des auteurs" 
           />
         </UFormGroup>
@@ -66,16 +67,18 @@
           <USelectMenu 
             v-model="selectedType" 
             :options="typeOptions" 
+            searchable
             placeholder="Sélectionnez le type" 
           />
         </UFormGroup>
 
 
         <!-- Thématiques -->
-        <UFormGroup label="Titre" required>
+        <UFormGroup label="Thème" required>
           <USelectMenu 
             v-model="selectedThemes" 
             :options="themeOptions" 
+            searchable
             placeholder="Sélectionnez les thèmes" 
             multiple
           />
@@ -83,10 +86,11 @@
         
 
         <!-- Edition -->
-        <UFormGroup label="Titre" required>
+        <UFormGroup label="Maison d'édition" required>
           <USelectMenu 
             v-model="selectedEdition" 
             :options="editionOptions" 
+            searchable
             placeholder="Sélectionnez une maison d'édition"  
           />
         </UFormGroup>        
@@ -308,4 +312,7 @@ select[multiple]:focus {
   gap: 15px;
 }
 
+.form-section {
+  margin-bottom: 20px;
+}
 </style>
