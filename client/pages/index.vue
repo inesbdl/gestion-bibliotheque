@@ -3,7 +3,7 @@
     <h1>Gestion de la Bibliothèque</h1>
 
     <BookTable
-      :books="books" :proposition="false"
+      :proposition="false"
     />
 
   </div>

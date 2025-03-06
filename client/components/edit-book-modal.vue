@@ -3,57 +3,67 @@
     <div class="modal" @click.stop>
       <h3>Modifier le livre</h3>
       <form @submit.prevent="save">
-        <div class="form-group">
-          <label>Titre :</label>
-          <input v-model="editedBook.title" />
-        </div>
 
-        <div class="form-group">
-          <label>Auteurice :</label>
-          <select v-model="editedBook.author.id">
-            <option v-for="author in authors" :key="author.id" :value="author.id">
-              {{ author.name }}
-            </option>
-          </select>
-        </div>
+        <UFormGroup label="Titre" required>
+            <UInput 
+              v-model="editedBook.title"  
+              class="input-field"
+            />
+          </UFormGroup>
 
-        <div class="form-group">
-          <label>Thématiques :</label>
-          <select v-model="selectedThemes" multiple>
-            <option v-for="theme in themes" :key="theme.id" :value="theme.id">
-              {{ theme.theme }}
-            </option>
-          </select>
+        <UFormGroup label="Auteurices" required>
+          <USelectMenu 
+            v-model="editedBook.authors"  
+            :options="authorOptions" 
+            multiple 
+            searchable
+            placeholder="Sélectionnez des auteurs" 
+          />
+        </UFormGroup>
 
-        </div>
+        <UFormGroup label="Thématiques" required>
+          <USelectMenu 
+            v-model="editedBook.themes"  
+            :options="themeOptions" 
+            multiple 
+            placeholder="Sélectionnez les thèmes" 
+          />
+        </UFormGroup>
 
-        <div class="form-group">
-          <label>Type :</label>
-          <select v-model="editedBook.type.id">
-            <option v-for="type in types" :key="type.id" :value="type.id">
-              {{ type.type }}
-            </option>
-          </select>
-        </div>
+        <UFormGroup label="Type" required>
+          <USelectMenu 
+            v-model="editedBook.type.type" 
+            :options="typeOptions"  
+            placeholder="Sélectionnez le type" 
+          />
+        </UFormGroup>
 
-        <div class="form-group">
-          <label>Nombre d'exemplaires :</label>
-          <input type="number" v-model="editedBook.number" />
-        </div>
+        <UFormGroup label="Nombre d'exemplaires">
+            <UInput 
+              v-model="editedBook.number"  
+              class="input-field"
+              type="number"
+            />
+          </UFormGroup>
 
-        <div class="form-group">
-          <label>ISBN :</label>
-          <input v-model="editedBook.isbn" />
-        </div>
+        <UFormGroup label="ISBN">
+            <UInput 
+              v-model="editedBook.isbn"  
+              placeholder="9782070344463" 
+              class="input-field"
+              :maxlength="13"
+            />
+          </UFormGroup>
 
-        <div class="form-group">
-          <label>Maison d'édition :</label>
-          <select v-model="editedBook.edition.id">
-            <option v-for="edition in editions" :key="edition.id" :value="edition.id">
-              {{ edition.edition }}
-            </option>
-          </select>
-        </div>
+        <UFormGroup label="Maison d'édition" required>
+          <USelectMenu 
+            v-model="editedBook.edition.edition" 
+            :options="editionOptions" 
+            placeholder="Sélectionnez la maison d'édition" 
+          />
+        </UFormGroup>
+
+        <UCheckbox v-model="owned" label="Le livre a été acheté" />
 
         <div class="buttons">
           <UButton color="gray" variant="solid" type="submit">Enregistrer</UButton>
@@ -76,14 +86,34 @@ export default {
   data() {
     return {
       editedBook: { ...this.book },
-      selectedThemes: this.book.themes.map((theme) => theme.id), 
+      
+      selectedAuthors: this.book.authors || [],
+      selectedThemes: this.book.themes || [],
     };
   },
+  computed: {
+    authorOptions() {
+      return this.authors.map(a => ({ label: a.name, value: a }));
+    },
+    
+    themeOptions() {
+      return this.themes.map(t => ({ label: t.theme, value: t }));
+    },
+    
+    typeOptions() {
+      return this.types.map(t => ({ label: t.type, value: t }));
+    },
+    
+    editionOptions() {
+      return this.editions.map(e => ({ label: e.edition, value: e }));
+    },
+  },
   watch: {
+    selectedAuthors(newAuthors) {
+      this.editedBook.authors = newAuthors;
+    },
     selectedThemes(newThemes) {
-      this.editedBook.themes = newThemes.map((id) =>
-        this.themes.find((theme) => theme.id === id)
-      );
+      this.editedBook.themes = newThemes;
     },
   },
   methods: {
@@ -92,17 +122,18 @@ export default {
     },
   },
 };
+
+const owned = ref ();
 </script>
 
 <style scoped>
-
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgb(255, 0, 0);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -110,18 +141,18 @@ export default {
 }
 
 .modal {
-  background-color: rgb(34, 33, 33);
+  background-color: #2c2f36;
   padding: 25px 40px;
-  border: 2px solid rgb(53, 52, 52);
+  border: 2px solid #3a3f47;
   border-radius: 10px;
-  width: 600px;
+  /* width: 600px; */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.form-group {
+form{
   display: flex;
   flex-direction: column;
-  margin-bottom: 15px;
+  gap: 10px;
 }
 
 label {

@@ -1,6 +1,6 @@
 <template>
     <div class="modal">
-      <p>Voulez-vous vraiment supprimer ce livre ?</p>
+      <p>Voulez-vous vraiment supprimer {{ book.title }} de {{ book.author.name }} ?</p>
       <span>Attention cette action est irréversible.</span>
       <div class="buttons">
         <UButton color="gray" variant="solid" type="submit" @click="$emit('confirm')">Supprimer</UButton>
@@ -10,10 +10,17 @@
 </template>
   
 
+<script>
+  export default {
+    props : {
+      book: Object,
+    }
+  }
+</script>
 
 <style  scoped>
   .modal {
-  background-color: rgb(43, 1, 1);
+  background-color: rgba(43, 1, 1, 0.934);
   padding: 25px 40px;
   border: 2px solid rgb(68, 2, 2);
   border-radius: 10px;

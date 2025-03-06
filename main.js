@@ -15,7 +15,6 @@ function createWindow() {
   if (process.env.NODE_ENV !== 'production') {
     mainWindow.loadURL('http://localhost:4000');
   } else {
-    // En production, charge le fichier généré par Nuxt
     mainWindow.loadFile(path.join(__dirname, 'client/.output/public/index.html'));
   }
 }

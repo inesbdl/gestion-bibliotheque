@@ -54,7 +54,7 @@ import { fetchAuthors, fetchEditions, fetchThemes, fetchTypes } from "~/api/fetc
 
 const types = ref<{ id: number; type: string }[]>([]);
 const themes = ref<{ id: number; theme: string }[]>([]);
-const editions = ref<{ id: number; name: string }[]>([]);
+const editions = ref<{ id: number; edition: string }[]>([]);
 const authors = ref<{ id: number; name: string }[]>([]);
 
 const booksIsbn = ref<string[]>([]);
@@ -69,26 +69,26 @@ const fetchBooksIsbn = async () => {
   }
 };
 
-onMounted(() => {
-  fetchTypes();
-  fetchThemes();
-  fetchEditions();
-  fetchAuthors();
-  fetchBooksIsbn();
+onMounted(async () => {
+  try {
+    types.value = await fetchTypes();
+    themes.value = await fetchThemes();
+    editions.value = await fetchEditions();
+    authors.value = await fetchAuthors();
+    await fetchBooksIsbn();
+  } catch (error) {
+    console.error("Erreur lors du chargement des données:", error);
+  }
 });
+
 </script>
 
 <style scoped>
 .container {
-  /* display: grid; */
-  /* grid-template-columns: 2fr 1fr; */
   display: flex;
   flex-direction: column;
 }
 
-/* .form-container {
-  width: 50%;
-} */
 .title {
   font-size: 2rem;
   font-weight: bold;
