@@ -16,20 +16,25 @@
         {
           label: '1. Accueil',
           content:
-            'La page d\'accueil vous permet de rechercher et de filtrer les livres disponibles dans la bibliothèque du planning familial. Vous pouvez utiliser la barre de recherche pour trouver un livre par titre, auteur, type, isbn ou thématique. Barre de recherche : Recherchez des livres par mot-clé. Filtres : Affinez la recherche en filtrant par auteur, thématique et type de livre.',
+            'La page d\'accueil vous permet de rechercher et de filtrer les livres disponibles dans la bibliothèque du planning familial. Vous pouvez utiliser la barre de recherche pour trouver un livre par titre, auteur, type, isbn ou thématique. Vous pouvez rechercher des livres par mot-clé via la barre de recherche et affiner la recherche grâce aux filtres.',
         },
         {
-          label: '2. Ajouter un livre',
+          label: '2. Modifier ou Supprimer un livre',
           content:
-            'Sur la page Ajouter un livre, vous pouvez entrer toutes les informations relatives à un nouveau livre que vous souhaitez ajouter à la bibliothèque. Titre : Le titre du livre à ajouter. Auteur : L\'auteur·ice ou le collectif ayant écrit le livre. Thématique : La thématique du livre (par exemple, Éducation, Sexualité, etc.). Type : Le type du livre (Roman, essai, biographie, etc.). Si ce livre est une proposition, vous pouvez cocher la case Ce livre est une proposition. Une fois le formulaire rempli, cliquez sur Ajouter pour enregistrer le livre dans la base de données.',
+            'Vous pouvez modifier et/ou supprimer un livre en cliquant sur les icônes correspondants dans es tableaux présentas sur les pages d\'accueil et de proposition de livres.',
         },
         {
-          label: '3. Modifier ou Supprimer un livre | Pas encore disponible',
+          label: '3. Ajouter un livre',
           content:
-            'Une fois que les livres sont ajoutés à la bibliothèque, vous pouvez les consulter, les modifier ou les supprimer. Modifier : Cliquez sur un livre pour modifier ses informations. Supprimer : Vous pouvez supprimer un livre de la bibliothèque en cliquant sur l\'icône de suppression.',
+            'Sur la page Ajouter un livre, vous pouvez entrer toutes les informations relatives à un nouveau livre que vous souhaitez ajouter à la bibliothèque. Si ce livre est une proposition, vous pouvez cocher la case Ce livre est une proposition. Une fois le formulaire rempli, cliquez sur Ajouter pour enregistrer le livre dans la bibliothèque.',
         },
         {
-          label: '4. Exporter la bibliothèque',
+          label: '4. Ajouter des éléments',
+          content:
+            'Dans le paramètres, vous avez la possibilité d\'ajouter des types, thématiques, auteur·ices etc si vous ne les trouvez pas lors de l\'ajout d\'un nouveau livre',
+        },
+        {
+          label: '5. Exporter la bibliothèque',
           content:
             'Vous avez également la possibilité d\'exporter la bibliothèque au format Excel, pour un usage externe. Utilisez le bouton Exporter sur la page paramètres pour générer un fichier Excel contenant les dpnnées.',
         },
@@ -58,7 +63,7 @@
         >
       </UAlert>
       <div class="contact">
-        <a href="https://discord.com/users/449290197310373899" target="_blank" class="discord-link">
+        <a href="https://discord.com" target="_blank" class="discord-link">
           <button class="discord-button">Ouvrir Discord</button>
         </a>
       </div>
