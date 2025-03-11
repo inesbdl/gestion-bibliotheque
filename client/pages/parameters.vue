@@ -4,7 +4,7 @@
 
       <!-- Export -->
       <div class="data">
-        <ExportButton  :books="books" />
+        <ExportButton />
         <ImportButton/>
       </div>
 
@@ -28,25 +28,9 @@
   
   <script setup lang="ts">
   import { ref, onMounted } from 'vue';
-  import { fetchBooks } from '~/api/fetch-datas';
   import addElementsForBooks from '~/components/add-elements-for-books.vue';
 
-  interface Book {
-    title: string;
-    author: string;
-    theme: string;
-    type: string;
-    isbn: string;
-    number?: number; 
-    owned: boolean;
-    edition: string;
-  }
   
-  const books = ref<Book[]>([]);
-  
-  onMounted(() => {
-  fetchBooks();    
-  });
   </script>
   
   <style scoped>

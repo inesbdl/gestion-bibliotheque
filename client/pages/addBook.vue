@@ -49,7 +49,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import addBookForm from "../components/add-book-form.vue";
-import addElementsForBooks from "../components/add-elements-for-books.vue";
 import { fetchAuthors, fetchEditions, fetchThemes, fetchTypes } from "~/api/fetch-datas";
 
 const types = ref<{ id: number; type: string }[]>([]);
