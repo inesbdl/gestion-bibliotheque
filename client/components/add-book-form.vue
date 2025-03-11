@@ -127,7 +127,7 @@ import { ref, onMounted } from 'vue';
 
 
 const props = defineProps({
-  authors: { type: Array as () => { id: number; name: string }[], required: true },
+  authors: { type: Array as () => { id: number; fullname: string }[], required: true },
   types: { type: Array as () => { id: number; type: string }[], required: true },
   themes: { type: Array as () => { id: number; theme: string }[], required: true },
   editions: { type: Array as () => { id: number; edition: string }[], required: true },
@@ -147,10 +147,10 @@ const authorLastName = ref('');
 const owned = ref<boolean>(false);
 const toast = useToast();
 const sortedAuthors = computed(() => {
-  return [...props.authors].sort((a, b) => a.name.localeCompare(b.name));
+  return [...props.authors].sort((a, b) => a.fullname.localeCompare(b.fullname));
 });
 const authorOptions = computed(() => {
-  return sortedAuthors.value.map(a => ({ label: a.name, value: a.id }));
+  return sortedAuthors.value.map(a => ({ label: a.fullname, value: a.id }));
 });
 const typeOptions = computed(() => {
   return props.types.map(t => ({ label: t.type, value: t.id }));

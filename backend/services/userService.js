@@ -24,8 +24,8 @@ async function getAllUsers(criterias = {}) {
     if (criterias.lastname) {
         where.lastname = criterias.lastname;
     }
-    if (criterias.firsname) {
-        where.firsname = criterias.firsname;
+    if (criterias.firstname) {
+        where.firstname = criterias.firstname;
     }
     const users = await User.findAll({
         where,
@@ -56,7 +56,7 @@ async function getLimitedUsers(criterias = {}, pageId, itemsPerPage) {
     if (criterias.limit) {
         limit = criterias.limit;
     }
-    const { count, rows } = await Book.findAndCountAll({
+    const { count, rows } = await User.findAndCountAll({
         where,
         include: [
             {model: Book},

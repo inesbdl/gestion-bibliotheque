@@ -56,7 +56,7 @@ async function getLimitedAuthors(criterias = {}, pageId, itemsPerPage) {
     if (criterias.limit) {
         limit = criterias.limit;
     }
-    const { count, rows } = await Book.findAndCountAll({
+    const { count, rows } = await Author.findAndCountAll({
         where,
         include: [
             {model: Book},

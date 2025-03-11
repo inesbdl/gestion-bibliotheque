@@ -50,7 +50,7 @@ async function getLimitedTypes(criterias = {}, pageId, itemsPerPage) {
     if (criterias.limit) {
         limit = criterias.limit;
     }
-    const { count, rows } = await Book.findAndCountAll({
+    const { count, rows } = await Type.findAndCountAll({
         where,
         include: [
             {model: Book},

@@ -22,7 +22,7 @@ export const fetchThemes = async () => {
       throw new Error(`Erreur HTTP ${response.status}: Impossible de charger les thèmes.`);
     }
     const data: { themes: { id: number; theme: string }[] } = await response.json();
-    return data; // Retourner un tableau des objets thèmes
+    return data;
   } catch (error) {
     console.error("Erreur lors du chargement des thèmes:", error);
     return []; // Retourne un tableau vide en cas d'erreur
@@ -36,8 +36,8 @@ export const fetchAuthors = async () => {
     if (!response.ok) {
       throw new Error(`Erreur HTTP ${response.status}: Impossible de charger les auteurices.`);
     }
-    const data: { authors: { id: number; name: string }[] } = await response.json();
-    return data; // Retourner un tableau d'objets auteurs
+    const data: { authors: { id: number; fullname: string }[] } = await response.json();
+    return data;
   } catch (error) {
     console.error("Erreur lors du chargement des auteurices:", error);
     return []; // Retourne un tableau vide en cas d'erreur
