@@ -68,7 +68,6 @@ export const fetchBooks = async () => {
       throw new Error(`Erreur HTTP ${response.status}: Impossible de charger les livres.`);
     }
     const data = await response.json();
-    console.log(data.books[0].author)
     return data || []; 
   } catch (error) {
     console.error("Erreur lors du chargement des livres:", error);
