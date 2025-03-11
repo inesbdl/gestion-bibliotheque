@@ -56,7 +56,52 @@
   
       <!-- tab -->
       <div class="table-container">
-
+        <table>
+          <thead>
+            <tr>
+              <th>Titre</th>
+              <th>Auteur·ice</th>
+              <th>Thématique</th>
+              <th>Type</th>
+              <th>Maison d'édition</th>
+              <th>Nombre d'exemplaires</th>
+              <th>ISBN</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="book in filteredBooks" :key="book.id">
+              <td>{{ book.title }}</td>
+              <td>{{ book.authors?.fullname }}</td>
+              <td>{{ book.themes?.map(t => t.theme).join(', ') }}</td>
+              <td>{{ book.type?.type }}</td>
+              <td>{{ book.edition?.edition }}</td>
+              <td>{{ book?.nbAvailable }}</td>
+              <td>{{ book?.isbn }}</td>
+              <td>
+  
+                  <UButton
+                    @click="openEditModal(book)"
+                    icon="i-heroicons-pencil-square"
+                    size="sm"
+                    color="primary"
+                    square
+                    variant="soft"
+                  />
+  
+                  <UButton
+                    @click="openDeleteModal(book)"
+                    icon="i-heroicons-trash"
+                    size="sm"
+                    color="white"
+                    square
+                    variant="soft"
+                  />
+  
+              </td>
+            </tr>
+          </tbody>
+        </table>
         
       </div>
   
@@ -147,6 +192,7 @@
         selectedType.value = [];
         selectedTheme.value = [];
         selectedEdition.value = [];
+        console.log(filteredBooks.value)
       };
   
       const filteredBooks = computed(() => {
@@ -156,9 +202,10 @@
             book.themes.some(theme => theme.theme.toLowerCase().includes(searchQuery.value.toLowerCase())) ||
             book.type.type.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
             book.isbn.includes(searchQuery.value) ||
-            book.author.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+            book.authors.fullname.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
             book.edition.edition.toLowerCase().includes(searchQuery.value.toLowerCase());
   
+            //TODO readapter pour pls auteurs
           const matchesAuthor = selectedAuthor.value.length === 0 || selectedAuthor.value.includes(book.author.id);
           const matchesType = selectedType.value.length === 0 || selectedType.value.includes(book.type.id);
           const matchesTheme = selectedTheme.value.length === 0 || book.themes.some(theme => selectedTheme.value.includes(theme.id));
@@ -217,8 +264,6 @@
   };
   </script>
   
-
-
 <style scoped>
 table {
   width: 90%;
