@@ -1,6 +1,6 @@
 <template>
     <div class="modal">
-      <p>Voulez-vous vraiment supprimer {{ book.title }} de {{ book.author.name }} ?</p>
+      <p>Voulez-vous vraiment supprimer {{ book.title }} de {{ book.authors.map(author => author.fullname).join(', ') }} ?</p>
       <span>Attention cette action est irréversible.</span>
       <div class="buttons">
         <UButton color="gray" variant="solid" type="submit" @click="$emit('confirm')">Supprimer</UButton>
