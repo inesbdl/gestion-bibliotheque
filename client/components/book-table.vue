@@ -72,7 +72,7 @@
           <tbody>
             <tr v-for="book in filteredBooks" :key="book.id">
               <td>{{ book.title }}</td>
-              <td>{{ book.authors?.fullname }}</td>
+              <td>{{ book.authors?.map(author => author.fullname).join(', ') }}</td>
               <td>{{ book.themes?.map(t => t.theme).join(', ') }}</td>
               <td>{{ book.type?.type }}</td>
               <td>{{ book.edition?.edition }}</td>
@@ -157,19 +157,19 @@
       const selectedBook = ref(null);
       
       const formattedTypes = computed(() => {
-        return types.value.map(t => ({ label: t.type, value: t.type }));
+        return types.value.map(t => ({ label: t.type, value: t.id }));
       });
 
       const formattedThemes = computed(() => {
-        return themes.value.map(t => ({ label: t.theme, value: t.theme }));
+        return themes.value.map(t => ({ label: t.theme, value: t.id }));
       });
 
       const formattedAuthors = computed(() => {
-        return authors.value.map(t => ({ label: t.fullname, value: t.fullname }));
+        return authors.value.map(t => ({ label: t.fullname, value: t.id }));
       });
 
       const formattedEditions = computed(() => {
-        return editions.value.map(t => ({ label: t.edition, value: t.edition }));
+        return editions.value.map(t => ({ label: t.edition, value: t.id }));
       });
 
   
@@ -192,29 +192,36 @@
         selectedType.value = [];
         selectedTheme.value = [];
         selectedEdition.value = [];
-        console.log(filteredBooks.value)
       };
   
       const filteredBooks = computed(() => {
-        return books.value.filter(book => {
-          const matchesSearchQuery = !searchQuery.value ||
-            book.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-            book.themes.some(theme => theme.theme.toLowerCase().includes(searchQuery.value.toLowerCase())) ||
-            book.type.type.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-            book.isbn.includes(searchQuery.value) ||
-            book.authors.fullname.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-            book.edition.edition.toLowerCase().includes(searchQuery.value.toLowerCase());
-  
-            //TODO readapter pour pls auteurs
-          const matchesAuthor = selectedAuthor.value.length === 0 || selectedAuthor.value.includes(book.author.id);
-          const matchesType = selectedType.value.length === 0 || selectedType.value.includes(book.type.id);
-          const matchesTheme = selectedTheme.value.length === 0 || book.themes.some(theme => selectedTheme.value.includes(theme.id));
-          const matchesEdition = selectedEdition.value.length === 0 || selectedEdition.value.includes(book.edition.id);
-  
-          return matchesSearchQuery && matchesAuthor && matchesType && matchesTheme && matchesEdition && (props.proposition ? !book.owned : book.owned);
+          return books.value.filter(book => {
+            const matchesSearchQuery = !searchQuery.value ||
+              book.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+              book.themes.some(theme => theme.theme.toLowerCase().includes(searchQuery.value.toLowerCase())) ||
+              book.type.type.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+              book.isbn.includes(searchQuery.value) ||
+              (book.authors && book.authors.some(author => author.fullname.toLowerCase().includes(searchQuery.value.toLowerCase()))) ||  
+              book.edition.edition.toLowerCase().includes(searchQuery.value.toLowerCase());
+
+            const matchesAuthor = selectedAuthor.value.length === 0 || 
+              book.authors.some(author => selectedAuthor.value.some(selected => selected.value === author.id));
+              
+              const matchesType = selectedType.value.length === 0 || 
+                selectedType.value.some(selected => selected.value === book.type.id);
+
+            const matchesTheme = selectedTheme.value.length === 0 || 
+              book.themes.some(theme => selectedTheme.value.some(selected => selected.value === theme.id));
+
+
+            const matchesEdition = selectedEdition.value.length === 0 || 
+              selectedEdition.value.some(selected => selected.value === book.edition.id);
+
+            return matchesSearchQuery && matchesAuthor && matchesType && matchesTheme && matchesEdition && (props.proposition ? !book.owned : book.owned);
+          });
         });
-      });
-  
+
+
       const openEditModal = (book) => {
         selectedBook.value = book;
         showEditModal.value = true;
