@@ -99,7 +99,7 @@
         <UTooltip text="Si recommandation ne rien mettre ou 1" :popper="{ placement: 'right' }">
           <UFormGroup label="Nombre d'exemplaires">
             <UInput 
-              v-model="number"  
+              v-model="nbAvailable"  
               placeholder=" 1" 
               icon="i-heroicons-pencil" 
               class="input-field"
@@ -136,7 +136,7 @@ const props = defineProps({
 
 const title = ref('');
 const isbn = ref('');
-const number = ref(1);
+const nbAvailable = ref(1);
 const selectedType = ref<number>();
 const selectedThemes = ref<number[]>([]);
 const selectedAuthors = ref<number[]>([]);
@@ -183,7 +183,7 @@ const validateForm = (): boolean => {
 const resetForm = (): void => {
   title.value = '';
   isbn.value = '';
-  number.value = 1;
+  nbAvailable.value = 1;
   selectedType.value = 0;
   selectedThemes.value = [];
   selectedAuthors.value = [];
@@ -243,7 +243,7 @@ const handleFormSubmit = async (): Promise<void> => {
     themes: selectedThemes.value,
     edition: selectedEdition.value,
     owned: !owned.value,
-    number: number.value,
+    nbAvailable: nbAvailable.value,
   };
 
   try {
@@ -254,6 +254,7 @@ const handleFormSubmit = async (): Promise<void> => {
     });
 
     if (!response.ok) {
+      console.log("reponse : ", response)
       throw new Error('Erreur lors de l\'ajout du livre');
     }
 

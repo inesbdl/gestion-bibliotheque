@@ -2,6 +2,9 @@ const bookService = require("../services/bookService");
 
 async function createBook(req, res) {
     try {
+        if(!req.body.nbShared){
+            req.body.nbShared = 0;
+        }
         const book = await bookService.createBook(req.body);
         res.json(book);
     }

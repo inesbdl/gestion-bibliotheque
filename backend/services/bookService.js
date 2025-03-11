@@ -2,6 +2,7 @@ const { Book, Author, Edition, Theme, Type } = require("../models/associations")
 
 
 async function createBook(book) {
+    console.log("book service :", book);
     return await Book.create(book);
 }
 
