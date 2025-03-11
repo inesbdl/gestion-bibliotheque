@@ -1,9 +1,31 @@
 const { Book, Author, Edition, Theme, Type } = require("../models/associations");
 
 
-async function createBook(book) {
-    console.log("book service :", book);
-    return await Book.create(book);
+async function createBook(bookData) {
+    // Create book without MtM associations
+    const book = await Book.create({
+        title: bookData.title,
+        nbAvailable: bookData.nbAvailable,
+        nbShared: bookData.nbShared,
+        isbn: bookData.isbn,
+        owned: bookData.owned,
+        typeId: bookData.type.value,
+        editionId: bookData.edition.value
+    });
+
+    // Associate authors
+    if (bookData.authors && bookData.authors.length > 0) {
+        const authorIds = bookData.authors.map(author => author.value);
+        await book.setAuthors(authorIds);
+    }
+
+    // Associate themes
+    if (bookData.themes && bookData.themes.length > 0) {
+        const themeIds = bookData.themes.map(theme => theme.value);
+        await book.setThemes(themeIds);
+    }
+
+    return book;
 }
 
 async function getBookById(id) {

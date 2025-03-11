@@ -2,28 +2,45 @@
     <div >
       <div class="filters">
 
-        <input class="filter" v-model="searchQuery" placeholder="Rechercher..." @input="filterBooks" />
+        <UInput
+          icon="i-heroicons-magnifying-glass-20-solid"
+          size="sm"
+          color="white"
+          placeholder="Rechercher..."
+          v-model="searchQuery"
+        />
 
-        <select class="filter" v-model="selectedAuthor" @change="filterBooks">
-            <option value="">Tous les auteurices</option>
-            <option v-for="author in authors" :key="author.id" :value="author.id">{{ author.name }}</option>
-        </select>
+        <USelectMenu 
+            v-model="selectedAuthor" 
+            :options="formattedAuthors" 
+            multiple 
+            searchable
+            placeholder="Sélectionnez des auteurs" 
+          />
 
-        <select class="filter" v-model="selectedType" @change="filterBooks">
-            <option value="">Tous les types</option>
-            <option v-for="type in types" :key="type.id" :value="type.id">{{ type.type }}</option>
-        </select>
+          <USelectMenu 
+          v-model="selectedType" 
+          :options="formattedTypes" 
+          multiple 
+          searchable
+          placeholder="Sélectionnez des types" 
+        />
 
-        <select class="filter" v-model="selectedTheme" @change="filterBooks">
-            <option value="">Toutes les thématiques</option>
-            <option v-for="theme in themes" :key="theme.id" :value="theme.id">{{ theme.theme }}</option>
-        </select>
+        <USelectMenu 
+            v-model="selectedTheme" 
+            :options="formattedThemes" 
+            multiple 
+            searchable
+            placeholder="Sélectionnez des thématiques" 
+          />
 
-        <select class="filter" v-model="selectedEdition" @change="filterBooks">
-            <option value="">Toutes les maisons d'édition</option>
-            <option v-for="edition in editions" :key="edition.id" :value="edition.id">{{ edition.edition }}</option>
-        </select>
-
+        <USelectMenu 
+            v-model="selectedEdition" 
+            :options="formattedEditions" 
+            multiple 
+            searchable
+            placeholder="Sélectionnez des maisons d'édition" 
+          />
 
         <UButton
           icon="i-heroicons-arrow-path"
@@ -40,52 +57,7 @@
       <!-- tab -->
       <div class="table-container">
 
-        <table>
-          <thead>
-            <tr>
-              <th>Titre</th>
-              <th>Auteur·ice</th>
-              <th>Thématique</th>
-              <th>Type</th>
-              <th>Maison d'édition</th>
-              <th>Nombre d'exemplaires</th>
-              <th>ISBN</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="book in filteredBooks" :key="book.id">
-              <td>{{ book.title }}</td>
-              <td>{{ book.author.name }}</td>
-              <td>{{ book.themes.map(t => t.theme).join(', ') }}</td>
-              <td>{{ book.type.type }}</td>
-              <td>{{ book.edition.edition }}</td>
-              <td>{{ book.number }}</td>
-              <td>{{ book.isbn }}</td>
-              <td>
-  
-                  <UButton
-                    @click="openEditModal(book)"
-                    icon="i-heroicons-pencil-square"
-                    size="sm"
-                    color="primary"
-                    square
-                    variant="soft"
-                  />
-  
-                  <UButton
-                    @click="openDeleteModal(book)"
-                    icon="i-heroicons-trash"
-                    size="sm"
-                    color="white"
-                    square
-                    variant="soft"
-                  />
-  
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        
       </div>
   
       <!-- modales -->
@@ -111,121 +83,140 @@
   </template>
   
   <script>
-import { fetchBooks, fetchAuthors, fetchThemes, fetchTypes, fetchEditions } from "../api/fetch-datas";
-import EditModal from "../components/edit-book-modal.vue";
-import DeleteModal from "../components/delete-book-modal.vue";
-
-export default {
-  components: { EditModal, DeleteModal },
-  data() {
-    return {
-      books: [], 
-      authors: [],
-      themes: [],
-      types: [],
-      editions: [],
-      searchQuery: '',
-      selectedType: '',
-      selectedTheme: '',
-      selectedEdition: '',
-      selectedAuthor: '',
-      showEditModal: false,
-      showDeleteModal: false,
-      selectedBook: null,
-    };
-  },
-  props:{
-    proposition : {
-      type: Boolean,
-      required: true
-    }
-  },
-  computed: {
-
-  filteredBooks() {
-    if (!this.books) {
-      return [];
-    }
-    return this.books.filter(book => {
-
-        const matchesSearchQuery = !this.searchQuery ||
-        book.title.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        book.themes.some(theme => theme.theme.toLowerCase().includes(this.searchQuery.toLowerCase())) ||
-        book.type.type.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        book.isbn.includes(this.searchQuery) ||
-        book.author.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        book.edition.edition.toLowerCase().includes(this.searchQuery.toLowerCase());
-      
-      const matchesAuthor = !this.selectedAuthor || book.author.id === this.selectedAuthor;
-      
-      const matchesType = !this.selectedType || book.type.id === this.selectedType;
-      
-      const matchesTheme = !this.selectedTheme || book.themes.some(theme => theme.id === this.selectedTheme);
-      
-      const matchesEdition = !this.selectedEdition || book.edition.id === this.selectedEdition;
-
-      if (this.proposition) {
-        return matchesSearchQuery && matchesAuthor && matchesType && matchesTheme && matchesEdition && book.owned === false;
-      } else {
-        return matchesSearchQuery && matchesAuthor && matchesType && matchesTheme && matchesEdition && book.owned == true;
+  import { ref, computed, onMounted } from 'vue';
+  import { fetchBooks, fetchAuthors, fetchThemes, fetchTypes, fetchEditions } from "../api/fetch-datas";
+  import EditModal from "../components/edit-book-modal.vue";
+  import DeleteModal from "../components/delete-book-modal.vue";
+  
+  export default {
+    components: { EditModal, DeleteModal },
+    props: {
+      proposition: {
+        type: Boolean,
+        required: true
       }
-      // return matchesSearchQuery && matchesAuthor && matchesType && matchesTheme && matchesEdition;
-    });
-  }
-}
-,
+    },
+    setup(props) {
+      const books = ref([]);
+      const authors = ref([]);
+      const themes = ref([]);
+      const types = ref([]);
+      const editions = ref([]);
+      const searchQuery = ref('');
+      const selectedAuthor = ref([]);
+      const selectedType = ref([]);
+      const selectedTheme = ref([]);
+      const selectedEdition = ref([]);
+      const showEditModal = ref(false);
+      const showDeleteModal = ref(false);
+      const selectedBook = ref(null);
+      
+      const formattedTypes = computed(() => {
+        return types.value.map(t => ({ label: t.type, value: t.type }));
+      });
 
-  methods: {
-    async fetchData() {
-    try {
-      const booksData = await fetchBooks(); 
-      this.books = booksData || []; 
-      this.authors = await fetchAuthors();
-      this.themes = await fetchThemes();
-      this.types = await fetchTypes();
-      this.editions = await fetchEditions();
-    } catch (error) {
-      console.error("Erreur lors du chargement des données :", error);
-      this.books = []; 
+      const formattedThemes = computed(() => {
+        return themes.value.map(t => ({ label: t.theme, value: t.theme }));
+      });
+
+      const formattedAuthors = computed(() => {
+        return authors.value.map(t => ({ label: t.fullname, value: t.fullname }));
+      });
+
+      const formattedEditions = computed(() => {
+        return editions.value.map(t => ({ label: t.edition, value: t.edition }));
+      });
+
+  
+      const fetchData = async () => {
+        try {
+          books.value = await fetchBooks() || [];
+          authors.value = await fetchAuthors();
+          themes.value = await fetchThemes();
+          types.value = await fetchTypes();
+          editions.value = await fetchEditions();
+        } catch (error) {
+          console.error("Erreur lors du chargement des données :", error);
+          books.value = [];
+        }
+      };
+  
+      const resetFilters = () => {
+        searchQuery.value = '';
+        selectedAuthor.value = [];
+        selectedType.value = [];
+        selectedTheme.value = [];
+        selectedEdition.value = [];
+      };
+  
+      const filteredBooks = computed(() => {
+        return books.value.filter(book => {
+          const matchesSearchQuery = !searchQuery.value ||
+            book.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+            book.themes.some(theme => theme.theme.toLowerCase().includes(searchQuery.value.toLowerCase())) ||
+            book.type.type.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+            book.isbn.includes(searchQuery.value) ||
+            book.author.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+            book.edition.edition.toLowerCase().includes(searchQuery.value.toLowerCase());
+  
+          const matchesAuthor = selectedAuthor.value.length === 0 || selectedAuthor.value.includes(book.author.id);
+          const matchesType = selectedType.value.length === 0 || selectedType.value.includes(book.type.id);
+          const matchesTheme = selectedTheme.value.length === 0 || book.themes.some(theme => selectedTheme.value.includes(theme.id));
+          const matchesEdition = selectedEdition.value.length === 0 || selectedEdition.value.includes(book.edition.id);
+  
+          return matchesSearchQuery && matchesAuthor && matchesType && matchesTheme && matchesEdition && (props.proposition ? !book.owned : book.owned);
+        });
+      });
+  
+      const openEditModal = (book) => {
+        selectedBook.value = book;
+        showEditModal.value = true;
+      };
+  
+      const openDeleteModal = (book) => {
+        selectedBook.value = book;
+        showDeleteModal.value = true;
+      };
+  
+      const updateBook = (updatedBook) => {
+        showEditModal.value = false;
+      };
+  
+      const deleteBook = () => {
+        showDeleteModal.value = false;
+      };
+  
+      onMounted(fetchData);
+  
+      return {
+        books,
+        authors,
+        themes,
+        types,
+        editions,
+        searchQuery,
+        selectedAuthor,
+        selectedType,
+        selectedTheme,
+        selectedEdition,
+        showEditModal,
+        showDeleteModal,
+        selectedBook,
+        filteredBooks,
+        resetFilters,
+        openEditModal,
+        openDeleteModal,
+        updateBook,
+        deleteBook,
+        formattedTypes,
+        formattedEditions,
+        formattedAuthors,
+        formattedThemes,
+      };
     }
-  },
-  resetFilters() {
-    this.searchQuery = '';
-    this.selectedAuthor = '';
-    this.selectedType = '';
-    this.selectedTheme = '';
-    this.selectedEdition = '';
-  },
-    filterBooks() {
-    },
-    openEditModal(book) {
-      this.selectedBook = book;
-      this.showEditModal = true;
-    },
-    openDeleteModal(book) {
-      this.selectedBook = book;
-      this.showDeleteModal = true;
-    },
-    toggleHET(book) {
-      book.isHound = !book.isHound;
-      this.$emit("update-book", book); 
-    },
-    updateBook(updatedBook) {
-      this.$emit("update-book", updatedBook);
-      this.showEditModal = false;
-    },
-    deleteBook() {
-      this.$emit("delete-book", this.selectedBook);
-      this.showDeleteModal = false;
-    },
-  },
-  async mounted() {
-    await this.fetchData();
-  },
-};
-
-
-</script>
+  };
+  </script>
+  
 
 
 <style scoped>
