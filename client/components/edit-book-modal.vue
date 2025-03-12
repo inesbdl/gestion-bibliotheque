@@ -2,68 +2,47 @@
   <div class="modal-overlay" @click="$emit('close')">
     <div class="modal" @click.stop>
       <h3>Modifier le livre</h3>
-      <form @submit.prevent="save">
-
+      <form @submit.prevent="handleModifyBook">
         <UFormGroup label="Titre" required>
-            <UInput 
-              v-model="editedBook.title"  
-              class="input-field"
-            />
-          </UFormGroup>
+          <UInput v-model="editedBook.title" class="input-field" />
+        </UFormGroup>
 
         <UFormGroup label="Auteurices" required>
-          <USelectMenu 
-            v-model="editedBook.authors"  
-            :options="authorOptions" 
-            multiple 
+          <USelectMenu
+            v-model="editedBook.authors"
+            :options="authorOptions"
+            multiple
             searchable
-            placeholder="Sélectionnez des auteurs" 
+            placeholder="Sélectionnez des auteurs"
           />
         </UFormGroup>
 
         <UFormGroup label="Thématiques" required>
-          <USelectMenu 
-            v-model="editedBook.themes"  
-            :options="themeOptions" 
-            multiple 
-            placeholder="Sélectionnez les thèmes" 
+          <USelectMenu
+            v-model="editedBook.themes"
+            :options="themeOptions"
+            multiple
+            placeholder="Sélectionnez les thèmes"
           />
         </UFormGroup>
 
         <UFormGroup label="Type" required>
-          <USelectMenu 
-            v-model="editedBook.type.type" 
-            :options="typeOptions"  
-            placeholder="Sélectionnez le type" 
-          />
+          <USelectMenu v-model="editedBook.type" :options="typeOptions" placeholder="Sélectionnez le type" />
         </UFormGroup>
 
         <UFormGroup label="Nombre d'exemplaires">
-            <UInput 
-              v-model="editedBook.number"  
-              class="input-field"
-              type="number"
-            />
-          </UFormGroup>
-
-        <UFormGroup label="ISBN">
-            <UInput 
-              v-model="editedBook.isbn"  
-              placeholder="9782070344463" 
-              class="input-field"
-              :maxlength="13"
-            />
-          </UFormGroup>
-
-        <UFormGroup label="Maison d'édition" required>
-          <USelectMenu 
-            v-model="editedBook.edition.edition" 
-            :options="editionOptions" 
-            placeholder="Sélectionnez la maison d'édition" 
-          />
+          <UInput v-model="editedBook.nbAvailable" class="input-field" type="number" />
         </UFormGroup>
 
-        <UCheckbox v-model="owned" label="Le livre a été acheté" />
+        <UFormGroup label="ISBN">
+          <UInput v-model="editedBook.isbn" placeholder="9782070344463" class="input-field" :maxlength="13" />
+        </UFormGroup>
+
+        <UFormGroup label="Maison d'édition" required>
+          <USelectMenu v-model="editedBook.edition" :options="editionOptions" placeholder="Sélectionnez la maison d'édition" />
+        </UFormGroup>
+
+        <UCheckbox v-model="editedBook.owned" label="Le livre a été acheté" />
 
         <div class="buttons">
           <UButton color="gray" variant="solid" type="submit">Enregistrer</UButton>
@@ -74,56 +53,64 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    book: Object,
-    authors: Array,
-    themes: Array,
-    types: Array,
-    editions: Array,
-  },
-  data() {
-    return {
-      editedBook: { ...this.book },
-      
-      selectedAuthors: this.book.authors || [],
-      selectedThemes: this.book.themes || [],
-    };
-  },
-  computed: {
-    authorOptions() {
-      return this.authors.map(a => ({ label: a.name, value: a }));
-    },
-    
-    themeOptions() {
-      return this.themes.map(t => ({ label: t.theme, value: t }));
-    },
-    
-    typeOptions() {
-      return this.types.map(t => ({ label: t.type, value: t }));
-    },
-    
-    editionOptions() {
-      return this.editions.map(e => ({ label: e.edition, value: e }));
-    },
-  },
-  watch: {
-    selectedAuthors(newAuthors) {
-      this.editedBook.authors = newAuthors;
-    },
-    selectedThemes(newThemes) {
-      this.editedBook.themes = newThemes;
-    },
-  },
-  methods: {
-    save() {
-      this.$emit("save", this.editedBook);
-    },
-  },
-};
+<script lang="ts" setup>
+import { ref, computed, watch } from "vue";
 
-const owned = ref ();
+const props = defineProps({
+  book: Object,
+  authors: Array,
+  themes: Array,
+  types: Array,
+  editions: Array,
+});
+
+const emit = defineEmits(["close", "save"]);
+
+const toast = useToast();
+const editedBook = ref({ ...props.book });
+const owned = ref(props.book?.owned || false);
+
+console.log("editedBook", editedBook.value)
+
+const authorOptions = computed(() => props.authors?.map(a => ({ label: a.fullname, value: a })));
+const themeOptions = computed(() => props.themes?.map(t => ({ label: t.theme, value: t })));
+const typeOptions = computed(() => props.types?.map(t => ({ label: t.type, value: t })));
+const editionOptions = computed(() => props.editions?.map(e => ({ label: e.edition, value: e })));
+
+watch(() => props.book, (newBook) => {
+  editedBook.value = { ...newBook };
+}, { deep: true, });
+
+const handleModifyBook = async () => {
+  const bookData = {
+    title: editedBook.value.title,
+    authorIds: editedBook.value.authors.map(a => a.value),
+    isbn: editedBook.value.isbn,
+    typeIds: editedBook.value.type.value,
+    themeId: editedBook.value.themes.map(t => t.value),
+    editionId: editedBook.value.edition.value,
+    owned: owned.value,
+    nbAvailable: editedBook.value.nbAvailable,
+  };
+
+  try {
+    console.log("data", bookData)
+    const response = await fetch(`http://localhost:2000/api/v1/books/update?idBook=${editedBook.value.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(bookData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de la modification du livre");
+    }
+
+    toast.add({ title: "Livre modifié avec succès", icon: "i-heroicons-check" });
+    emit("save", bookData);
+  } catch (error: any) {
+    toast.add({ title: error.message, icon: "i-heroicons-exclamation-circle", color: "red" });
+  }
+};
 </script>
 
 <style scoped>
@@ -145,11 +132,10 @@ const owned = ref ();
   padding: 25px 40px;
   border: 2px solid #3a3f47;
   border-radius: 10px;
-  /* width: 600px; */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-form{
+form {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -161,16 +147,13 @@ label {
   color: white;
 }
 
-input, select {
+input,
+select {
   width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 14px;
-}
-
-select[multiple] {
-  height: 100px;
 }
 
 .buttons {
@@ -184,7 +167,6 @@ h3 {
   font-size: 2rem;
   font-weight: bold;
   text-transform: uppercase;
-  font-family: "Arial", sans-serif;
   text-align: center;
   margin-bottom: 20px;
   color: white;
