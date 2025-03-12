@@ -54,7 +54,7 @@ import { fetchAuthors, fetchEditions, fetchThemes, fetchTypes } from "~/api/fetc
 const types = ref<{ id: number; type: string }[]>([]);
 const themes = ref<{ id: number; theme: string }[]>([]);
 const editions = ref<{ id: number; edition: string }[]>([]);
-const authors = ref<{ id: number; name: string }[]>([]);
+const authors = ref<{ id: number; fullname: string }[]>([]);
 
 const booksIsbn = ref<string[]>([]);
 
@@ -62,7 +62,7 @@ const fetchBooksIsbn = async () => {
   try {
     const response = await fetch("http://localhost:2000/api/v1/books/");
     const data = await response.json();
-    booksIsbn.value = data.books.map((book: { isbn: string }) => book.isbn);
+    booksIsbn.value = data.map((book: { isbn: string }) => book.isbn);
   } catch (error) {
     console.error("Erreur lors du chargement des isbn:", error);
   }

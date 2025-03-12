@@ -42,7 +42,9 @@
     />
 
     <footer class="guide-footer">
+
       <UDivider icon="i-simple-icons-discord" />
+
       <p style="margin-top: 20px;">
         <strong>Besoin d'aide ?</strong> Si vous avez des questions ou des
         suggestions, contactez-nous sur discord !
@@ -62,11 +64,12 @@
 
         >
       </UAlert>
-      <div class="contact">
+
+      <!--<div class="contact">
         <a href="https://discord.com" target="_blank" class="discord-link">
           <button class="discord-button">Ouvrir Discord</button>
         </a>
-      </div>
+      </div> -->
       </div>
     </footer>
   </div>

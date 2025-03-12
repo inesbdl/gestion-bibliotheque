@@ -223,6 +223,10 @@ const handleAuthorCreation = async (): Promise<number | null> => {
 const handleFormSubmit = async (): Promise<void> => {
   if (!validateForm()) return;
 
+  console.log("liste des isbn : ", props.booksIsbn)
+  console.log("current isbn : ", isbn.value)
+
+
   if (props.booksIsbn.includes(isbn.value)) {
     toast.add({ title: 'Un livre possède déjà cet ISBN', icon: "i-heroicons-exclamation-circle", color: "red" });
     return;
