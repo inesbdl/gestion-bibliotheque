@@ -57,10 +57,8 @@
   }
   .title {
     font-size: 2.5rem;
-    font-weight: bold;
+    color: #c6c5c5;
     text-transform: uppercase;
-    font-family: "Arial", sans-serif;
-    text-align: center;
     margin-bottom: 20px;
     margin-top: 20px;
   }

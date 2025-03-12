@@ -39,12 +39,10 @@
       }
   
       .title {
-      font-size: 2.5rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      font-family: 'Arial', sans-serif;
-      text-align: center;
-      margin-bottom: 20px;
+        font-size: 2.5rem;
+        color: #c6c5c5;
+        text-transform: uppercase;
+        margin-bottom: 20px;
       }
   
       .search-bar {

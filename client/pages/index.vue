@@ -37,13 +37,11 @@ export default {
   gap: 50px;
 }
 h1 {
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 2.5rem;
+  color: #c6c5c5;
   text-transform: uppercase;
-  font-family: "Arial", sans-serif;
-  text-align: center;
   margin-bottom: 20px;
-  color: white;
+  text-align: center;
 }
 
 

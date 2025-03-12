@@ -96,7 +96,9 @@
 
 .guide-header h1 {
   font-size: 2.5rem;
-  color: #cfcece;
+  color: #c6c5c5;
+  text-transform: uppercase;
+  margin-bottom: 20px;
 }
 
 .guide-header p {
