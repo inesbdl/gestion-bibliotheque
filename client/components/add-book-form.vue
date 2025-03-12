@@ -168,7 +168,8 @@ const validateForm = (): boolean => {
     toast.add({ title: 'Le titre est requis.', icon: "i-heroicons-exclamation-circle", color: "red" });
     return false;
   }
-  if (!selectedAuthors.value.length) {
+  //TODO prendre en compte pas auteur
+  if (!selectedAuthors.value.length && !(authorNotFound.value && authorFirstName.value && authorLastName.value))  {
     console.log(selectedAuthors.value);
     toast.add({ title: 'Veuillez sélectionner un auteur.', icon: "i-heroicons-exclamation-circle", color: "red" });
     return false;
@@ -236,7 +237,12 @@ const handleFormSubmit = async (): Promise<void> => {
   const authorIds = [...selectedAuthors.value];
   const newAuthorId = await handleAuthorCreation();
   if (newAuthorId) {
-    authorIds.push(newAuthorId);
+    const newAuthor = {
+      label : authorFirstName.value + " " + authorLastName.value,
+      value : newAuthorId
+    }
+    authorIds.push(newAuthor);
+    console.log("tableau de auteurs" , authorIds)
   }
 
   const book = {

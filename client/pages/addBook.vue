@@ -16,7 +16,9 @@
         proposer un livre à acheter.
       </h2>
     </div>
+    
     <!-- Colonne informations -->
+    <!--
     <div class="alert-container">
       <UAlert
         icon="i-heroicons-exclamation-triangle"
@@ -30,6 +32,7 @@
       </UAlert>
 
     </div>
+      -->
     <div class="container">
       <div class="form-container">
         <!-- formulaire ajout livre -->

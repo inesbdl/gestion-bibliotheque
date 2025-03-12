@@ -121,7 +121,7 @@
           v-if="showDeleteModal"
           :book="selectedBook"
           @close="showDeleteModal = false"
-          @confirm="deleteBook"
+          @confirm="deleteBook(selectedBook.id)"
         />
       </div>
     </div>
@@ -130,8 +130,11 @@
   <script>
   import { ref, computed, onMounted } from 'vue';
   import { fetchBooks, fetchAuthors, fetchThemes, fetchTypes, fetchEditions } from "../api/fetch-datas";
+  import { deleteBookApi,} from "../api/books-actions"
   import EditModal from "../components/edit-book-modal.vue";
   import DeleteModal from "../components/delete-book-modal.vue";
+  
+
   
   export default {
     components: { EditModal, DeleteModal },
@@ -155,6 +158,7 @@
       const showEditModal = ref(false);
       const showDeleteModal = ref(false);
       const selectedBook = ref(null);
+      const toast = useToast();
       
       const formattedTypes = computed(() => {
         return types.value.map(t => ({ label: t.type, value: t.id }));
@@ -236,8 +240,32 @@
         showEditModal.value = false;
       };
   
-      const deleteBook = () => {
-        showDeleteModal.value = false;
+      const deleteBook = async (id) => {
+        try {
+          const response = await deleteBookApi(id); 
+
+          if (response) {
+            toast.add({ 
+              title: "Livre supprimé avec succès", 
+              icon: "i-heroicons-check-circle", 
+              color: "green" 
+            });
+
+
+            books.value = books.value.filter(book => book.id !== id);
+
+            showDeleteModal.value = false;
+          } else {
+            throw new Error("Réponse invalide de l'API");
+          }
+        } catch (error) {
+          console.error("Erreur lors de la suppression du livre:", error);
+          toast.add({ 
+            title: "Erreur lors de la suppression du livre", 
+            icon: "i-heroicons-exclamation-circle", 
+            color: "red" 
+          });
+        }
       };
   
       onMounted(fetchData);
@@ -280,6 +308,10 @@ table {
   margin: 20px auto;
 }
 
+/* thead th{
+  border-bottom: solid 1px rgb(188, 19, 19);
+} */
+
 thead th {
   color: #cdcbcb;
   padding: 10px;
@@ -298,8 +330,6 @@ tbody tr:nth-child(even) {
 tbody tr:hover {
   background-color: #74059d3e; 
 }
-
-
 
 td {
   padding: 10px;
