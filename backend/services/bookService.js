@@ -149,10 +149,25 @@ async function addEditionToBook(idEdition, bookId) {
 }
 
 async function updateBook(bookId, updatedData) {
-    const book = await Book.findByPk(bookId);
-    if (book) {
+    console.log("id", bookId)
+    try {
+        const book = await Book.findByPk(bookId, {
+            include: [
+                {model: Author},
+                {model: Edition},
+                {model: Theme},
+                {model: Type},
+            ]
+        });
+        console.log("update", book)
+        console.log("data", updatedData)
+        if (!book) {
+            return { success: false, message: "Book not found" };
+        }
+
         if (updatedData.editionId) {
             const edition = await Edition.findByPk(updatedData.editionId);
+            console.log("UPDATEedition", edition)
             if (edition) {
                 await book.setEdition(edition);
             } else {
@@ -162,6 +177,7 @@ async function updateBook(bookId, updatedData) {
 
         if (updatedData.typeId) {
             const type = await Type.findByPk(updatedData.typeId);
+            console.log("UPDATEtype", type)
             if (type) {
                 await book.setType(type);
             } else {
@@ -170,9 +186,8 @@ async function updateBook(bookId, updatedData) {
         }
 
         if (updatedData.themeIds && Array.isArray(updatedData.themeIds)) {
-            const themes = await Theme.findAll({
-                where: { id: updatedData.themeIds }
-            });
+            const themes = await Theme.findAll({ where: { id: updatedData.themeIds } });
+            console.log("UPDATEthemes", themes)
 
             if (themes.length === updatedData.themeIds.length) {
                 await book.setThemes(themes);
@@ -182,9 +197,8 @@ async function updateBook(bookId, updatedData) {
         }
 
         if (updatedData.authorIds && Array.isArray(updatedData.authorIds)) {
-            const authors = await Author.findAll({
-                where: { id: updatedData.authorIds }
-            });
+            const authors = await Author.findAll({ where: { id: updatedData.authorIds } });
+            console.log("UPDATEauthors", authors)
 
             if (authors.length === updatedData.authorIds.length) {
                 await book.setAuthors(authors);
@@ -193,12 +207,21 @@ async function updateBook(bookId, updatedData) {
             }
         }
 
-        return book.update(updatedData);
-    }
-    else {
-        return null;
+        await book.update({
+            title: updatedData.title,
+            isbn: updatedData.isbn,
+            nbAvailable: updatedData.nbAvailable,
+            nbShared: updatedData.nbShared,
+            owned: updatedData.owned,
+        });
+
+        return { success: true, message: "Book updated successfully", book };
+    } catch (error) {
+        console.error("Error updating book:", error);
+        return { success: false, message: "Internal Server Error" };
     }
 }
+
 
 async function deleteBook(bookId) {
     const book = await Book.findByPk(bookId);
