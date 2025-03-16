@@ -168,7 +168,6 @@ const validateForm = (): boolean => {
     toast.add({ title: 'Le titre est requis.', icon: "i-heroicons-exclamation-circle", color: "red" });
     return false;
   }
-  //TODO prendre en compte pas auteur
   if (!selectedAuthors.value.length && !(authorNotFound.value && authorFirstName.value && authorLastName.value))  {
     console.log(selectedAuthors.value);
     toast.add({ title: 'Veuillez sélectionner un auteur.', icon: "i-heroicons-exclamation-circle", color: "red" });
@@ -242,7 +241,6 @@ const handleFormSubmit = async (): Promise<void> => {
       value : newAuthorId
     }
     authorIds.push(newAuthor);
-    console.log("tableau de auteurs" , authorIds)
   }
 
   const book = {
