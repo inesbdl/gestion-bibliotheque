@@ -70,7 +70,6 @@ const toast = useToast();
 const editedBook = ref({ ...props.book });
 const owned = ref(props.book?.owned || false);
 
-console.log("editedBook", editedBook.value)
 
 const authorOptions = computed(() => props.authors?.map(a => ({ label: a.fullname, value: a })));
 const themeOptions = computed(() => props.themes?.map(t => ({ label: t.theme, value: t })));
@@ -86,15 +85,14 @@ const handleModifyBook = async () => {
     title: editedBook.value.title,
     authorIds: editedBook.value.authors.map(a => a.value),
     isbn: editedBook.value.isbn,
-    typeIds: editedBook.value.type.value,
-    themeId: editedBook.value.themes.map(t => t.value),
+    typeId: editedBook.value.type.value,
+    themeIds: editedBook.value.themes.map(t => t.value),
     editionId: editedBook.value.edition.value,
     owned: owned.value,
     nbAvailable: editedBook.value.nbAvailable,
   };
 
   try {
-    console.log("data", bookData)
     const response = await fetch(`http://localhost:2000/api/v1/books/update?idBook=${editedBook.value.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },

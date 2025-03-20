@@ -1,4 +1,5 @@
 const { Book, Author, Edition, Theme, Type } = require("../models/associations");
+const { Op } = require("sequelize"); 
 
 
 async function createBook(bookData) {
@@ -149,7 +150,6 @@ async function addEditionToBook(idEdition, bookId) {
 }
 
 async function updateBook(bookId, updatedData) {
-    console.log("id", bookId)
     try {
         const book = await Book.findByPk(bookId, {
             include: [
@@ -159,15 +159,13 @@ async function updateBook(bookId, updatedData) {
                 {model: Type},
             ]
         });
-        console.log("update", book)
-        console.log("data", updatedData)
+
         if (!book) {
             return { success: false, message: "Book not found" };
         }
 
         if (updatedData.editionId) {
-            const edition = await Edition.findByPk(updatedData.editionId);
-            console.log("UPDATEedition", edition)
+            const edition = await Edition.findByPk(updatedData.editionId.id);
             if (edition) {
                 await book.setEdition(edition);
             } else {
@@ -176,8 +174,7 @@ async function updateBook(bookId, updatedData) {
         }
 
         if (updatedData.typeId) {
-            const type = await Type.findByPk(updatedData.typeId);
-            console.log("UPDATEtype", type)
+            const type = await Type.findByPk(updatedData.typeId.id);
             if (type) {
                 await book.setType(type);
             } else {
@@ -186,26 +183,36 @@ async function updateBook(bookId, updatedData) {
         }
 
         if (updatedData.themeIds && Array.isArray(updatedData.themeIds)) {
-            const themes = await Theme.findAll({ where: { id: updatedData.themeIds } });
-            console.log("UPDATEthemes", themes)
+            const validThemeIds = updatedData.themeIds
+                .filter(theme => theme && theme.id)
+                .map(theme => theme.id);
 
-            if (themes.length === updatedData.themeIds.length) {
-                await book.setThemes(themes);
-            } else {
-                return { success: false, message: "One or more Themes not found" };
+            if (validThemeIds.length > 0) {
+                const themes = await Theme.findAll({ where: { id: { [Op.in]: validThemeIds } } });
+
+                if (themes.length === validThemeIds.length) {
+                    await book.setThemes(themes);
+                } else {
+                    return { success: false, message: "One or more Themes not found" };
+                }
             }
         }
 
         if (updatedData.authorIds && Array.isArray(updatedData.authorIds)) {
-            const authors = await Author.findAll({ where: { id: updatedData.authorIds } });
-            console.log("UPDATEauthors", authors)
+            const validAuthorIds = updatedData.authorIds
+                .filter(author => author && author.id)
+                .map(author => author.id);
+            if (validAuthorIds.length > 0) {
+                const authors = await Author.findAll({ where: { id: { [Op.in]: validAuthorIds } } });
 
-            if (authors.length === updatedData.authorIds.length) {
-                await book.setAuthors(authors);
-            } else {
-                return { success: false, message: "One or more Authors not found" };
+                if (authors.length === validAuthorIds.length) {
+                    await book.setAuthors(authors);
+                } else {
+                    return { success: false, message: "One or more Authors not found" };
+                }
             }
         }
+
 
         await book.update({
             title: updatedData.title,

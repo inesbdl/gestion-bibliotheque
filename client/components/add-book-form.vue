@@ -170,7 +170,6 @@ const validateForm = (): boolean => {
   }
   //TODO prendre en compte pas auteur
   if (!selectedAuthors.value.length && !(authorNotFound.value && authorFirstName.value && authorLastName.value))  {
-    console.log(selectedAuthors.value);
     toast.add({ title: 'Veuillez sélectionner un auteur.', icon: "i-heroicons-exclamation-circle", color: "red" });
     return false;
   }
@@ -224,9 +223,6 @@ const handleAuthorCreation = async (): Promise<number | null> => {
 const handleFormSubmit = async (): Promise<void> => {
   if (!validateForm()) return;
 
-  console.log("liste des isbn : ", props.booksIsbn)
-  console.log("current isbn : ", isbn.value)
-
 
   if (props.booksIsbn.includes(isbn.value)) {
     toast.add({ title: 'Un livre possède déjà cet ISBN', icon: "i-heroicons-exclamation-circle", color: "red" });
@@ -242,7 +238,6 @@ const handleFormSubmit = async (): Promise<void> => {
       value : newAuthorId
     }
     authorIds.push(newAuthor);
-    console.log("tableau de auteurs" , authorIds)
   }
 
   const book = {
@@ -264,7 +259,6 @@ const handleFormSubmit = async (): Promise<void> => {
     });
 
     if (!response.ok) {
-      console.log("reponse : ", response)
       throw new Error('Erreur lors de l\'ajout du livre');
     }
 

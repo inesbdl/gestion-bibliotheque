@@ -27,7 +27,6 @@ const books = ref<Book[]>([]);
 const fetchData = async () => {
 try {
   books.value = await fetchBooks();
-  console.log('Livres reçus :', books.value);
 } catch (error) {
   console.error("Erreur lors du chargement des données :", error);
   books.value = [];
