@@ -1,5 +1,5 @@
 {
-  "name": "Bibliothèque Françoise",
+  "name": "Bibliotheque",
   "version": "1.0.0",
   "description": "Application de gestion de bibliothèque",
   "main": "main.js",
@@ -27,7 +27,21 @@
       "database/**/*"
     ],
     "extraResources": [
-      "database/mydb.sqlite"
+      {
+        "from": "client/dist",  
+        "to": "client",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "backend",  
+        "to": "backend",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "database",  
+        "to": "database",
+        "filter": ["**/*"]
+      }
     ]
   },
   "keywords": [],

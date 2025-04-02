@@ -1,10 +1,22 @@
 const { app, BrowserWindow } = require('electron');
 const { exec } = require('child_process');
+const path = require('path');
 const http = require('http');
 
 let mainWindow;
 let nuxtProcess;
 let backendProcess;
+
+const isPackaged = app.isPackaged;
+const appPath = isPackaged ? path.dirname(process.execPath) : __dirname;
+
+// ressources qui sont dans dist/win-unpacked suit au build electron
+// client est récupéré à partir du build de nuxt (client/.output/public)
+//tout ça est géré dans le package.json au niveau de buil → files
+const backendPath = path.join(appPath,'resources','backend', 'app.js');
+const nuxtDistPath = path.join(appPath,'resources', 'client');
+
+const nuxtUrl = "http://localhost:3000";
 
 function waitForNuxt(url, timeout = 30000) {
   return new Promise((resolve, reject) => {
@@ -35,14 +47,14 @@ function waitForNuxt(url, timeout = 30000) {
 
 function stopBackend() {
   if (backendProcess) {
-    console.log("⏏️ Fermeture propre du backend...");
+    console.log("⏏️ Fermeture du backend...");
     backendProcess.kill('SIGTERM');
   }
 }
 
 app.whenReady().then(async () => {
   console.log("🚀 Lancement du backend Express...");
-  backendProcess = exec('node backend/app.js', (err, stdout, stderr) => {
+  backendProcess = exec(`node ${backendPath}`, (err, stdout, stderr) => {
     if (err) {
       console.error("❌ Erreur backend :", stderr);
     } else {
@@ -51,16 +63,26 @@ app.whenReady().then(async () => {
   });
 
   console.log("🌍 Lancement du serveur Nuxt...");
-  nuxtProcess = exec('npm run start --prefix client', (err, stdout, stderr) => {
-    if (err) {
-      console.error("❌ Erreur Nuxt :", stderr);
-    } else {
-      console.log("🎉 Serveur Nuxt lancé :", stdout);
-    }
-  });
+  if (isPackaged) {
+    const express = require('express');
+    const nuxtServer = express();
+    nuxtServer.use(express.static(nuxtDistPath));
+    nuxtServer.get('*', (req, res) => {
+      res.sendFile(path.join(nuxtDistPath, 'index.html'));
+    });
+    nuxtServer.listen(3000, () => console.log('✅ Nuxt lancé en production'));
+  } else {
+    nuxtProcess = exec('npm run start --prefix client', (err, stdout, stderr) => {
+      if (err) {
+        console.error("❌ Erreur Nuxt :", stderr);
+      } else {
+        console.log("🎉 Serveur Nuxt lancé :", stdout);
+      }
+    });
+  }
 
   try {
-    await waitForNuxt("http://localhost:3000");
+    await waitForNuxt(nuxtUrl);
   } catch (error) {
     console.error(error);
     stopBackend();
@@ -78,7 +100,7 @@ app.whenReady().then(async () => {
   });
 
   console.log("🌍 Chargement de Nuxt dans Electron...");
-  mainWindow.loadURL("http://localhost:3000");
+  mainWindow.loadURL(nuxtUrl);
 
   mainWindow.on("closed", () => {
     console.log("🔒 Fermeture de la fenêtre Electron...");
@@ -97,7 +119,9 @@ app.on("window-all-closed", () => {
     console.log("⏏️ Fermeture du processus Nuxt...");
     nuxtProcess.kill();
   }
-  app.quit();
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
 });
 
 app.on('before-quit', () => {
