@@ -47,7 +47,7 @@
           size="sm"
           color="primary"
           variant="soft"
-          label="Réinitialiser"
+          label="Réinitialiser les filtres"
           :trailing="false"
           @click="resetFilters"
         />
