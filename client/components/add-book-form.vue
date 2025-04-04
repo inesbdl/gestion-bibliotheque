@@ -5,10 +5,10 @@
         <!-- Titre -->
         <UTooltip text="Titre du livre" :popper="{ placement: 'right' }">
           <UFormGroup label="Titre" required>
-            <UInput 
-              v-model="title"  
-              placeholder="Sociologie des nids" 
-              icon="i-heroicons-pencil" 
+            <UInput
+              v-model="title"
+              placeholder="Sociologie des nids"
+              icon="i-heroicons-pencil"
               class="input-field"
             />
           </UFormGroup>
@@ -16,46 +16,54 @@
 
         <!-- Auteur -->
         <UFormGroup label="Auteurices" required>
-          <USelectMenu 
-            v-model="selectedAuthors" 
-            :options="authorOptions" 
-            multiple 
+          <USelectMenu
+            v-model="selectedAuthors"
+            :options="authorOptions"
+            multiple
             searchable
-            placeholder="Sélectionnez des auteurs" 
+            placeholder="Sélectionnez des auteurs"
           />
         </UFormGroup>
 
-
-        <UTooltip text="Ajouter un auteur non trouvé" :popper="{ placement: 'right' }">
-          <UCheckbox v-model="authorNotFound" label="Je ne trouve pas l'auteur" />
+        <UTooltip
+          text="Ajouter un auteur non trouvé"
+          :popper="{ placement: 'right' }"
+        >
+          <UCheckbox
+            v-model="authorNotFound"
+            label="Je ne trouve pas l'auteur"
+          />
         </UTooltip>
 
         <div v-if="authorNotFound" class="new-author-fields">
           <UFormGroup label="Prénom de l'auteur" required>
-            <UInput 
-              v-model="authorFirstName"  
-              placeholder="Prénom" 
-              icon="i-heroicons-pencil" 
+            <UInput
+              v-model="authorFirstName"
+              placeholder="Prénom"
+              icon="i-heroicons-pencil"
               class="input-field"
             />
           </UFormGroup>
           <UFormGroup label="Nom de l'auteur" required>
-            <UInput 
-              v-model="authorLastName"  
-              placeholder="Nom" 
-              icon="i-heroicons-pencil" 
+            <UInput
+              v-model="authorLastName"
+              placeholder="Nom"
+              icon="i-heroicons-pencil"
               class="input-field"
             />
           </UFormGroup>
         </div>
 
         <!-- ISBN -->
-        <UTooltip text="Code composé de 13 chiffres." :popper="{ placement: 'right' }">
+        <UTooltip
+          text="Code composé de 13 chiffres."
+          :popper="{ placement: 'right' }"
+        >
           <UFormGroup label="ISBN">
-            <UInput 
-              v-model="isbn"  
-              placeholder="9782070344463" 
-              icon="i-heroicons-pencil" 
+            <UInput
+              v-model="isbn"
+              placeholder="1111111111111"
+              icon="i-heroicons-pencil"
               class="input-field"
               :maxlength="13"
             />
@@ -64,57 +72,59 @@
 
         <!-- Type -->
         <UFormGroup label="Type" required>
-          <USelectMenu 
-            v-model="selectedType" 
-            :options="typeOptions" 
+          <USelectMenu
+            v-model="selectedType"
+            :options="typeOptions"
             searchable
-            placeholder="Sélectionnez le type" 
+            placeholder="Sélectionnez le type"
           />
         </UFormGroup>
-
 
         <!-- Thématiques -->
         <UFormGroup label="Thème" required>
-          <USelectMenu 
-            v-model="selectedThemes" 
-            :options="themeOptions" 
+          <USelectMenu
+            v-model="selectedThemes"
+            :options="themeOptions"
             searchable
-            placeholder="Sélectionnez les thèmes" 
+            placeholder="Sélectionnez les thèmes"
             multiple
           />
         </UFormGroup>
-        
 
         <!-- Edition -->
         <UFormGroup label="Maison d'édition" required>
-          <USelectMenu 
-            v-model="selectedEdition" 
-            :options="editionOptions" 
+          <USelectMenu
+            v-model="selectedEdition"
+            :options="editionOptions"
             searchable
-            placeholder="Sélectionnez une maison d'édition"  
+            placeholder="Sélectionnez une maison d'édition"
           />
-        </UFormGroup>        
+        </UFormGroup>
 
         <!-- Nb exemplaires -->
-        <UTooltip text="Si recommandation ne rien mettre ou 1" :popper="{ placement: 'right' }">
+        <UTooltip
+          text="Si recommandation ne rien mettre ou 1"
+          :popper="{ placement: 'right' }"
+        >
           <UFormGroup label="Nombre d'exemplaires">
-            <UInput 
-              v-model="nbAvailable"  
-              placeholder=" 1" 
-              icon="i-heroicons-pencil" 
+            <UInput
+              v-model="nbAvailable"
+              placeholder=" 1"
+              icon="i-heroicons-pencil"
               class="input-field"
               type="number"
+              min="0"
             />
           </UFormGroup>
         </UTooltip>
 
-        <UCheckbox v-model="owned" name="owned" label="Ce livre est une proposition" />
+        <UCheckbox
+          v-model="owned"
+          name="owned"
+          label="Ce livre est une proposition"
+        />
 
-        <UButton 
-          block 
-          class="submit-button"
-          type="submit"
-        >
+        <UButton block class="submit-button" type="submit">
           Ajouter le livre
         </UButton>
       </form>
@@ -123,82 +133,114 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-
+import { ref, onMounted } from "vue";
 
 const props = defineProps({
-  authors: { type: Array as () => { id: number; fullname: string }[], required: true },
-  types: { type: Array as () => { id: number; type: string }[], required: true },
-  themes: { type: Array as () => { id: number; theme: string }[], required: true },
-  editions: { type: Array as () => { id: number; edition: string }[], required: true },
+  authors: {
+    type: Array as () => { id: number; fullname: string }[],
+    required: true,
+  },
+  types: {
+    type: Array as () => { id: number; type: string }[],
+    required: true,
+  },
+  themes: {
+    type: Array as () => { id: number; theme: string }[],
+    required: true,
+  },
+  editions: {
+    type: Array as () => { id: number; edition: string }[],
+    required: true,
+  },
   booksIsbn: { type: Array, required: true },
 });
 
-const title = ref('');
-const isbn = ref('');
+const title = ref("");
+const isbn = ref("");
 const nbAvailable = ref(1);
 const selectedType = ref<number>();
 const selectedThemes = ref<number[]>([]);
 const selectedAuthors = ref<number[]>([]);
 const selectedEdition = ref<number>();
 const authorNotFound = ref(false);
-const authorFirstName = ref('');
-const authorLastName = ref('');
+const authorFirstName = ref("");
+const authorLastName = ref("");
 const owned = ref<boolean>(false);
 const toast = useToast();
 const sortedAuthors = computed(() => {
-  return [...props.authors].sort((a, b) => a.fullname.localeCompare(b.fullname));
+  return [...props.authors].sort((a, b) =>
+    a.fullname.localeCompare(b.fullname)
+  );
 });
 const authorOptions = computed(() => {
-  return sortedAuthors.value.map(a => ({ label: a.fullname, value: a.id }));
+  return sortedAuthors.value.map((a) => ({ label: a.fullname, value: a.id }));
 });
 const typeOptions = computed(() => {
-  return props.types.map(t => ({ label: t.type, value: t.id }));
+  return props.types.map((t) => ({ label: t.type, value: t.id }));
 });
 const themeOptions = computed(() => {
-  return props.themes.map(t => ({ label: t.theme, value: t.id }));
+  return props.themes.map((t) => ({ label: t.theme, value: t.id }));
 });
 const editionOptions = computed(() => {
-  return props.editions.map(e => ({ label: e.edition, value: e.id }));
+  return props.editions.map((e) => ({ label: e.edition, value: e.id }));
 });
 
 
 const validateForm = (): boolean => {
   if (!title.value.trim()) {
-    toast.add({ title: 'Le titre est requis.', icon: "i-heroicons-exclamation-circle", color: "red" });
+    toast.add({
+      title: "Le titre est requis.",
+      icon: "i-heroicons-exclamation-circle",
+      color: "red",
+    });
     return false;
   }
-  if (!selectedAuthors.value.length && !(authorNotFound.value && authorFirstName.value && authorLastName.value))  {
-    toast.add({ title: 'Veuillez sélectionner un auteur.', icon: "i-heroicons-exclamation-circle", color: "red" });
+  if (
+    !selectedAuthors.value.length &&
+    !(authorNotFound.value && authorFirstName.value && authorLastName.value)
+  ) {
+    toast.add({
+      title: "Veuillez sélectionner un auteur.",
+      icon: "i-heroicons-exclamation-circle",
+      color: "red",
+    });
     return false;
   }
   if (!selectedType.value) {
-    toast.add({ title: 'Le type est obligatoire.', icon: "i-heroicons-exclamation-circle", color: "red" });
+    toast.add({
+      title: "Le type est obligatoire.",
+      icon: "i-heroicons-exclamation-circle",
+      color: "red",
+    });
     return false;
   }
   return true;
 };
 
 const resetForm = (): void => {
-  title.value = '';
-  isbn.value = '';
+  title.value = "";
+  isbn.value = "";
   nbAvailable.value = 1;
   selectedType.value = 0;
   selectedThemes.value = [];
   selectedAuthors.value = [];
   selectedEdition.value = 0;
   authorNotFound.value = false;
-  authorFirstName.value = '';
-  authorLastName.value = '';
+  authorFirstName.value = "";
+  authorLastName.value = "";
   owned.value = false;
 };
 
 const handleAuthorCreation = async (): Promise<number | null> => {
-  if (authorNotFound.value && authorFirstName.value.trim() && authorLastName.value.trim()) {
+  if (
+    authorNotFound.value &&
+    authorFirstName.value.trim() &&
+    authorLastName.value.trim()
+  ) {
     try {
-      const response = await fetch('http://localhost:2000/api/v1/authors/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("http://localhost:2000/api/v1/authors/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           firstname: authorFirstName.value,
           lastname: authorLastName.value,
@@ -206,13 +248,17 @@ const handleAuthorCreation = async (): Promise<number | null> => {
       });
 
       if (!response.ok) {
-        throw new Error('Erreur lors de la création de l\'auteur');
+        throw new Error("Erreur lors de la création de l'auteur");
       }
 
       const newAuthor = await response.json();
       return newAuthor.id;
     } catch (error: any) {
-      toast.add({ title: error.message, icon: "i-heroicons-exclamation-circle", color: "red" });
+      toast.add({
+        title: error.message,
+        icon: "i-heroicons-exclamation-circle",
+        color: "red",
+      });
       return null;
     }
   }
@@ -222,20 +268,22 @@ const handleAuthorCreation = async (): Promise<number | null> => {
 const handleFormSubmit = async (): Promise<void> => {
   if (!validateForm()) return;
 
-
   if (props.booksIsbn.includes(isbn.value)) {
-    toast.add({ title: 'Un livre possède déjà cet ISBN', icon: "i-heroicons-exclamation-circle", color: "red" });
+    toast.add({
+      title: "Un livre possède déjà cet ISBN",
+      icon: "i-heroicons-exclamation-circle",
+      color: "red",
+    });
     return;
   }
-  
 
   const authorIds = [...selectedAuthors.value];
   const newAuthorId = await handleAuthorCreation();
   if (newAuthorId) {
     const newAuthor = {
-      label : authorFirstName.value + " " + authorLastName.value,
-      value : newAuthorId
-    }
+      label: authorFirstName.value + " " + authorLastName.value,
+      value: newAuthorId,
+    };
     authorIds.push(newAuthor);
   }
 
@@ -251,22 +299,31 @@ const handleFormSubmit = async (): Promise<void> => {
   };
 
   try {
-    const response = await fetch('http://localhost:2000/api/v1/books/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const response = await fetch("http://localhost:2000/api/v1/books/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(book),
     });
 
     if (!response.ok) {
-      throw new Error('Erreur lors de l\'ajout du livre');
+      throw new Error("Erreur lors de l'ajout du livre");
     }
 
-    toast.add({ title: 'Livre ajouté avec succès', icon: "i-heroicons-check" });
+    toast.add({ title: "Livre ajouté avec succès", icon: "i-heroicons-check" });
     resetForm();
   } catch (error: any) {
-    toast.add({ title: error.message, icon: "i-heroicons-exclamation-circle", color: "red" });
+    toast.add({
+      title: error.message,
+      icon: "i-heroicons-exclamation-circle",
+      color: "red",
+    });
   }
 };
+
+const handleISBNInput = () =>{
+  isbn.value = isbn.value.replace(/\D/g, '');
+}
+
 </script>
 
 <style scoped>
@@ -292,7 +349,7 @@ section {
   margin-top: 40px;
 }
 
-select{
+select {
   border: 1px solid #333c4c;
   border-radius: 5px;
   padding: 5px;
@@ -309,7 +366,7 @@ select[multiple]:focus {
   overflow-y: auto;
 }
 
-.new-author-fields{
+.new-author-fields {
   display: flex;
   flex-direction: column;
   gap: 15px;
