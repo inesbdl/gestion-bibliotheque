@@ -62,10 +62,11 @@
           <UFormGroup label="ISBN">
             <UInput
               v-model="isbn"
-              placeholder="9782070344463"
+              placeholder="1111111111111"
               icon="i-heroicons-pencil"
               class="input-field"
               :maxlength="13"
+              type="number"
             />
           </UFormGroup>
         </UTooltip>
@@ -113,6 +114,7 @@
               icon="i-heroicons-pencil"
               class="input-field"
               type="number"
+              min="0"
             />
           </UFormGroup>
         </UTooltip>
@@ -183,6 +185,7 @@ const themeOptions = computed(() => {
 const editionOptions = computed(() => {
   return props.editions.map((e) => ({ label: e.edition, value: e.id }));
 });
+
 
 const validateForm = (): boolean => {
   if (!title.value.trim()) {
@@ -317,6 +320,11 @@ const handleFormSubmit = async (): Promise<void> => {
     });
   }
 };
+
+const handleISBNInput = () =>{
+  isbn.value = isbn.value.replace(/\D/g, '');
+}
+
 </script>
 
 <style scoped>

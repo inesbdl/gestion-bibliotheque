@@ -5,7 +5,6 @@
       <!-- Export -->
       <div class="data">
         <ExportButton />
-        <ImportButton/>
       </div>
 
       <!-- TYPE -->
@@ -24,7 +23,21 @@
       <addElementsForBooks label="Ajouter un·e auteur·ice" placeholder="Marie Viaire" elementType="author"/>
 
     </div>
-  </template>
+
+    <!-- Espace developeur-->
+    <!--
+    <div style="display: flex; flex-direction: column; margin-top: 60px; margin-bottom: 60px; align-items: center; gap: 25px;">
+      <UDivider icon="i-simple-icons-devbox" />
+      <p style="margin-top: 20px;">
+        Merci d'utiliser ces boutons si vous êtes certain·es de ce que vous faites.
+      </p>
+      <div style="display: flex; gap: 15px;">
+        <ImportButton/>
+         TODO remplacer par exportdevbutton 
+        <ImportButton/>
+      </div>
+    </div> -->
+  </template> 
   
   <script setup lang="ts">
   import { ref, onMounted } from 'vue';
