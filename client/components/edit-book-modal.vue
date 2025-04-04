@@ -82,6 +82,7 @@ watch(() => props.book, (newBook) => {
 
 const handleModifyBook = async () => {
   const bookData = {
+    id: editedBook.value.id,
     title: editedBook.value.title,
     authorIds: editedBook.value.authors.map(a => a.value),
     isbn: editedBook.value.isbn,
@@ -103,8 +104,14 @@ const handleModifyBook = async () => {
       throw new Error("Erreur lors de la modification du livre");
     }
 
+    const bookUpdatedData = await fetch(`http://localhost:2000/api/v1/books/id?id=${editedBook.value.id}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const bookUpdated = await bookUpdatedData.json();
+    
     toast.add({ title: "Livre modifié avec succès", icon: "i-heroicons-check" });
-    emit("save", bookData);
+    emit("save", bookUpdated);
   } catch (error: any) {
     toast.add({ title: error.message, icon: "i-heroicons-exclamation-circle", color: "red" });
   }
