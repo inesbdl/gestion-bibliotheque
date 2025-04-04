@@ -66,7 +66,6 @@
               icon="i-heroicons-pencil"
               class="input-field"
               :maxlength="13"
-              type="number"
             />
           </UFormGroup>
         </UTooltip>

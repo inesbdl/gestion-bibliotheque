@@ -25,7 +25,6 @@
     </div>
 
     <!-- Espace developeur-->
-    <!--
     <div style="display: flex; flex-direction: column; margin-top: 60px; margin-bottom: 60px; align-items: center; gap: 25px;">
       <UDivider icon="i-simple-icons-devbox" />
       <p style="margin-top: 20px;">
@@ -33,10 +32,9 @@
       </p>
       <div style="display: flex; gap: 15px;">
         <ImportButton/>
-         TODO remplacer par exportdevbutton 
-        <ImportButton/>
+        <ExportButtonDev/>
       </div>
-    </div> -->
+    </div>
   </template> 
   
   <script setup lang="ts">
