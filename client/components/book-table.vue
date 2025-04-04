@@ -235,8 +235,12 @@
         selectedBook.value = book;
         showDeleteModal.value = true;
       };
-  
+      
       const updateBook = (updatedBook) => {
+        const index = books.value.findIndex(book => book.id == updatedBook.id);
+        if (index !== -1) {
+          books.value[index] = updatedBook;
+        }
         showEditModal.value = false;
       };
   
