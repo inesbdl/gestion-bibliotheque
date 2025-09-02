@@ -3,8 +3,7 @@
     <header class="guide-header">
       <h1>Guide de l'application</h1>
       <p>
-        Bienvenue dans l'application de gestion de bibliothèque du Planning
-        Familial 33.
+        Bienvenue dans l'application de gestion de bibliothèque
       </p>
     </header>
 
@@ -16,27 +15,32 @@
         {
           label: '1. Accueil',
           content:
-            'La page d\'accueil vous permet de rechercher et de filtrer les livres disponibles dans la bibliothèque du planning familial. Vous pouvez utiliser la barre de recherche pour trouver un livre par titre, auteur, type, isbn ou thématique. Vous pouvez rechercher des livres par mot-clé via la barre de recherche et affiner la recherche grâce aux filtres.',
+            'La page d\'accueil vous permet de rechercher et de filtrer les livres disponibles dans la bibliothèque. Vous pouvez utiliser la barre de recherche pour trouver un livre par titre, auteur, type, isbn ou thématique. Vous pouvez rechercher des livres par mot-clé via la barre de recherche et affiner la recherche grâce aux filtres.',
         },
         {
           label: '2. Modifier ou Supprimer un livre',
           content:
-            'Vous pouvez modifier et/ou supprimer un livre en cliquant sur les icônes correspondants dans es tableaux présentas sur les pages d\'accueil et de proposition de livres.',
+            'Vous pouvez modifier et/ou supprimer un livre en cliquant sur les icônes correspondantes dans les tableaux présents sur les pages d\'accueil et de proposition de livres.',
         },
         {
           label: '3. Ajouter un livre',
           content:
             'Sur la page Ajouter un livre, vous pouvez entrer toutes les informations relatives à un nouveau livre que vous souhaitez ajouter à la bibliothèque. Si ce livre est une proposition, vous pouvez cocher la case Ce livre est une proposition. Une fois le formulaire rempli, cliquez sur Ajouter pour enregistrer le livre dans la bibliothèque.',
         },
+        // {
+        //   label: '4. Emprunter et rendre un livre',
+        //   content:
+        //     'Sur la page d\'accueil, vous pouvez emprunter un livre en cliquant sur l\'icone correspondante et en étant connecté. Vous pouvez voir les livres empruntés dans votre espace de compte. Pour rendre un livre, rendez vous dans votre espace de compte et cliquez sur le bouton rendre le livre.',
+        // },
         {
-          label: '4. Ajouter des éléments',
+          label: '5. Ajouter des éléments',
           content:
             'Dans le paramètres, vous avez la possibilité d\'ajouter des types, thématiques, auteur·ices etc si vous ne les trouvez pas lors de l\'ajout d\'un nouveau livre',
         },
         {
-          label: '5. Exporter la bibliothèque',
+          label: '6. Exporter la bibliothèque',
           content:
-            'Vous avez également la possibilité d\'exporter la bibliothèque au format Excel, pour un usage externe. Utilisez le bouton Exporter sur la page paramètres pour générer un fichier Excel contenant les dpnnées.',
+            'Vous avez également la possibilité d\'exporter la bibliothèque au format Excel, pour un usage externe. Utilisez le bouton Exporter sur la page paramètres pour générer un fichier Excel contenant les données.',
         },
       ]"
     />
@@ -52,8 +56,8 @@
       <div class="contact">
         <UAlert
           description="@oswinfreyr"
-          :avatar="{ src: 'aurora.png' }"
-          title="Aurora (iel/elle)"
+          :avatar="{ src: 'oswin.jpg' }"
+          title="Aurora (ael/iel)"
           color="primary" variant="subtle"
         />
         <UAlert

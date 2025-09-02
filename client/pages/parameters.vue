@@ -31,7 +31,7 @@
         Merci d'utiliser ces boutons si vous êtes certain·es de ce que vous faites.
       </p>
       <div style="display: flex; gap: 15px;">
-        <ImportButton/>
+        <!-- <ImportButton/> -->
         <ExportButtonDev/>
       </div>
     </div>
@@ -39,8 +39,17 @@
   
   <script setup lang="ts">
   import { ref, onMounted } from 'vue';
+  import { checkUserSession } from '~/api/users-actions';
   import addElementsForBooks from '~/components/add-elements-for-books.vue';
 
+  const router = useRouter();
+
+  // onMounted(async () => {
+  //   const isConnected = await checkUserSession();
+  //   if (!isConnected){
+  //     router.push('/');
+  //   }
+  // })
   
   </script>
   

@@ -268,7 +268,7 @@ const handleAuthorCreation = async (): Promise<number | null> => {
 const handleFormSubmit = async (): Promise<void> => {
   if (!validateForm()) return;
 
-  if (props.booksIsbn.includes(isbn.value)) {
+  if (props.booksIsbn.includes(isbn.value) && isbn.value != "") {
     toast.add({
       title: "Un livre possède déjà cet ISBN",
       icon: "i-heroicons-exclamation-circle",
@@ -284,7 +284,7 @@ const handleFormSubmit = async (): Promise<void> => {
       label: authorFirstName.value + " " + authorLastName.value,
       value: newAuthorId,
     };
-    authorIds.push(newAuthor);
+    authorIds.push(newAuthor.value);
   }
 
   const book = {
