@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Menu } = require('electron');
 const { exec } = require('child_process');
 const path = require('path');
 const http = require('http');
@@ -88,6 +88,31 @@ app.whenReady().then(async () => {
     stopBackend();
     return;
   }
+
+  const template = [
+    {
+      label: 'Fichier',
+      submenu: [
+        { role: 'quit', label:"Quitter" }
+      ]
+    },
+    {
+      label: 'Écran',
+      submenu: [
+        { role: 'reload', label: "Rafraichir" },
+        // { role: 'forceReload' },
+        { type: 'separator' },
+        { role: 'resetZoom', label: "Réinitialiser le zoom" },
+        { role: 'zoomIn', label: "Zoom +" },
+        { role: 'zoomOut', label: "Zoom -" },
+        { type: 'separator' },
+        { role: 'togglefullscreen', label: "Plein écran" }
+      ]
+    },
+  ]
+
+  const menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
 
   console.log("🖥️ Création de la fenêtre Electron...");
   mainWindow = new BrowserWindow({
