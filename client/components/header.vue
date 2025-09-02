@@ -1,37 +1,84 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 
-const links = ref([
-  [
-    {
-      label: 'Bibliothèque',
-      icon: 'i-heroicons-building-library',
-      to: '/'
-    },
-    {
-      label: 'Ajouter un livre',
-      icon: 'i-heroicons-book-open',
-      to: 'addBook'
-    },
-    {
-      label : 'Propositions de livres',
-      icon: 'i-heroicons-shopping-bag',
-      to: 'booksToBuy'
-    },
-  ],
-  [
-    {
+interface User {
+  firstname: string;
+  lastname: string;
+  fullname: string;
+  email: string;
+}
+
+// const user = useState<User | null>('user', () => null)
+
+// onMounted(async () => {
+//   if (!user.value) {
+//     try {
+//       const res = await fetch('http://localhost:2000/api/v1/users/currentUser', {
+//         credentials: 'include'
+//       });
+//       if (res.ok) {
+//         const data = await res.json();
+//         user.value = data;
+//       }
+//     } catch (err) {
+//       user.value = null;
+//     }
+//   }
+// });
+
+
+const links = computed(() => {
+  return [
+    [
+      {
+        label: 'Bibliothèque',
+        icon: 'i-heroicons-building-library',
+        to: '/'
+      },
+      {
+        label: 'Ajouter un livre',
+        icon: 'i-heroicons-book-open',
+        to: 'addBook'
+      },
+      {
+        label : 'Propositions de livres',
+        icon: 'i-heroicons-shopping-bag',
+        to: 'booksToBuy'
+      },
+    ],
+    [ 
+      // user.value  - LORS DE LA REMISE DE LA CONNEXION REACTIVER LE MIDDLEWARE DANS LES ROUTES BACK
+      //   ? {
+      //       label: 'Paramètres',
+      //       icon: 'i-heroicons-wrench-screwdriver',
+      //       to: 'parameters'
+      //     }
+      //   : {
+            
+      //     },
+      {
         label: 'Paramètres',
         icon: 'i-heroicons-wrench-screwdriver',
-      to: 'parameters'
-    },
-    {
-      label: 'Guide',
-      icon: 'i-heroicons-question-mark-circle',
-      to:"guide"
-    }
-  ]
-]);
+        to: 'parameters'
+      },
+      {
+        label: 'Guide',
+        icon: 'i-heroicons-question-mark-circle',
+        to: 'guide'
+      },
+      // user.value
+      //   ? {
+      //       label: user.value.fullname,
+      //       icon: 'i-heroicons-user-circle',
+      //       to: 'profile' 
+      //     }
+      //   : {
+      //       label: 'Connexion',
+      //       icon: 'i-heroicons-user-circle',
+      //       to: 'login'
+      //     }
+    ]
+  ];
+});
 
 </script>
 

@@ -1,6 +1,6 @@
 <template>
     <div v-if="isLoading" class="splash-screen">
-        <h1>COUCOU</h1>
+        <h1>LOADING</h1>
     </div>
   </template>
   

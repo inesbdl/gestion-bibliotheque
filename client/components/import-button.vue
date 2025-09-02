@@ -112,7 +112,7 @@ const importDataToApi = async (booksData, authorsData, themesData, typesData, ed
     }
 
     for (const book of booksData) {
-      console.log(book)
+      // console.log(book)
       const bookForApi = {
         title: book.title,
         authors: book.authors,
@@ -123,7 +123,7 @@ const importDataToApi = async (booksData, authorsData, themesData, typesData, ed
         owned: book.owned,
         nbAvailable: book.nbAvailable
       }
-      console.log(bookForApi)
+      // console.log(bookForApi)
       await fetch('http://localhost:2000/api/v1/books', {
         method: 'POST',
         headers: {

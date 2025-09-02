@@ -65,6 +65,7 @@
               <th>Type</th>
               <th>Maison d'édition</th>
               <th>Nombre d'exemplaires</th>
+              <th>Nombre empruntés</th>
               <th>ISBN</th>
               <th>Actions</th>
             </tr>
@@ -77,6 +78,7 @@
               <td>{{ book.type?.type }}</td>
               <td>{{ book.edition?.edition }}</td>
               <td>{{ book?.nbAvailable }}</td>
+              <td>{{ book?.nbShared }}</td>
               <td>{{ book?.isbn }}</td>
               <td>
   
@@ -87,7 +89,10 @@
                     color="primary"
                     square
                     variant="soft"
-                  />
+                    title="Modifier ce livre"
+                  >
+                  Modifier
+                  </UButton>
   
                   <UButton
                     @click="openDeleteModal(book)"
@@ -96,7 +101,23 @@
                     color="white"
                     square
                     variant="soft"
-                  />
+                    title="Supprimer ce livre"
+                  >
+                  Supprimer
+                  </UButton>
+
+                  <!-- <UButton
+                    v-if="hasToken && book.nbShared < book.nbAvailable && !proposition"
+                    @click="openBorrowModal(book)"
+                    icon="i-heroicons-book-open"
+                    size="sm"
+                    color="green"
+                    square
+                    variant="soft"
+                    title="Emprunter ce livre"
+                  >
+                  Emprunter
+                  </UButton> -->
   
               </td>
             </tr>
@@ -106,7 +127,7 @@
       </div>
   
       <!-- modales -->
-      <div class="modal" v-if="showEditModal || showDeleteModal">
+      <div class="modal" v-if="showEditModal || showDeleteModal || showBorrowModal">
         <EditModal
           v-if="showEditModal"
           :book="selectedBook"
@@ -123,6 +144,12 @@
           @close="showDeleteModal = false"
           @confirm="deleteBook(selectedBook.id)"
         />
+        <!-- <BorrowBookModal
+          v-if="showBorrowModal"
+          :book="selectedBook"
+          @close="showBorrowModal = false"
+          @borrowed="borrowBook"
+        /> -->
       </div>
     </div>
   </template>
@@ -131,13 +158,15 @@
   import { ref, computed, onMounted } from 'vue';
   import { fetchBooks, fetchAuthors, fetchThemes, fetchTypes, fetchEditions } from "../api/fetch-datas";
   import { deleteBookApi,} from "../api/books-actions"
+  import { checkUserSession,} from "../api/users-actions"
   import EditModal from "../components/edit-book-modal.vue";
   import DeleteModal from "../components/delete-book-modal.vue";
+  import BorrowBookModal from './borrow-book-modal.vue';
   
 
   
   export default {
-    components: { EditModal, DeleteModal },
+    components: { EditModal, DeleteModal, BorrowBookModal },
     props: {
       proposition: {
         type: Boolean,
@@ -157,9 +186,27 @@
       const selectedEdition = ref([]);
       const showEditModal = ref(false);
       const showDeleteModal = ref(false);
+      const showBorrowModal = ref(false);
       const selectedBook = ref(null);
       const toast = useToast();
       
+      const hasToken = ref(false);
+      
+      const isConnected = computed(() => {
+        const connected = checkUserSession();
+        return connected
+      }) 
+
+      if (isConnected) {
+        console.log("true", isConnected.value)
+        hasToken.value = true
+      }
+      else {
+        console.log("false", isConnected)
+        hasToken.value = false
+      }
+  
+
       const formattedTypes = computed(() => {
         return types.value.map(t => ({ label: t.type, value: t.id }));
       });
@@ -176,7 +223,6 @@
         return editions.value.map(t => ({ label: t.edition, value: t.id }));
       });
 
-  
       const fetchData = async () => {
         try {
           books.value = await fetchBooks() || [];
@@ -235,6 +281,11 @@
         selectedBook.value = book;
         showDeleteModal.value = true;
       };
+
+      const openBorrowModal = (book) => {
+        selectedBook.value = book;
+        showBorrowModal.value = true;
+      };
       
       const updateBook = (updatedBook) => {
         const index = books.value.findIndex(book => book.id == updatedBook.id);
@@ -271,6 +322,14 @@
           });
         }
       };
+
+      const borrowBook = (updatedBook) => {
+        const index = books.value.findIndex(book => book.id == updatedBook.id);
+        if (index !== -1) {
+          books.value[index] = updatedBook;
+        }
+        showBorrowModal.value = false;
+      };
   
       onMounted(fetchData);
   
@@ -280,6 +339,7 @@
         themes,
         types,
         editions,
+        hasToken,
         searchQuery,
         selectedAuthor,
         selectedType,
@@ -287,13 +347,16 @@
         selectedEdition,
         showEditModal,
         showDeleteModal,
+        showBorrowModal,
         selectedBook,
         filteredBooks,
         resetFilters,
         openEditModal,
         openDeleteModal,
+        openBorrowModal,
         updateBook,
         deleteBook,
+        borrowBook,
         formattedTypes,
         formattedEditions,
         formattedAuthors,
@@ -343,6 +406,7 @@ td {
 
 button {
   margin-right: 5px;
+  margin-bottom: 5px;
   padding: 5px 10px;
   background-color: #007bff;
   color: white;
